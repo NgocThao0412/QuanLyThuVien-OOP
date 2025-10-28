@@ -10,7 +10,7 @@ public class PhieuNhap {
     public String getMaNCC() {
         return maNCC;
     }
-
+    
     public void setMaNCC(String maNCC) {
         this.maNCC = maNCC;
     }
