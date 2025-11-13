@@ -129,6 +129,14 @@ public class DanhSachPhieuMuon {
             System.out.print("Moi chon: ");
             chon = Integer.parseInt(PhanTu.sc.nextLine());
 
+            int chon;
+             try {
+               chon = Integer.parseInt(PhanTu.sc.nextLine());
+              } catch (Exception e) {
+             System.out.println("Vui long nhap so!");
+            chon = -1;
+           continue;
+        }
             switch (chon) {
                 case 1 -> nhapDanhSach();
                 case 2 -> xuatDanhSach();
