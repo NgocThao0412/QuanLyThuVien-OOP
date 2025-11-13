@@ -226,5 +226,12 @@ public static boolean KiemTraTheLoai(String theLoai) {
     }
     return true;
 }
-
+public static boolean KiemTraNamXuatBan(int nam) {
+    int namHienTai = LocalDate.now().getYear();
+    if (nam < 1900 || nam > namHienTai) {
+        System.out.println("Loi: Nam xuat ban khong hop le (1900 - " + namHienTai + ")!");
+        return false;
+    }
+    return true;
+}
 }
