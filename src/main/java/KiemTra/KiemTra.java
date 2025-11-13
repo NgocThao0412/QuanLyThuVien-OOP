@@ -195,7 +195,7 @@ public class KiemTra {
 
 
     // KIEM TRA THONG TIN SACH
-public static boolean KiemTraTenSach(String tenSach) {
+    public static boolean KiemTraTenSach(String tenSach) {
     if (tenSach == null || tenSach.trim().isEmpty()) {
         System.out.println("Loi: Ten sach khong duoc de trong!");
         return false;
@@ -207,7 +207,7 @@ public static boolean KiemTraTenSach(String tenSach) {
     return true;
 }
 
-public static boolean KiemTraTacGia(String tacGia) {
+    public static boolean KiemTraTacGia(String tacGia) {
     if (tacGia == null || tacGia.trim().isEmpty()) {
         System.out.println("Loi: Tac gia khong duoc de trong!");
         return false;
@@ -219,14 +219,14 @@ public static boolean KiemTraTacGia(String tacGia) {
     return true;
 }
 
-public static boolean KiemTraTheLoai(String theLoai) {
+    public static boolean KiemTraTheLoai(String theLoai) {
     if (theLoai == null || theLoai.trim().isEmpty()) {
         System.out.println("Loi: The loai khong duoc de trong!");
         return false;
     }
     return true;
 }
-public static boolean KiemTraNamXuatBan(int nam) {
+    public static boolean KiemTraNamXuatBan(int nam) {
     int namHienTai = LocalDate.now().getYear();
     if (nam < 1900 || nam > namHienTai) {
         System.out.println("Loi: Nam xuat ban khong hop le (1900 - " + namHienTai + ")!");
@@ -234,4 +234,37 @@ public static boolean KiemTraNamXuatBan(int nam) {
     }
     return true;
 }
+
+  //KIEM TRA LUA CHON
+    public static int CheckNumber() {
+        boolean check = false;
+		String str;
+		do {
+			str = sc.nextLine();
+			check = true;
+			if(!isNumber(str)) {
+				check = false;
+				System.out.print("Nhap sai so!!! Moi nhap lai: ");
+			}
+		} while (!check);
+		return Integer.parseInt(str);
+	}
+	public static boolean isNumber(String str) {
+		try {
+			Integer.parseInt(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+    //KIEM TRA CHUOI
+    public static boolean isDecimal(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 }
