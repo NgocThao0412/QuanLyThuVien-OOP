@@ -34,7 +34,7 @@ public class PhieuMuon extends PhanTu {
 
     // ===== Override =====
    @Override
-public void nhap() {
+    public void nhap() {
     System.out.println("\n=== NHAP THONG TIN PHIEU MUON ===");
     do {
         System.out.print("Nhap ma phieu muon: ");
@@ -75,45 +75,71 @@ public void nhap() {
                 tinhTrang);
     }
 
-    @Override
+   @Override
     public void sua() {
-        int chon;
-        do {
-            System.out.println("\n--- CHINH SUA PHIEU MUON ---");
-            System.out.println("1. Sua ma phieu");
-            System.out.println("2. Sua ngay muon");
-            System.out.println("3. Sua ngay tra");
-            System.out.println("4. Sua tinh trang");
-            System.out.println("0. Thoat");
-            System.out.print("Chon: ");
+    int chon;
+    do {
+        System.out.println("\n--- CHINH SUA PHIEU MUON ---");
+        System.out.println("1. Sua ma phieu");
+        System.out.println("2. Sua ngay muon");
+        System.out.println("3. Sua ngay tra");
+        System.out.println("4. Sua tinh trang");
+        System.out.println("0. Thoat");
+        System.out.print("Chon: ");
+        
+        try {
             chon = Integer.parseInt(sc.nextLine());
-            try {
-                switch (chon) {
-                    case 1:
+        } catch (Exception e) {
+            System.out.println("Vui long nhap so!");
+            chon = -1;
+            continue;
+        }
+
+        try {
+            switch (chon) {
+                case 1:
+                    do {
                         System.out.print("Nhap ma phieu moi: ");
                         maPM = sc.nextLine();
-                        break;
-                    case 2:
+                    } while (!CheckLoi.KiemTraMaPhieu(maPM));
+                    break;
+
+                case 2:
+                    String strNgayMuon;
+                    do {
                         System.out.print("Nhap ngay muon moi (dd/MM/yyyy): ");
-                        ngayMuon = sdf.parse(sc.nextLine());
-                        break;
-                    case 3:
+                        strNgayMuon = sc.nextLine();
+                    } while (!CheckLoi.KiemTraNgay(strNgayMuon));
+                    ngayMuon = sdf.parse(strNgayMuon);
+                    break;
+
+                case 3:
+                    String strNgayTra;
+                    do {
                         System.out.print("Nhap ngay tra moi (dd/MM/yyyy): ");
-                        ngayTra = sdf.parse(sc.nextLine());
-                        break;
-                    case 4:
-                        System.out.print("Nhap tinh trang moi: ");
+                        strNgayTra = sc.nextLine();
+                    } while (!CheckLoi.KiemTraNgay(strNgayTra) ||
+                             !CheckLoi.KiemTraNgayMuonTra(sdf.format(ngayMuon), strNgayTra));
+                    ngayTra = sdf.parse(strNgayTra);
+                    break;
+
+                case 4:
+                    do {
+                        System.out.print("Nhap tinh trang moi (Dang muon / Da tra): ");
                         tinhTrang = sc.nextLine();
-                        break;
-                    case 0:
-                        System.out.println("Thoat chinh sua!");
-                        break;
-                    default:
-                        System.out.println("Lua chon khong hop le!");
-                }
-            } catch (Exception e) {
-                System.out.println("Loi nhap lieu: " + e.getMessage());
+                    } while (!CheckLoi.KiemTraTinhTrang(tinhTrang));
+                    break;
+
+                case 0:
+                    System.out.println("Thoat chinh sua!");
+                    break;
+
+                default:
+                    System.out.println("Lua chon khong hop le!");
             }
-        } while (chon != 0);
-    }
+        } catch (Exception e) {
+            System.out.println("Loi nhap lieu: " + e.getMessage());
+        }
+
+    } while (chon != 0);
 }
