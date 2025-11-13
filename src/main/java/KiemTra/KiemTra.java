@@ -3,7 +3,7 @@ package KiemTra;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class CheckLoi {
+public class KiemTra {
 
     // KIEM TRA MA
     public static boolean KiemTraMaNV(String ma) {

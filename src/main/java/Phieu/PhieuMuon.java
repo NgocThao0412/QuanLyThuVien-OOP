@@ -2,7 +2,7 @@ package Phieu;
 
 import java.util.Date;
 
-import KiemTra.KiemTra.CheckLoi;
+import KiemTra.KiemTra;
 
 public class PhieuMuon extends PhanTu {
     private String maPM;
