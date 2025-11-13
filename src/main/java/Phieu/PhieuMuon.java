@@ -1,19 +1,28 @@
 package Phieu;
 
-import java.util.Date;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-import KiemTra.KiemTra;
+import KiemTra.CheckLoi;
 
 public class PhieuMuon extends PhanTu {
     private String maPM;
+    private String maDG;
+    private String maTL;
     private Date ngayMuon;
     private Date ngayTra;
     private String tinhTrang;
 
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private static final String FILE_NAME = "dspm.txt";
+
     public PhieuMuon() {}
 
-    public PhieuMuon(String maPM, Date ngayMuon, Date ngayTra, String tinhTrang) {
+    public PhieuMuon(String maPM, String maDG, String maTL, Date ngayMuon, Date ngayTra, String tinhTrang) {
         this.maPM = maPM;
+        this.maDG = maDG;
+        this.maTL = maTL;
         this.ngayMuon = ngayMuon;
         this.ngayTra = ngayTra;
         this.tinhTrang = tinhTrang;
@@ -22,6 +31,12 @@ public class PhieuMuon extends PhanTu {
     // ===== Getter & Setter =====
     public String getMaPM() { return maPM; }
     public void setMaPM(String maPM) { this.maPM = maPM; }
+
+    public String getMaDG() { return maDG; }
+    public void setMaDG(String maDG) { this.maDG = maDG; }
+
+    public String getMaTL() { return maTL; }
+    public void setMaTL(String maTL) { this.maTL = maTL; }
 
     public Date getNgayMuon() { return ngayMuon; }
     public void setNgayMuon(Date ngayMuon) { this.ngayMuon = ngayMuon; }
@@ -32,114 +47,147 @@ public class PhieuMuon extends PhanTu {
     public String getTinhTrang() { return tinhTrang; }
     public void setTinhTrang(String tinhTrang) { this.tinhTrang = tinhTrang; }
 
-    // ===== Override =====
-   @Override
+    // ===== Nhập từ bàn phím =====
+    @Override
     public void nhap() {
-    System.out.println("\n=== NHAP THONG TIN PHIEU MUON ===");
-    do {
-        System.out.print("Nhap ma phieu muon: ");
-        maPM = sc.nextLine();
-    } while (!CheckLoi.KiemTraMaPhieu(maPM));
+        System.out.println("\n=== NHAP THONG TIN PHIEU MUON ===");
 
-    String strNgayMuon, strNgayTra;
-    do {
-        System.out.print("Nhap ngay muon (dd/MM/yyyy): ");
-        strNgayMuon = sc.nextLine();
-    } while (!CheckLoi.KiemTraNgay(strNgayMuon));
+        do {
+            System.out.print("Nhap ma phieu muon: ");
+            maPM = sc.nextLine();
+        } while (!CheckLoi.KiemTraMaPhieu(maPM));
 
-    do {
-        System.out.print("Nhap ngay tra (dd/MM/yyyy): ");
-        strNgayTra = sc.nextLine();
-    } while (!CheckLoi.KiemTraNgay(strNgayTra) ||
-             !CheckLoi.KiemTraNgayMuonTra(strNgayMuon, strNgayTra));
+        do {
+            System.out.print("Nhap ma doc gia: ");
+            maDG = sc.nextLine();
+        } while (!CheckLoi.KiemTraMaDG(maDG));
 
-    try {
-        ngayMuon = sdf.parse(strNgayMuon);
-        ngayTra = sdf.parse(strNgayTra);
-    } catch (Exception e) {
-        System.out.println("Loi dinh dang ngay: " + e.getMessage());
+        do {
+            System.out.print("Nhap ma tai lieu: ");
+            maTL = sc.nextLine();
+        } while (!CheckLoi.KiemTraMaTL(maTL));
+
+        String strNgayMuon, strNgayTra;
+        do {
+            System.out.print("Nhap ngay muon (dd/MM/yyyy): ");
+            strNgayMuon = sc.nextLine();
+        } while (!CheckLoi.KiemTraNgay(strNgayMuon));
+
+        do {
+            System.out.print("Nhap ngay tra (dd/MM/yyyy): ");
+            strNgayTra = sc.nextLine();
+        } while (!CheckLoi.KiemTraNgay(strNgayTra) ||
+                 !CheckLoi.KiemTraNgayMuonTra(strNgayMuon, strNgayTra));
+
+        try {
+            ngayMuon = sdf.parse(strNgayMuon);
+            ngayTra = sdf.parse(strNgayTra);
+        } catch (Exception e) {
+            System.out.println("Loi dinh dang ngay: " + e.getMessage());
+        }
+
+        do {
+            System.out.print("Nhap tinh trang (Dang muon / Da tra): ");
+            tinhTrang = sc.nextLine();
+        } while (!CheckLoi.KiemTraTinhTrang(tinhTrang));
     }
 
-    do {
-        System.out.print("Nhap tinh trang (Dang muon / Da tra): ");
-        tinhTrang = sc.nextLine();
-    } while (!CheckLoi.KiemTraTinhTrang(tinhTrang));
-}
-
+    // ===== Xuất ra màn hình =====
     @Override
     public void xuat() {
-        System.out.printf("%-10s %-15s %-15s %-15s\n",
-                maPM,
+        System.out.printf("%-10s %-10s %-10s %-15s %-15s %-15s\n",
+                maPM, maDG, maTL,
                 sdf.format(ngayMuon),
                 sdf.format(ngayTra),
                 tinhTrang);
     }
 
-   @Override
+    // ===== Sửa thông tin =====
+    @Override
     public void sua() {
-    int chon;
-    do {
-        System.out.println("\n--- CHINH SUA PHIEU MUON ---");
-        System.out.println("1. Sua ma phieu");
-        System.out.println("2. Sua ngay muon");
-        System.out.println("3. Sua ngay tra");
-        System.out.println("4. Sua tinh trang");
-        System.out.println("0. Thoat");
-        System.out.print("Chon: ");
-        
-        try {
-            chon = Integer.parseInt(sc.nextLine());
-        } catch (Exception e) {
-            System.out.println("Vui long nhap so!");
-            chon = -1;
-            continue;
-        }
+        int chon;
+        do {
+            System.out.println("\n--- CHINH SUA PHIEU MUON ---");
+            System.out.println("1. Sua ma doc gia");
+            System.out.println("2. Sua ma tai lieu");
+            System.out.println("3. Sua ngay muon");
+            System.out.println("4. Sua ngay tra");
+            System.out.println("5. Sua tinh trang");
+            System.out.println("0. Thoat");
+            System.out.print("Chon: ");
+            try {
+                chon = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("Vui long nhap so!");
+                chon = -1;
+                continue;
+            }
 
-        try {
-            switch (chon) {
-                case 1:
-                    do {
-                        System.out.print("Nhap ma phieu moi: ");
-                        maPM = sc.nextLine();
-                    } while (!CheckLoi.KiemTraMaPhieu(maPM));
-                    break;
-
-                case 2:
-                    String strNgayMuon;
-                    do {
+            try {
+                switch (chon) {
+                    case 1:
+                        System.out.print("Nhap ma doc gia moi: ");
+                        maDG = sc.nextLine();
+                        break;
+                    case 2:
+                        System.out.print("Nhap ma tai lieu moi: ");
+                        maTL = sc.nextLine();
+                        break;
+                    case 3:
                         System.out.print("Nhap ngay muon moi (dd/MM/yyyy): ");
-                        strNgayMuon = sc.nextLine();
-                    } while (!CheckLoi.KiemTraNgay(strNgayMuon));
-                    ngayMuon = sdf.parse(strNgayMuon);
-                    break;
-
-                case 3:
-                    String strNgayTra;
-                    do {
+                        ngayMuon = sdf.parse(sc.nextLine());
+                        break;
+                    case 4:
                         System.out.print("Nhap ngay tra moi (dd/MM/yyyy): ");
-                        strNgayTra = sc.nextLine();
-                    } while (!CheckLoi.KiemTraNgay(strNgayTra) ||
-                             !CheckLoi.KiemTraNgayMuonTra(sdf.format(ngayMuon), strNgayTra));
-                    ngayTra = sdf.parse(strNgayTra);
-                    break;
-
-                case 4:
-                    do {
-                        System.out.print("Nhap tinh trang moi (Dang muon / Da tra): ");
+                        ngayTra = sdf.parse(sc.nextLine());
+                        break;
+                    case 5:
+                        System.out.print("Nhap tinh trang moi: ");
                         tinhTrang = sc.nextLine();
-                    } while (!CheckLoi.KiemTraTinhTrang(tinhTrang));
-                    break;
+                        break;
+                    case 0:
+                        System.out.println("Thoat chinh sua!");
+                        break;
+                    default:
+                        System.out.println("Lua chon khong hop le!");
+                }
+            } catch (Exception e) {
+                System.out.println("Loi nhap lieu: " + e.getMessage());
+            }
+        } while (chon != 0);
+    }
 
-                case 0:
-                    System.out.println("Thoat chinh sua!");
-                    break;
-
-                default:
-                    System.out.println("Lua chon khong hop le!");
+    // ===== Đọc file (tĩnh) =====
+    public static ArrayList<PhieuMuon> docFile() {
+        ArrayList<PhieuMuon> ds = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] p = line.split(";");
+                if (p.length == 6) {
+                    Date ngayMuon = sdf.parse(p[3]);
+                    Date ngayTra = sdf.parse(p[4]);
+                    ds.add(new PhieuMuon(p[0], p[1], p[2], ngayMuon, ngayTra, p[5]));
+                }
             }
         } catch (Exception e) {
-            System.out.println("Loi nhap lieu: " + e.getMessage());
+            System.out.println("Loi khi doc file: " + e.getMessage());
         }
+        return ds;
+    }
 
-    } while (chon != 0);
+    // ===== Ghi file (tĩnh) =====
+    public static void ghiFile(ArrayList<PhieuMuon> ds) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (PhieuMuon pm : ds) {
+                bw.write(pm.maPM + ";" + pm.maDG + ";" + pm.maTL + ";" +
+                         sdf.format(pm.ngayMuon) + ";" +
+                         sdf.format(pm.ngayTra) + ";" +
+                         pm.tinhTrang);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Loi khi ghi file: " + e.getMessage());
+        }
+    }
 }
