@@ -1,142 +1,169 @@
 package DanhSach;
 
-import java.util.ArrayList;
 import Phieu.PhieuMuon;
+import Phieu.PhanTu;
 
 public class DanhSachPhieuMuon {
-    private ArrayList<PhieuMuon> ds = new ArrayList<>();
 
-    // ===== Nhap moi danh sach =====
+    private PhieuMuon[] ds = new PhieuMuon[200]; 
+    private int size = 0; 
+
+    // ===== Đọc file khi khởi tạo =====
+    public DanhSachPhieuMuon() {
+        ds = PhieuMuon.docFile();
+        size = ds.length;
+    }
+
+    // ===== Nhập mới danh sách =====
     public void nhapDanhSach() {
-        ds.clear();
         System.out.print("Nhap so luong phieu muon: ");
         int n = Integer.parseInt(PhanTu.sc.nextLine());
+        size = 0;
+
         for (int i = 0; i < n; i++) {
             System.out.println("\n--- Phieu muon thu " + (i + 1) + " ---");
             PhieuMuon pm = new PhieuMuon();
             pm.nhap();
-            ds.add(pm);
+            ds[size++] = pm;
         }
+
+        PhieuMuon.ghiFile(ds);
+        System.out.println("Da luu danh sach vao file!");
     }
 
-    // ===== Xuat danh sach =====
+    // ===== Xuất danh sách từ file =====
     public void xuatDanhSach() {
-        if (ds.isEmpty()) {
-            System.out.println("Danh sach phieu muon trong!");
-            return;
-        }
-        System.out.printf("%-10s %-15s %-15s %-15s\n",
-                "Ma PM", "Ngay muon", "Ngay tra", "Tinh trang");
-        System.out.println("-----------------------------------------------------");
-        for (PhieuMuon pm : ds) {
-            pm.xuat();
-        }
+    PhieuMuon[] dsFile = PhieuMuon.docFile(); 
+
+    if (dsFile.length == 0) {
+        System.out.println("File rong, khong co du lieu!");
+        return;
     }
 
-    // ===== Them phieu muon =====
+    System.out.printf("%-10s %-10s %-10s %-15s %-15s %-15s\n",
+            "MaPM", "MaDG", "MaTL", "Ngay muon", "Ngay tra", "Tinh trang");
+    System.out.println("-----------------------------------------------------------");
+
+    for (PhieuMuon pm : dsFile) {
+        pm.xuat();
+    }
+}
+
+
+    // ===== Thêm =====
     public void themPhieuMuon() {
-        System.out.println("\n=== THEM PHIEU MUON MOI ===");
         PhieuMuon pm = new PhieuMuon();
         pm.nhap();
-        ds.add(pm);
-        System.out.println("Them phieu muon thanh cong!");
+        ds[size++] = pm;
+        PhieuMuon.ghiFile(ds);
+        System.out.println("Them thanh cong!");
     }
 
-    // ===== Chinh sua thong tin =====
+    // ===== Sửa =====
     public void suaPhieuMuon() {
-        System.out.print("Nhap ma phieu can sua: ");
+        System.out.print("Nhap ma phieu muon can sua: ");
         String ma = PhanTu.sc.nextLine();
-        PhieuMuon pm = timTheoMa(ma);
-        if (pm != null) {
-            pm.sua();
-        } else {
-            System.out.println("Khong tim thay phieu muon co ma: " + ma);
+        int index = timTheoMaIndex(ma);
+
+        if (index == -1) {
+            System.out.println("Khong tim thay!");
+            return;
         }
+
+        ds[index].sua();
+        PhieuMuon.ghiFile(ds);
+        System.out.println("Da cap nhat file!");
     }
 
-    // ===== Xoa phieu muon =====
+    // ===== Xóa =====
     public void xoaPhieuMuon() {
-        System.out.print("Nhap ma phieu can xoa: ");
+        System.out.print("Nhap ma phieu muon can xoa: ");
         String ma = PhanTu.sc.nextLine();
-        PhieuMuon pm = timTheoMa(ma);
-        if (pm != null) {
-            ds.remove(pm);
-            System.out.println("Da xoa phieu muon: " + ma);
-        } else {
-            System.out.println("Khong tim thay phieu muon!");
+        int index = timTheoMaIndex(ma);
+
+        if (index == -1) {
+            System.out.println("Khong tim thay ma phieu!");
+            return;
         }
+
+ 
+        for (int i = index; i < size - 1; i++)
+            ds[i] = ds[i + 1];
+
+        size--;
+        ds[size] = null;
+
+        PhieuMuon.ghiFile(ds);
+
+        System.out.println("Da xoa thanh cong!");
     }
 
-    // ===== Tim phieu muon =====
+    // ===== Tìm =====
     public void timPhieuMuon() {
-        System.out.print("Nhap ma phieu can tim: ");
+        System.out.print("Nhap ma phieu muon can tim: ");
         String ma = PhanTu.sc.nextLine();
-        PhieuMuon pm = timTheoMa(ma);
-        if (pm != null) {
-            System.out.printf("%-10s %-15s %-15s %-15s\n",
-                    "Ma PM", "Ngay muon", "Ngay tra", "Tinh trang");
-            System.out.println("-----------------------------------------------------");
-            pm.xuat();
-        } else {
-            System.out.println("Khong tim thay phieu muon!");
+        int index = timTheoMaIndex(ma);
+
+        if (index == -1) {
+            System.out.println("Khong tim thay!");
+            return;
         }
+
+        System.out.printf("%-10s %-10s %-10s %-15s %-15s %-15s\n",
+                "MaPM", "MaDG", "MaTL", "Ngay muon", "Ngay tra", "Tinh trang");
+        System.out.println("-----------------------------------------------------------");
+
+        ds[index].xuat();
     }
 
-    // ===== Thong ke =====
+    // ===== Thống kê =====
     public void thongKe() {
         int dangMuon = 0, daTra = 0;
-        for (PhieuMuon pm : ds) {
-            if (pm.getTinhTrang().equalsIgnoreCase("Dang muon"))
-                dangMuon++;
-            else if (pm.getTinhTrang().equalsIgnoreCase("Da tra"))
-                daTra++;
+
+        for (int i = 0; i < size; i++) {
+            String t = ds[i].getTinhTrang().toLowerCase();
+            if (t.equals("dang muon")) dangMuon++;
+            if (t.equals("da tra")) daTra++;
         }
-        System.out.println("Tong so phieu: " + ds.size());
-        System.out.println(" - Dang muon: " + dangMuon);
-        System.out.println(" - Da tra: " + daTra);
+
+        System.out.println("Tong phieu: " + size);
+        System.out.println("Dang muon: " + dangMuon);
+        System.out.println("Da tra: " + daTra);
     }
 
-    // ===== Tong so luong =====
+    // ===== Tổng số lượng =====
     public void tongSoLuong() {
-        System.out.println("Tong so luong phieu muon hien co: " + ds.size());
+        System.out.println("Tong so phieu muon: " + size);
     }
 
-    // ===== Ham tim phieu theo ma =====
-    private PhieuMuon timTheoMa(String ma) {
-        for (PhieuMuon pm : ds) {
-            if (pm.getMaPM().equalsIgnoreCase(ma)) {
-                return pm;
-            }
+    // ===== Tìm bằng mã =====
+    private int timTheoMaIndex(String ma) {
+        for (int i = 0; i < size; i++) {
+            if (ds[i].getMaPM().equalsIgnoreCase(ma))
+                return i;
         }
-        return null;
+        return -1;
     }
 
-    // ===== Menu quan ly danh sach phieu muon =====
+    // ===== Menu =====
     public void menu() {
         int chon;
+
         do {
-            System.out.println("\n*** QUAN LY DANH SACH PHIEU MUON ***");
-            System.out.println("1. Nhap moi danh sach");
+            System.out.println("\n*** QUAN LY PHIEU MUON ***");
+            System.out.println("1. Nhap danh sach moi");
             System.out.println("2. Xuat danh sach");
-            System.out.println("3. Them phieu muon vao danh sach");
-            System.out.println("4. Chinh sua thong tin phieu muon");
+            System.out.println("3. Them phieu muon");
+            System.out.println("4. Sua phieu muon");
             System.out.println("5. Xoa phieu muon");
             System.out.println("6. Tim phieu muon");
             System.out.println("7. Thong ke");
-            System.out.println("8. Tong so luong phieu muon");
-            System.out.println("0. Quay lai menu quan ly");
-            System.out.println("=================================");
+            System.out.println("8. Tong so luong");
+            System.out.println("0. Thoat");
             System.out.print("Moi chon: ");
+
             chon = Integer.parseInt(PhanTu.sc.nextLine());
 
-            int chon;
-             try {
-               chon = Integer.parseInt(PhanTu.sc.nextLine());
-              } catch (Exception e) {
-             System.out.println("Vui long nhap so!");
-            chon = -1;
-           continue;
-        }
             switch (chon) {
                 case 1 -> nhapDanhSach();
                 case 2 -> xuatDanhSach();
@@ -146,9 +173,10 @@ public class DanhSachPhieuMuon {
                 case 6 -> timPhieuMuon();
                 case 7 -> thongKe();
                 case 8 -> tongSoLuong();
-                case 0 -> System.out.println("Quay lai menu chinh...");
-                default -> System.out.println("Lua chon khong hop le!");
+                case 0 -> System.out.println("Thoat!");
+                default -> System.out.println("Lua chon sai!");
             }
+
         } while (chon != 0);
     }
 }
