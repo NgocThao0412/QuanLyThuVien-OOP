@@ -157,9 +157,10 @@ public class PhieuMuon extends PhanTu {
         } while (chon != 0);
     }
 
-    // ===== Đọc file (tĩnh) =====
-    public static ArrayList<PhieuMuon> docFile() {
-        ArrayList<PhieuMuon> ds = new ArrayList<>();
+    // ===== Đọc file (trả về mảng) =====
+    public static PhieuMuon[] docFile() {
+        PhieuMuon[] ds = new PhieuMuon[100]; 
+        int i = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -167,27 +168,27 @@ public class PhieuMuon extends PhanTu {
                 if (p.length == 6) {
                     Date ngayMuon = sdf.parse(p[3]);
                     Date ngayTra = sdf.parse(p[4]);
-                    ds.add(new PhieuMuon(p[0], p[1], p[2], ngayMuon, ngayTra, p[5]));
+                    ds[i++] = new PhieuMuon(p[0], p[1], p[2], ngayMuon, ngayTra, p[5]);
                 }
             }
         } catch (Exception e) {
             System.out.println("Loi khi doc file: " + e.getMessage());
         }
-        return ds;
+        return Arrays.copyOf(ds, i); 
     }
 
-    // ===== Ghi file (tĩnh) =====
-    public static void ghiFile(ArrayList<PhieuMuon> ds) {
+    // ===== Ghi file =====
+    public static void ghiFile(PhieuMuon[] ds) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            for (PhieuMuon pm : ds) {
-                bw.write(pm.maPM + ";" + pm.maDG + ";" + pm.maTL + ";" +
-                         sdf.format(pm.ngayMuon) + ";" +
-                         sdf.format(pm.ngayTra) + ";" +
-                         pm.tinhTrang);
-                bw.newLine();
-            }
+           for (PhieuMuon pm : ds) {
+                     if (pm == null) break;
+                         bw.write(pm.maPM + ";" + pm.maDG + ";" + pm.maTL + ";" +
+                            sdf.format(pm.ngayMuon) + ";" + sdf.format(pm.ngayTra) + ";" +
+                             pm.tinhTrang);
+                         bw.newLine();}
         } catch (IOException e) {
             System.out.println("Loi khi ghi file: " + e.getMessage());
         }
     }
 }
+
