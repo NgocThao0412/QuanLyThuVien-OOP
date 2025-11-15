@@ -266,5 +266,35 @@ public class KiemTra {
             return false;
         }
     }
+	//manh them
+ public static String checkTheLoaiSach() {
+    boolean check = false;
+    int choose;
+    System.out.println("==============================");
+    System.out.println("1. Sach Trinh Tham");
+    System.out.println("2. Sach Thieu Nhi");
+    System.out.println("3. Sach Tam Ly");
+    System.out.println("==============================");
+    do {
+        System.out.print("Moi chon: ");
+        try {
+            choose = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Nhap sai! Vui long nhap so tu 1-3.");
+            continue;
+        }
+        switch (choose) {
+            case 1:
+                return "Sach Trinh Tham";
+            case 2:
+                return "Sach Thieu Nhi";
+            case 3:
+                return "Sach Tam Ly";
+            default:
+                System.out.println("Hay chon so co trong menu!!!");
+                break;
+        }
+    } while (true);
+}
 
 }
