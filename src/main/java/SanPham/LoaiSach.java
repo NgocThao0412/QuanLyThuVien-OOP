@@ -5,7 +5,7 @@ import KiemTra.KiemTra;
 
 public class LoaiSach extends PhanTu {
     private String maLoaiSach;
-    private String tenSach;
+    private String tenLoaiSach;
     private String nhaXuatBan;
     private int namXuatBan;
     private int soLuong = 0;
@@ -13,9 +13,9 @@ public class LoaiSach extends PhanTu {
 
     public LoaiSach() {}
 
-    public LoaiSach(String maLoaiSach, String tenSach, String nhaXuatBan, int namXuatBan, int soLuong, String[] dsmaSach) {
+    public LoaiSach(String maLoaiSach, String tenLoaiSach, String nhaXuatBan, int namXuatBan, int soLuong, String[] dsmaSach) {
         this.maLoaiSach = maLoaiSach;
-        this.tenSach = tenSach;
+        this.tenLoaiSach = tenLoaiSach;
         this.nhaXuatBan = nhaXuatBan;
         this.namXuatBan = namXuatBan;
         this.soLuong = soLuong;
@@ -42,17 +42,17 @@ public class LoaiSach extends PhanTu {
         } while (!check);
     }
 
-    public String gettenSach() {
-        return tenSach;
+    public String gettenLoaiSach() {
+        return tenLoaiSach;
     }
 
-    public void settenSach(String tenSach) {
-        this.tenSach = tenSach;
+    public void settenLoaiSach(String tenLoaiSach) {
+        this.tenLoaiSach = tenLoaiSach;
     }
 
-    public void settenSach() {
-        System.out.print("Nhập tên sách: ");
-        tenSach = sc.nextLine();
+    public void settenLoaiSach() {
+        System.out.print("Nhập tên loại sách: ");
+        tenLoaiSach = sc.nextLine();
     }
 
     public String getNhaXuatBan() {
@@ -90,7 +90,7 @@ public class LoaiSach extends PhanTu {
         Sach[] dsstmp = dss.getDsSach();
         soLuong = 0;
         for (int i = 0; i < dsstmp.length; i++) {
-            if (dsstmp[i].gettenSach().equals(tenSach)) {
+            if (dsstmp[i].gettenSach().equals(tenLoaiSach)) {
                 soLuong++;
             }
         }
@@ -114,12 +114,12 @@ public class LoaiSach extends PhanTu {
         Sach[] dsstmp = dss.getDsSach();
         int count = 0;
       for (int i = 0; i < dsstmp.length; i++)
-      if (dsstmp[i].gettenSach().equals(tenSach)) count++;
+      if (dsstmp[i].gettenSach().equals(tenLoaiSach)) count++;
 
       String[] dsmaSpArr = new String[count];
       int m = 0;
       for (int i = 0; i < dsstmp.length; i++) {
-    if (dsstmp[i].gettenSach().equals(tenSach))
+    if (dsstmp[i].gettenSach().equals(tenLoaiSach))
         dsmaSpArr[m++] = dsstmp[i].getmaSach();
        }
         setDsMaSach(dsmaSpArr);
@@ -140,7 +140,7 @@ public class LoaiSach extends PhanTu {
                     System.out.print("Bạn có muốn thêm sách mới? (1 - có, 0 - không): ");
                     int chon = KiemTra.CheckNumber();
                     if (chon == 1) ttds.themKPhanTuVaoDanhSach();
-                } else if (!pt.gettenSach().equals(tenSach)) {
+                } else if (!pt.gettenSach().equals(tenLoaiSach)) {
                     System.out.println("Tên sách không phù hợp!");
                     pt = null;
                 }
@@ -178,15 +178,15 @@ public class LoaiSach extends PhanTu {
     }
 
     public void xuatLoaiSach() {
-        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Mã Loại Sách", "Tên Sách", "Nhà Xuất Bản", "Năm XB", "Số Lượng");
-        System.out.printf("%-20s %-25s %-20s %-15d %-10d \n", maLoaiSach, tenSach, nhaXuatBan, namXuatBan, soLuong);
+        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Mã Loại Sách", "Tên Loại Sách", "Nhà Xuất Bản", "Năm XB", "Số Lượng");
+        System.out.printf("%-20s %-25s %-20s %-15d %-10d \n", maLoaiSach, tenLoaiSach, nhaXuatBan, namXuatBan, soLuong);
         System.out.println("***************************************************");
     }
 
     @Override
     public void nhap() {
         setmaLoaiSach();
-        settenSach();
+        settenLoaiSach();
         setNhaXuatBan();
         setNamXuatBan();
         setDsMaSach();
