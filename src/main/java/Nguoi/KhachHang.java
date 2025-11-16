@@ -258,7 +258,7 @@ public class KhachHang extends Nguoi {
                 Pt = (Sach) DsSach.layPhanTuVoi(maSach);
                 if (Pt != null) {
                     System.out.printf("%-15s %-30s %-25s %-20s \n",
-                            maSach, Pt.getTenSach(), Pt.getTacGia(), Pt.getTheLoai());
+                            maSach, Pt.gettenSach(), Pt.getTacGia(), Pt.getLoaiSach());
                 }
             }
         } else {
