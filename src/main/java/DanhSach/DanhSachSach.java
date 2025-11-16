@@ -181,7 +181,7 @@ public class DanhSachSach implements DanhSachChung {
 
             // Xoa khoi danh sach the loai
             DanhSachTheLoai dstl = new DanhSachTheLoai();
-            dstl.xoaPhanTu(dsSach[viTri].getmaSach(), dsSach[viTri].getLoaiSach());
+            dstl.xoaPhanTuMaSach(dsSach[viTri].getmaSach(), dsSach[viTri].getLoaiSach());
 
             soLuong--;
             setDsSach(temp);
