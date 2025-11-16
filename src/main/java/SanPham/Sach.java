@@ -43,7 +43,7 @@ public class Sach extends PhanTu {
             if(!Check) System.out.print("Ma Sach da ton tai, moi nhap lai:  ");
 
             if(Check){
-                Check = dstl.checkMaTheLoai(maSach) == true;
+                Check = dstl.CheckmaTheLoai(maSach) == true;
                 if(Check) System.out.print("Ma Sach phai trung 1 phan voi ma The Loai!! Moi nhap lại: ");
 
             }
