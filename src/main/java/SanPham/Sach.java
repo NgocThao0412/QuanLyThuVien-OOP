@@ -59,8 +59,8 @@ public class Sach extends PhanTu {
                 stt = Integer.parseInt(dss[i].getmaSach().substring(5))+1;
             }
         }
-        if(stt>9) maSach = "DETECTIVE"+ stt;
-        else maSach = "DETECTIVE0"+ stt;
+        if(stt>9) maSach = "TT"+ stt;
+        else maSach = "TT"+ stt;
         System.out.println("Ma Sach:" + maSach);
     }
 
@@ -73,8 +73,8 @@ public class Sach extends PhanTu {
                 stt = Integer.parseInt(dss[i].getmaSach().substring(8))+1;
             }
         }
-        if(stt>9) maSach = "KID"+ stt;
-        else maSach = "KID"+ stt;
+        if(stt>9) maSach = "TN"+ stt;
+        else maSach = "TN"+ stt;
         System.out.println("Ma Sach:" + maSach);
     }
 
@@ -87,8 +87,8 @@ public class Sach extends PhanTu {
                 stt = Integer.parseInt(dss[i].getmaSach().substring(7))+1;
             }
         }
-        if(stt>9) maSach = "PSYCHO"+ stt;
-        else maSach = "PSYCHO"+ stt;
+        if(stt>9) maSach = "TL"+ stt;
+        else maSach = "TL"+ stt;
         System.out.println("Ma Sach:" + maSach);
     }
 
