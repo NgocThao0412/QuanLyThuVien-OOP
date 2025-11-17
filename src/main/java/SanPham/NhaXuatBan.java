@@ -6,16 +6,16 @@ public class NhaXuatBan extends PhanTu {
     private String maNXB;
     private String tenNXB;
     private String diachi;
-    private String email;
+    private String sdt;
 
     public NhaXuatBan(){
     }
 
-     public NhaXuatBan(String maNXB , String tenNXB , String diachi , String email){
+     public NhaXuatBan(String maNXB , String tenNXB , String diachi , String sdt){
         this.maNXB = maNXB ;
         this.tenNXB = tenNXB;
         this.diachi = diachi ;
-        this.email = email;
+        this.sdt = sdt;
     }
 
     public void setmaNXB(String a){
@@ -48,15 +48,15 @@ public class NhaXuatBan extends PhanTu {
         diachi = sc.nextLine();
     }
 
-    public void setemail(String email) {
-        this.email = email;
+    public void setsdt(String sdt) {
+        this.sdt = sdt;
     }
-    public void setemail() {
-        System.out.print("Nhap email nha xuat ban: ");
+    public void setsdt() {
+        System.out.print("Nhap so dien thoai nha xuat ban: ");
         boolean check = false;
         do {
-            email = sc.nextLine();
-            check = KiemTra.KiemTraEmail(email);
+            sdt = sc.nextLine();
+            check = KiemTra.KiemTraSDT(sdt);
         } while (!check);
     }
     
@@ -72,8 +72,8 @@ public class NhaXuatBan extends PhanTu {
         return diachi;
     }
 
-     public String getemail() {
-        return email;
+     public String getsdt() {
+        return sdt;
     }
 
     
@@ -82,11 +82,11 @@ public class NhaXuatBan extends PhanTu {
         setmaNXB();
         settenNXB();
         setDiaChi();
-        setemail();
+        setsdt();
     }
     @Override
     public void xuat() {
-        System.out.printf("%-20s %-20s %-45s %-20s  \n",getmaNXB(),gettenNXB(),getDiaChi(),getemail());
+        System.out.printf("%-20s %-20s %-45s %-20s  \n",getmaNXB(),gettenNXB(),getDiaChi(),getsdt());
 
     }
     @Override
@@ -119,8 +119,8 @@ public class NhaXuatBan extends PhanTu {
                     setDiaChi();
                     break;
                 case 4:
-                    System.out.println("Thong tin hien tai: "+getemail());
-                    setemail();
+                    System.out.println("Thong tin hien tai: "+getsdt());
+                    setsdt();
                     break;
                 
                 default:
