@@ -1,0 +1,16 @@
+15
+TL01#Dac Nhan Tam#Dale Carnegie#Sach Tam Ly#First News#20#75000
+TL02#Nhung Dieu Ap Luc#Mark Manson#Sach Tam Ly#Thai Ha#12#85000
+TL03#Tu Duy Nhanh Va Cham#Daniel Kahneman#Sach Tam Ly#First News#15#100000
+TL04#Suc Manh Cua Thoi Quen#Charles Duhigg#Sach Tam Ly#Thai Ha#18#90000
+TL05#Nghich Ly Cua Lua Chon#Barry Schwartz#Sach Tam Ly#Nha Nam#10#80000
+TN01#Hoang Tu Be#Antoine de Saint-Exupery#Sach Thieu Nhi#Kim Dong#15#60000
+TN02#Toi Thay Hoa Vang Tren Co Xanh#Nguyen Nhat Anh#Sach Thieu Nhi#Kim Dong#25#70000
+TN03#Doraemon Tap 1#Fujiko F. Fujio#Sach Thieu Nhi#Kim Dong#30#20000
+TN04#Pippi Tat Dai#Astrid Lindgren#Sach Thieu Nhi#Kim Dong#10#55000
+TN05#Chuyen Con Meo Day Hai Au Bay#Luis Sepulveda#Sach Thieu Nhi#Kim Dong#12#65000
+TT01#Vu An Tren Tau Toc Hanh#Agatha Christie#Sach Trinh Tham#Nha Nam#10#95000
+TT02#Sherlock Holmes#Arthur Conan Doyle#Sach Trinh Tham#Nha Nam#8#120000
+TT03#Ma Code Da Vinci#Dan Brown#Sach Trinh Tham#Nha Nam#15#110000
+T044#Co Gai Mat Tich#Gillian Flynn#Sach Trinh Tham#Nha Nam#7#105000
+TT05#Toi Giet Nguoi#Haruki Murakami#Sach Trinh Tham#Nha Nam#5#130000
