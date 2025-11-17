@@ -234,7 +234,26 @@ public class KiemTra {
     }
     return true;
 }
+ public static boolean KiemTraNhaXuatBan(String nxb) {
+    if (nxb == null || nxb.trim().isEmpty()) {
+        System.out.println("Loi: Nha xuat ban khong duoc de trong!");
+        return false;
+    }
 
+    // Không cho phép ký tự đặc biệt
+    if (!nxb.matches("[a-zA-Z0-9\\s\\p{L}]+")) {
+        System.out.println("Loi: Ten nha xuat ban khong duoc chua ky tu dac biet!");
+        return false;
+    }
+
+    // Kiểm tra độ dài hợp lý
+    if (nxb.length() < 3 || nxb.length() > 50) {
+        System.out.println("Loi: Ten nha xuat ban phai tu 3 - 50 ky tu!");
+        return false;
+    }
+
+    return true;
+}
   //KIEM TRA LUA CHON
     public static int CheckNumber() {
         boolean check = false;
@@ -298,3 +317,4 @@ public class KiemTra {
 }
 
 }
+
