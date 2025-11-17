@@ -35,38 +35,38 @@ public class KhachHang extends Nguoi {
         this.NgayLapThe = NgayLapThe;
     }
 
-    public int GetSoSachDangMuon() {
+    public int getSoSachDangMuon() {
         return SoSachDangMuon;
     }
 
-    public void SetSoSachDangMuon(int SoSachDangMuon) {
+    public void setSoSachDangMuon(int SoSachDangMuon) {
         this.SoSachDangMuon = SoSachDangMuon;
     }
 
-    public int GetTongTienPhat() {
+    public int getTongTienPhat() {
         return TongTienPhat;
     }
 
-    public void SetTongTienPhat(int TongTienPhat) {
+    public void setTongTienPhat(int TongTienPhat) {
         this.TongTienPhat = TongTienPhat;
     }
 
-    public String GetMaKhachHang() {
+    public String getMaKhachHang() {
         return MaKhachHang;
     }
 
-    public void SetMaKhachHang(String MaKhachHang) {
+    public void setMaKhachHang(String MaKhachHang) {
         this.MaKhachHang = MaKhachHang;
     }
 
     // Tạo mã khách hàng tự động
-    public void SetMaKhachHang() {
+    public void setMaKhachHang() {
         DanhSachKhachHang ttds = new DanhSachKhachHang();
-        KhachHang[] dskh = ttds.GetDsKhachHang();
+        KhachHang[] dskh = ttds.getDsKhachHang();
         int Stt;
         if (dskh != null && dskh.length != 0) {
             try {
-                Stt = Integer.parseInt(dskh[dskh.length - 1].GetMaKhachHang().substring(2)) + 1;
+                Stt = Integer.parseInt(dskh[dskh.length - 1].getMaKhachHang().substring(2)) + 1;
             } catch (NumberFormatException e) {
                 Stt = 1;
             }
@@ -82,15 +82,15 @@ public class KhachHang extends Nguoi {
         System.out.println("Ma khach hang (doc gia) da duoc tao: " + MaKhachHang);
     }
 
-    public LocalDate GetNgayLapThe() {
+    public LocalDate getNgayLapThe() {
         return NgayLapThe;
     }
 
-    public void SetNgayLapThe(LocalDate NgayLapThe) {
+    public void setNgayLapThe(LocalDate NgayLapThe) {
         this.NgayLapThe = NgayLapThe;
     }
 
-    public void SetNgayLapThe() {
+    public void setNgayLapThe() {
         System.out.print("Nhap ngay lap the (dd/MM/yyyy): ");
         boolean check = false;
         do {
@@ -104,11 +104,11 @@ public class KhachHang extends Nguoi {
         } while (!check);
     }
 
-    public String[] GetDsMaSachDangMuon() {
+    public String[] getDsMaSachDangMuon() {
         return DsMaSachDangMuon;
     }
 
-    public void SetDsMaSachDangMuon(String[] DsMaSachDangMuon) {
+    public void setDsMaSachDangMuon(String[] DsMaSachDangMuon) {
         this.DsMaSachDangMuon = DsMaSachDangMuon;
         if (DsMaSachDangMuon != null) {
             this.SoSachDangMuon = DsMaSachDangMuon.length;
@@ -117,7 +117,7 @@ public class KhachHang extends Nguoi {
         }
     }
 
-    public void SetDsMaSachDangMuon_Nhap() {
+    public void setDsMaSachDangMuon_Nhap() {
         System.out.print("Ban co muon xuat ra man hinh danh sach sach khong? (1 - in, 0 - khong): ");
         int Chon = KiemTra.CheckNumber();
         DanhSachSach DsSach = new DanhSachSach();
@@ -142,7 +142,7 @@ public class KhachHang extends Nguoi {
                 }
             } while (!Check);
         }
-        SetDsMaSachDangMuon(DsMaSachArr);
+        setDsMaSachDangMuon(DsMaSachArr);
     }
 
     public void XoaMaSachKhoiDsMuon() {
@@ -168,7 +168,7 @@ public class KhachHang extends Nguoi {
         }
 
         if (Check) {
-            SetDsMaSachDangMuon(DsMaSachMoi);
+            setDsMaSachDangMuon(DsMaSachMoi);
             System.out.println("Da xoa ma sach thanh cong!");
         } else {
             System.out.println("Khong tim thay ma sach trong danh sach dang muon!");
@@ -205,7 +205,7 @@ public class KhachHang extends Nguoi {
         } while (!Check);
 
         DsMaSachMoi[OldLength] = MaSachMoi;
-        SetDsMaSachDangMuon(DsMaSachMoi);
+        setDsMaSachDangMuon(DsMaSachMoi);
         System.out.println("Da them ma sach thanh cong!");
     }
 
@@ -218,33 +218,33 @@ public class KhachHang extends Nguoi {
 
     @Override
     public void nhap() {
-        SetMaKhachHang();
+        setMaKhachHang();
         super.nhap();
-        SetNgayLapThe();
+        setNgayLapThe();
         System.out.print("Nhap tong tien phat (nhap 0 neu khong co): ");
-        SetTongTienPhat(KiemTra.CheckNumber());
+        setTongTienPhat(KiemTra.CheckNumber());
 
         System.out.print("Cap nhat danh sach sach dang muon? (1 - co, 0 - khong): ");
         int Chon = KiemTra.CheckNumber();
         if (Chon == 1) {
-            SetDsMaSachDangMuon_Nhap();
+            setDsMaSachDangMuon_Nhap();
         } else {
-            SetDsMaSachDangMuon(new String[0]);
+            setDsMaSachDangMuon(new String[0]);
         }
     }
 
     @Override
     public void xuat() {
         System.out.println("****************************");
-        System.out.println("Ma khach hang: " + GetMaKhachHang());
+        System.out.println("Ma khach hang: " + getMaKhachHang());
         super.xuat();
 
         if (NgayLapThe != null) {
             System.out.println("Ngay lap the: " + NgayLapThe.format(DATE_FORMATTER));
         }
 
-        System.out.println("Tong tien phat: " + GetTongTienPhat());
-        System.out.println("So sach dang muon: " + GetSoSachDangMuon());
+        System.out.println("Tong tien phat: " + getTongTienPhat());
+        System.out.println("So sach dang muon: " + getSoSachDangMuon());
         System.out.println();
 
         if (DsMaSachDangMuon != null && DsMaSachDangMuon.length != 0) {
@@ -296,9 +296,9 @@ public class KhachHang extends Nguoi {
                     super.suaThongTin();
                     break;
                 case 2:
-                    System.out.println("Tong tien phat hien tai: " + GetTongTienPhat());
+                    System.out.println("Tong tien phat hien tai: " + getTongTienPhat());
                     System.out.print("Nhap tong tien phat moi: ");
-                    SetTongTienPhat(KiemTra.CheckNumber());
+                    setTongTienPhat(KiemTra.CheckNumber());
                     break;
                 case 3:
                     System.out.println("Them 1 ma sach vao danh sach:");
@@ -310,7 +310,7 @@ public class KhachHang extends Nguoi {
                     break;
                 case 5:
                     System.out.println("Nhap moi lai toan bo danh sach sach muon:");
-                    SetDsMaSachDangMuon_Nhap();
+                    setDsMaSachDangMuon_Nhap();
                     break;
                 case 6:
                     System.out.println("Them K ma sach vao danh sach:");
@@ -319,7 +319,7 @@ public class KhachHang extends Nguoi {
                 case 7:
                     System.out.println("Ngay lap the hien tai: " +
                             (NgayLapThe != null ? NgayLapThe.format(DATE_FORMATTER) : "Chua co"));
-                    SetNgayLapThe();
+                    setNgayLapThe();
                     break;
                 default:
                     System.out.println("Hay nhap so co trong menu!");
