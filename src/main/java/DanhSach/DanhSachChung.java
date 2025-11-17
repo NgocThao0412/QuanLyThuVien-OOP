@@ -1,7 +1,7 @@
 package DanhSach;
 import java.util.Scanner;
 
-import Sach.PhanTu;
+import SanPham.PhanTu;
 
 public interface DanhSachChung {
     public static Scanner sc = new Scanner(System.in);

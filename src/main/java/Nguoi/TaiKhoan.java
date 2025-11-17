@@ -3,7 +3,7 @@ package Nguoi;
 improt Danhsach.DanhsachNhanVien;
 import Danhsach.DanhSachTaiKhoan;
 import KiemTra.KiemTra;
-import Sach.PhanTu;
+import SanPham.PhanTu;
 public class TaiKhoan extends PhanTu {
     private String username, password, type;
     
