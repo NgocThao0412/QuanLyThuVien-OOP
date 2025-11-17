@@ -87,7 +87,7 @@ public class DanhSachSach implements DanhSachChung {
                 nhaXuatBan = ((SachTamLy) sp).getNhaXuatBan();
 
             FileHandler.themSach(
-                sp.getmaSach(), sp.gettenSach(), sp.getTacGia(), sp.getLoaiSach(),
+                sp.getmaSach(), sp.gettenSach(), sp.getTacGia(), sp.getLoaiSach(),nhaXuatBan,
                 sp.getSoLuong(), sp.getPrice()
             );
         }
