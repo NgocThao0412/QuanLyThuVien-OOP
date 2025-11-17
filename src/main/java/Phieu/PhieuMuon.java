@@ -1,12 +1,12 @@
 package Phieu;
 
+import DanhSach.DanhSachSach;
+import KiemTra.KiemTra;
+import SanPham.PhanTu;
+import SanPham.Sach;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import KiemTra.CheckLoi;
-import SanPham.PhanTu;
-import SanPham.Sach;
 
 public class PhieuMuon extends PhanTu {
     private String maPM;
@@ -15,6 +15,8 @@ public class PhieuMuon extends PhanTu {
     private Date ngayMuon;
     private Date ngayTra;
     private String tinhTrang;
+    private int soLuongMuon;
+
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private static final String FILE_NAME = "dspm.txt";
@@ -52,6 +54,10 @@ public class PhieuMuon extends PhanTu {
     public String getNgayMuonString() { return sdf.format(ngayMuon); }
     public String getNgayTraString() { return (ngayTra != null ? sdf.format(ngayTra) : "");}
 
+    public int getSoLuongMuon() { return soLuongMuon; }
+    public void setSoLuongMuon(int soLuongMuon) { this.soLuongMuon = soLuongMuon; }
+
+
 
     // ===== Nhập =====
     @Override
@@ -61,30 +67,37 @@ public class PhieuMuon extends PhanTu {
         do {
             System.out.print("Nhap ma phieu muon: ");
             maPM = sc.nextLine();
-        } while (!CheckLoi.KiemTraMaPhieu(maPM));
+        } while (!KiemTra.KiemTraMaPhieu(maPM));
 
         do {
             System.out.print("Nhap ma doc gia: ");
             maDG = sc.nextLine();
-        } while (!CheckLoi.KiemTraMaDG(maDG));
+        } while (!KiemTra.KiemTraMaKH(maDG));
 
         do {
             System.out.print("Nhap ma sach: ");
             maTL = sc.nextLine();
-        } while (!CheckLoi.KiemTraMaTL(maTL));
+        } while (!KiemTra.KiemTraMaSachTL(maTL));
+        
+        do {
+            System.out.print("Nhap so luong muon: ");
+         try {
+            soLuongMuon = Integer.parseInt(sc.nextLine());
+         } catch (Exception e) { soLuongMuon = -1; }
+        } while (soLuongMuon <= 0);
 
         String strNgayMuon, strNgayTra;
 
         do {
             System.out.print("Nhap ngay muon (dd/MM/yyyy): ");
             strNgayMuon = sc.nextLine();
-        } while (!CheckLoi.KiemTraNgay(strNgayMuon));
+        } while (!KiemTra.KiemTraNgay(strNgayMuon));
 
         do {
             System.out.print("Nhap ngay tra (dd/MM/yyyy): ");
             strNgayTra = sc.nextLine();
-        } while (!CheckLoi.KiemTraNgay(strNgayTra)
-                || !CheckLoi.KiemTraNgayMuonTra(strNgayMuon, strNgayTra));
+        } while (!KiemTra.KiemTraNgay(strNgayTra)
+                || !KiemTra.KiemTraNgayMuonTra(strNgayMuon, strNgayTra));
 
         try {
             ngayMuon = sdf.parse(strNgayMuon);
@@ -96,10 +109,9 @@ public class PhieuMuon extends PhanTu {
         do {
             System.out.print("Nhap tinh trang (Dang muon / Da tra): ");
             tinhTrang = sc.nextLine();
-        } while (!CheckLoi.KiemTraTinhTrang(tinhTrang));
+        } while (!KiemTra.KiemTraTinhTrang(tinhTrang));
     }
 
-    // ===== Xuất =====
     @Override
     public void xuat() {
     System.out.println("========================================= Thong tin phieu muon =========================================");
@@ -107,41 +119,61 @@ public class PhieuMuon extends PhanTu {
     System.out.println("Ma phieu muon: " + maPM);
     System.out.println("Ma doc gia: " + maDG);
     System.out.println("Ma tai lieu: " + maTL);
+    System.out.println("So luong muon: " + soLuongMuon);
     System.out.println("Ngay muon: " + sdf.format(ngayMuon));
     
     if (ngayTra != null)
         System.out.println("Ngay tra: " + sdf.format(ngayTra));
     else
         System.out.println("Ngay tra: ");
+    
 
     System.out.println("Tinh trang: " + tinhTrang);
-
     System.out.println("===========================================================================================================");
-    System.out.println("============================================= Danh sach sach =============================================");
 
-    System.out.printf("%-12s %-28s %-20s %-15s %-20s %-10s %-10s\n",
-            "Ma sach", "Ten sach", "Tac gia", "The loai", "Nha xuat ban", "So luong", "Gia");
+   DanhSachSach dss = new DanhSachSach();    
+   Sach[] ds = dss.getDsSach();
+   int soLuongSach = dss.getSoLuong();
 
-    // Duyet danh sach
-    for (Sach s : dsSach) {
-        System.out.printf("%-12s %-28s %-20s %-15s %-20s %-10d %-10d\n",
-            s.getMaSach(),
-            s.getTenSach(),
+   System.out.println("============================================= Danh sach sach muon =============================================");
+
+   for (int i = 0; i < soLuongSach; i++) {
+    Sach s = ds[i];
+
+    if (s.getmaSach().equalsIgnoreCase(maTL)) {
+        
+        String nxb = "";
+        try {
+            nxb = (String) s.getClass().getMethod("getNhaXuatBan").invoke(s);
+        } catch (Exception e) {
+            nxb = "";
+        }
+
+        System.out.printf(
+            "Ma sach:%-12s     Ten sach:%-28s     Tac gia:%-20s     Loai sach:%-15s     Nha xuat ban:%-20s\n",
+            s.getmaSach(),
+            s.gettenSach(),
             s.getTacGia(),
-            s.getTheLoai(),
-            s.getNhaXuatBan(),
-            s.getSoLuong(),
-            s.getGia()
+            s.getLoaiSach(),
+            nxb
+        );
+
+        System.out.printf(
+            "So luong muon:%-10d     Gia:%-10d\n",
+            soLuongMuon,
+            s.getPrice()
         );
     }
+}
 
     System.out.println("===========================================================================================================");
 }
 
 
+
     // ===== Sửa =====
     @Override
-    public void sua() {
+    public void suaThongTin() {
         int chon;
 
         do {
