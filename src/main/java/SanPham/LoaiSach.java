@@ -7,17 +7,15 @@ public class LoaiSach extends PhanTu {
     private String maLoaiSach;
     private String tenLoaiSach;
     private String nhaXuatBan;
-    private int namXuatBan;
     private int soLuong = 0;
     private String[] dsmaSach;
 
     public LoaiSach() {}
 
-    public LoaiSach(String maLoaiSach, String tenLoaiSach, String nhaXuatBan, int namXuatBan, int soLuong, String[] dsmaSach) {
+    public LoaiSach(String maLoaiSach, String tenLoaiSach, String nhaXuatBan, int soLuong, String[] dsmaSach) {
         this.maLoaiSach = maLoaiSach;
         this.tenLoaiSach = tenLoaiSach;
         this.nhaXuatBan = nhaXuatBan;
-        this.namXuatBan = namXuatBan;
         this.soLuong = soLuong;
         this.dsmaSach = dsmaSach;
     }
@@ -67,20 +65,6 @@ public class LoaiSach extends PhanTu {
         System.out.print("Nhập nhà xuất bản: ");
         nhaXuatBan = sc.nextLine();
     }
-
-    public int getNamXuatBan() {
-        return namXuatBan;
-    }
-
-    public void setNamXuatBan(int namXuatBan) {
-        this.namXuatBan = namXuatBan;
-    }
-
-    public void setNamXuatBan() {
-        System.out.print("Nhap nam xuat ban: ");
-        namXuatBan = KiemTra.CheckNumber();
-    }
-
     public int getSoLuong() {
         return soLuong;
     }
@@ -178,8 +162,8 @@ public class LoaiSach extends PhanTu {
     }
 
     public void xuatLoaiSach() {
-        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Ma Loai Sach", "Ten Loai Sach", "Nha Xuat Ban", "Nam XB", "So Luong");
-        System.out.printf("%-20s %-25s %-20s %-15d %-10d \n", maLoaiSach, tenLoaiSach, nhaXuatBan, namXuatBan, soLuong);
+        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Ma Loai Sach", "Ten Loai Sach", "Nha Xuat Ban", "So Luong");
+        System.out.printf("%-20s %-25s %-20s %-15d %-10d \n", maLoaiSach, tenLoaiSach, nhaXuatBan, soLuong);
         System.out.println("***************************************************");
     }
 
@@ -188,7 +172,6 @@ public class LoaiSach extends PhanTu {
         setmaLoaiSach();
         settenLoaiSach();
         setNhaXuatBan();
-        setNamXuatBan();
         setDsMaSach();
         setSoLuong();
     }
