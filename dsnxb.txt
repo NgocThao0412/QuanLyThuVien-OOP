@@ -1,0 +1,5 @@
+4
+NXB_KIMDONG#NXB Kim Dong#55 Quang Trung, Ha Noi#02439434730
+NHA_NAM#Nha Nam#59 Do Quang, Cau Giay, Ha Noi#02435146876
+FIRST_NEWS#First News#11H Nguyen Thi Minh Khai, Q1, TP.HCM#02838227979
+THAI_HA#Thai Ha Books#26 Hoang Cau, Dong Da, Ha Noi#02438563810
