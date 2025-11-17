@@ -1,0 +1,16 @@
+=============================================================================================================================
+=                                                  Thong tin phieu muon                                                       =
+=============================================================================================================================
+Ma phieu muon: PM001
+Ma khach hang: KH005
+Ma sach: S002
+Ngay muon: 18/11/2025
+Ngay tra: 21/11/2025
+===================================================== Danh sach sach ==========================================================
+Ma sach: TN01     Ten sach: Den Men Phieu Luu Ky     Tac gia: To Hoai     The loai: Thieu nhi     Nha xuat ban: Kim Dong 
+So Luong: 1     Gia: 50000
+
+Ma sach: TL03     Ten sach: Dac Nhan Tam     Tac gia: Dale Carnegie     The loai: Tam ly     Nha xuat ban: First News 
+So Luong: 3     Gia: 75000
+
+

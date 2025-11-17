@@ -45,10 +45,16 @@ public class DanhSachPhieuMuon {
     System.out.println("-----------------------------------------------------------");
 
     for (PhieuMuon pm : dsFile) {
-        pm.xuat();
-    }
+    System.out.printf("%-10s %-10s %-10s %-15s %-15s %-15s\n",
+        pm.getMaPM(),
+        pm.getMaDG(),
+        pm.getMaTL(),
+        pm.getNgayMuonString(),
+        pm.getNgayTraString(),
+        pm.getTinhTrang()
+    );
 }
-
+}
 
     // ===== Thêm =====
     public void themPhieuMuon() {

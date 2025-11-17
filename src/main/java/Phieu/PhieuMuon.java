@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import KiemTra.CheckLoi;
+import SanPham.PhanTu;
+import SanPham.Sach;
 
 public class PhieuMuon extends PhanTu {
     private String maPM;
@@ -47,6 +49,10 @@ public class PhieuMuon extends PhanTu {
     public String getTinhTrang() { return tinhTrang; }
     public void setTinhTrang(String tinhTrang) { this.tinhTrang = tinhTrang; }
 
+    public String getNgayMuonString() { return sdf.format(ngayMuon); }
+    public String getNgayTraString() { return (ngayTra != null ? sdf.format(ngayTra) : "");}
+
+
     // ===== Nhập =====
     @Override
     public void nhap() {
@@ -63,7 +69,7 @@ public class PhieuMuon extends PhanTu {
         } while (!CheckLoi.KiemTraMaDG(maDG));
 
         do {
-            System.out.print("Nhap ma tai lieu: ");
+            System.out.print("Nhap ma sach: ");
             maTL = sc.nextLine();
         } while (!CheckLoi.KiemTraMaTL(maTL));
 
@@ -96,12 +102,42 @@ public class PhieuMuon extends PhanTu {
     // ===== Xuất =====
     @Override
     public void xuat() {
-        System.out.printf("%-10s %-10s %-10s %-15s %-15s %-15s\n",
-                maPM, maDG, maTL,
-                sdf.format(ngayMuon),
-                sdf.format(ngayTra),
-                tinhTrang);
+    System.out.println("========================================= Thong tin phieu muon =========================================");
+
+    System.out.println("Ma phieu muon: " + maPM);
+    System.out.println("Ma doc gia: " + maDG);
+    System.out.println("Ma tai lieu: " + maTL);
+    System.out.println("Ngay muon: " + sdf.format(ngayMuon));
+    
+    if (ngayTra != null)
+        System.out.println("Ngay tra: " + sdf.format(ngayTra));
+    else
+        System.out.println("Ngay tra: ");
+
+    System.out.println("Tinh trang: " + tinhTrang);
+
+    System.out.println("===========================================================================================================");
+    System.out.println("============================================= Danh sach sach =============================================");
+
+    System.out.printf("%-12s %-28s %-20s %-15s %-20s %-10s %-10s\n",
+            "Ma sach", "Ten sach", "Tac gia", "The loai", "Nha xuat ban", "So luong", "Gia");
+
+    // Duyet danh sach
+    for (Sach s : dsSach) {
+        System.out.printf("%-12s %-28s %-20s %-15s %-20s %-10d %-10d\n",
+            s.getMaSach(),
+            s.getTenSach(),
+            s.getTacGia(),
+            s.getTheLoai(),
+            s.getNhaXuatBan(),
+            s.getSoLuong(),
+            s.getGia()
+        );
     }
+
+    System.out.println("===========================================================================================================");
+}
+
 
     // ===== Sửa =====
     @Override
