@@ -15,20 +15,20 @@ public class FileHandler {
         ghiFile(tmp, "dsnv.txt"); // Đã đổi: GhiFile -> ghiFile
     }
 
-    public static void themSach(String maSach, String tenSach, String tacGia, String theLoai, String nhaXuatBan, int soLuong, int gia, String dacTrungSach) { // Đã đổi tên hàm
-        String tmp = maSach + "#" + tenSach + "#" + tacGia + "#" + theLoai + "#" + nhaXuatBan + "#" + soLuong + "#" + gia + "#" + dacTrungSach; // Đã đổi
+    public static void themSach(String maSach, String tenSach, String tacGia, String theLoai, String nhaXuatBan, int soLuong, int gia) { // Đã đổi tên hàm
+        String tmp = maSach + "#" + tenSach + "#" + tacGia + "#" + theLoai + "#" + nhaXuatBan + "#" + soLuong + "#" + gia ; // Đã đổi
         ghiFile(tmp, "dssach.txt"); // Đã đổi
     }
 
-    public static void themTheLoai(String maTheLoai, String tenTheLoai, int soLuongSach, int soNgayMuonToiDa, String[] dsMaSach) { // Đã đổi tên hàm
-        String tmp = maTheLoai + "#" + tenTheLoai + "#" + soNgayMuonToiDa + "#" + dsMaSach.length; // Đã đổi
+    public static void themTheLoai(String maTheLoai, String tenTheLoai, int soLuongSach, String[] dsMaSach) { // Đã đổi tên hàm
+        String tmp = maTheLoai + "#" + tenTheLoai + "#" + dsMaSach.length; // Đã đổi
         for(int i=0;i<dsMaSach.length;i++) tmp += "#" + dsMaSach[i];
         ghiFile(tmp, "dstheloai.txt"); // Đã đổi
     }
 
-    public static void themNCC(String maNhaCC , String tenNhaCC , String diachi , String sdt) { // Đã đổi tên hàm
+    public static void themNXB(String maNhaCC , String tenNhaCC , String diachi , String sdt) { // Đã đổi tên hàm
         String tmp = maNhaCC + "#" + tenNhaCC + "#" + diachi + "#" + sdt; // Đã đổi
-        ghiFile(tmp, "dsncc.txt"); // Đã đổi
+        ghiFile(tmp, "dsnxb.txt"); // Đã đổi
     }
 
     public static void themPN(int maPhieuNhap, String ngaynhap, String maNhaCC , String maNV, int tongTien, int SoluongNhap, Sach[] dsmspNhap) { // Đã đổi tên hàm
@@ -90,11 +90,11 @@ public class FileHandler {
                         case 0: 
                             tenFile = "dssach.txt";
                             ghiFile("5", tenFile);
-                            themSach("TT01", "Dế Mèn Phiêu Lưu Ký", "Tô Hoài", "Thiếu Nhi", "Kim Đồng", 10, 50000, "Tái bản 2020");
-                            themSach("VH01", "Nhà Giả Kim", "Paulo Coelho", "Văn Học", "Nhã Nam", 15, 80000, "Bìa cứng");
-                            themSach("KT01", "Lược Sử Loài Người", "Yuval Noah Harari", "Khoa Học", "Omega Plus", 5, 250000, "Bản đặc biệt");
-                            themSach("TN01", "Đắc Nhân Tâm", "Dale Carnegie", "Tâm Lý", "First News", 20, 75000, "Bìa mềm");
-                            themSach("VH02", "Hai Số Phận", "Jeffrey Archer", "Văn Học", "NXB Trẻ", 8, 120000, "Dịch giả: Bùi Xuân");
+                            themSach("TT01", "Dế Mèn Phiêu Lưu Ký", "Tô Hoài", "Thiếu Nhi", "Kim Đồng", 10, 50000);
+                            themSach("VH01", "Nhà Giả Kim", "Paulo Coelho", "Văn Học", "Nhã Nam", 15, 80000);
+                            themSach("KT01", "Lược Sử Loài Người", "Yuval Noah Harari", "Khoa Học", "Omega Plus", 5, 250000);
+                            themSach("TN01", "Đắc Nhân Tâm", "Dale Carnegie", "Tâm Lý", "First News", 20, 75000);
+                            themSach("VH02", "Hai Số Phận", "Jeffrey Archer", "Văn Học", "NXB Trẻ", 8, 120000);
                             break;
                         case 1: 
                             tenFile = "dsnv.txt";
@@ -121,25 +121,25 @@ public class FileHandler {
                             themTK("NV04", "123", "quan ly");
                             break;
                         case 4: 
-                            tenFile = "dstheloai.txt";
+                            tenFile = "dstl.txt";
                             ghiFile("3", tenFile);
                             String[] dsMaSp1 = new String[]{"TT01"};
-                            themTheLoai("THIEUNHI", "Sách Thiếu Nhi", 1, 14, dsMaSp1); 
+                            themTheLoai("THIEUNHI", "Sách Thiếu Nhi", 1, dsMaSp1); 
                             String[] dsMaSp2 = new String[]{"VH01", "VH02"};
-                            themTheLoai("VANHOC", "Sách Văn Học", 2, 14, dsMaSp2);
+                            themTheLoai("VANHOC", "Sách Văn Học", 2, dsMaSp2);
                             String[] dsMaSp3 = new String[]{"KT01", "TN01"};
-                            themTheLoai("KYNANG", "Sách Kỹ Năng - Khoa Học", 2, 7, dsMaSp3);
+                            themTheLoai("KYNANG", "Sách Kỹ Năng - Khoa Học", 2, dsMaSp3);
                             break;
                         case 5: 
                             tenFile = "dspm.txt";
                             ghiFile("0", tenFile); 
                             break;
                         case 6: 
-                            tenFile = "dsncc.txt";
+                            tenFile = "dsnxb.txt";
                             ghiFile("3", tenFile);
-                            themNCC("NXB_KIMDONG","NXB Kim Đồng","55 Quang Trung, Hà Nội","02439434730");
-                            themNCC("NHA_NAM","Nhã Nam","59 Đỗ Quang, Cầu Giấy, Hà Nội","02435146876");
-                            themNCC("FIRST_NEWS","First News","11H Nguyễn Thị Minh Khai, Q1, TP.HCM","02838227979");
+                            themNXB("NXB_KIMDONG","NXB Kim Đồng","55 Quang Trung, Hà Nội","02439434730");
+                            themNXB("NHA_NAM","Nhã Nam","59 Đỗ Quang, Cầu Giấy, Hà Nội","02435146876");
+                            themNXB("FIRST_NEWS","First News","11H Nguyễn Thị Minh Khai, Q1, TP.HCM","02838227979");
                             break;
                         case 7: 
                             tenFile = "dspn.txt";
