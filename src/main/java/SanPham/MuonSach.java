@@ -1,136 +1,135 @@
 package SanPham;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import KiemTra.KiemTra;
-import java.util.Scanner;
 
-// MuonSach kế thừa PhanTu để có các phương thức cơ bản
 public class MuonSach extends PhanTu {
-    private String maMuonSach;
-    private String maSach;
-    private String tenSach;
-    private LocalDate ngayMuon;
-    private LocalDate ngayTraDuKien;
-    private int soLuong;
+    private int soPhieuMuon;
+    private String ngayLapPhieu;
+    private String maNhanVien;
+    private String maKhachHang;
+    private String ngayTraDuKien;
+    private String trangThai;
+    private Sach[] dsSachMuon;
 
-    // Định dạng ngày tháng
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    // Constructor mặc định
     public MuonSach() {
-        super();
-        this.maMuonSach = "";
-        this.maSach = "";
-        this.tenSach = "";
-        this.ngayMuon = LocalDate.now();
-        this.ngayTraDuKien = LocalDate.now().plusDays(7); // Mặc định 7 ngày
-        this.soLuong = 0;
-    }
-
-    // Constructor đầy đủ
-    public MuonSach(String maMuonSach, String maSach, String tenSach, LocalDate ngayMuon, LocalDate ngayTraDuKien, int soLuong) {
-        super(maMuonSach); // MaMuonSach làm mã định danh chung
-        this.maMuonSach = maMuonSach;
-        this.maSach = maSach;
-        this.tenSach = tenSach;
-        this.ngayMuon = ngayMuon;
-        this.ngayTraDuKien = ngayTraDuKien;
-        this.soLuong = soLuong;
+        this.trangThai = "Dang muon";
     }
     
-    // Override phương thức nhập (từ PhanTu)
+    public MuonSach(int soPhieuMuon, String ngayLapPhieu, String maNhanVien, String maKhachHang,
+                    String ngayTraDuKien, String trangThai, Sach[] dsSachMuon) {
+        this.soPhieuMuon = soPhieuMuon;
+        this.ngayLapPhieu = ngayLapPhieu;
+        this.maNhanVien = maNhanVien;
+        this.maKhachHang = maKhachHang;
+        this.ngayTraDuKien = ngayTraDuKien;
+        this.trangThai = trangThai;
+        this.dsSachMuon = dsSachMuon;
+    }
+
+    public int getSoPhieuMuon() { return soPhieuMuon; }
+    public String getNgayLapPhieu() { return ngayLapPhieu; }
+    public String getMaNhanVien() { return maNhanVien; }
+    public String getMaKhachHang() { return maKhachHang; }
+    public String getNgayTraDuKien() { return ngayTraDuKien; }
+    public String getTrangThai() { return trangThai; }
+    public Sach[] getDsSachMuon() { return dsSachMuon; }
+    
     @Override
     public void nhap() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("--- Nhap Thong Tin Chi Tiet Sach Muon ---");
+        System.out.println("\n--- NHAP THONG TIN PHIEU MUON ---");
         
-        System.out.print("Ma Chi Tiet Muon: ");
-        this.maMuonSach = sc.nextLine();
-        super.setMa(this.maMuonSach);
+        System.out.print("Nhap Ma Phieu Muon (so): ");
+        this.soPhieuMuon = KiemTra.CheckNumber();
 
-        System.out.print("Ma Sach: ");
-        this.maSach = sc.nextLine();
+        this.ngayLapPhieu = String.format("%02d/%02d/%d", ngayhientai, thanghientai, namhientai);
+        System.out.println("Ngay Lap Phieu (Tu dong): " + this.ngayLapPhieu);
 
-        System.out.print("Ten Sach: ");
-        this.tenSach = sc.nextLine();
-
-        System.out.print("So Luong Muon: ");
-        this.soLuong = KiemTra.CheckNumber();
-
-        // Nhập ngày tháng có thể phức tạp hơn, ta dùng mặc định
-        this.ngayMuon = LocalDate.now();
-        this.ngayTraDuKien = LocalDate.now().plusDays(7);
-        System.out.println("Ngay Muon (Mac dinh): " + ngayMuon.format(DATE_FORMATTER));
-        System.out.println("Ngay Tra Du Kien (Mac dinh +7 ngay): " + ngayTraDuKien.format(DATE_FORMATTER));
+        System.out.print("Nhap Ma Nhan Vien lap phieu: ");
+        this.maNhanVien = sc.nextLine();
+        
+        System.out.print("Nhap Ma Khach Hang muon: ");
+        this.maKhachHang = sc.nextLine();
+        
+        System.out.print("Nhap Ngay Tra Du Kien (dd/MM/yyyy): ");
+        this.ngayTraDuKien = sc.nextLine();
+        
+        System.out.println("Trang Thai Mac Dinh: " + this.trangThai);
+        
+        System.out.print("Nhap so luong dau sach muon muon: ");
+        int soLuongDauSach = KiemTra.CheckNumber();
+        
+        this.dsSachMuon = new Sach[soLuongDauSach];
+        
+        for (int i = 0; i < soLuongDauSach; i++) {
+            System.out.println("--- Nhap thong tin sach thu " + (i + 1) + " ---");
+            System.out.print("Nhap Ma Sach: ");
+            String maS = sc.nextLine();
+            
+            System.out.print("Nhap So Luong: ");
+            int sl = KiemTra.CheckNumber();
+            this.dsSachMuon[i] = new Sach(maS, "Chua biet", "Chua biet", "Chua biet", sl, 0);
+        }
     }
 
-    // Override phương thức xuất (từ PhanTu)
     @Override
     public void xuat() {
-        System.out.printf("| %-18s | %-10s | %-30s | %-12s | %-18s | %-8s |\n",
-                this.maMuonSach, this.maSach, this.tenSach, 
-                this.ngayMuon.format(DATE_FORMATTER), 
-                this.ngayTraDuKien.format(DATE_FORMATTER), 
-                this.soLuong);
-    }
-    
-    // Static header cho việc xuất danh sách
-    public static void xuatHeader() {
-        System.out.println("=================================================================================================");
-        System.out.printf("| %-18s | %-10s | %-30s | %-12s | %-18s | %-8s |\n",
-                "Ma Chi Tiet Muon", "Ma Sach", "Ten Sach", "Ngay Muon", "Ngay Tra Du Kien", "SL");
-        System.out.println("=================================================================================================");
-    }
-    
-    // Getters and Setters
-
-    public String getMaMuonSach() {
-        return maMuonSach;
-    }
-
-    public void setMaMuonSach(String maMuonSach) {
-        this.maMuonSach = maMuonSach;
-        super.setMa(maMuonSach);
-    }
-
-    public String getMaSach() {
-        return maSach;
+        int tongSoLuong = 0;
+        if (dsSachMuon != null) {
+            for (Sach sach : dsSachMuon) {
+                tongSoLuong += sach.getSoLuong();
+            }
+        }
+        
+        System.out.println("====================================");
+        System.out.printf("%-20s %-20s\n", "PHIEU MUON SACH:", "Ma PM: " + soPhieuMuon);
+        System.out.printf("%-20s %-20s\n", "Ngay Lap Phieu:", ngayLapPhieu);
+        System.out.printf("%-20s %-20s\n", "Ma NV Lap:", maNhanVien);
+        System.out.printf("%-20s %-20s\n", "Ma KH Muon:", maKhachHang);
+        System.out.printf("%-20s %-20s\n", "Ngay Tra Du Kien:", ngayTraDuKien);
+        System.out.printf("%-20s %-20s\n", "Trang Thai:", trangThai);
+        System.out.println("Tong So Luong Sach: " + tongSoLuong);
+        
+        System.out.println("--- CHI TIET SACH MUON ---");
+        if (dsSachMuon != null && dsSachMuon.length > 0) {
+            System.out.printf("%-10s %-20s %-10s\n", "STT", "Ma Sach", "So luong");
+            for (int i = 0; i < dsSachMuon.length; i++) {
+                System.out.printf("%-10s %-20s %-10d\n", (i + 1), dsSachMuon[i].getmaSach(), dsSachMuon[i].getSoLuong());
+            }
+        } else {
+            System.out.println("  (Khong co sach nao trong phieu.)");
+        }
+        System.out.println("====================================");
     }
 
-    public void setMaSach(String maSach) {
-        this.maSach = maSach;
-    }
-
-    public String getTenSach() {
-        return tenSach;
-    }
-
-    public void setTenSach(String tenSach) {
-        this.tenSach = tenSach;
-    }
-
-    public LocalDate getNgayMuon() {
-        return ngayMuon;
-    }
-
-    public void setNgayMuon(LocalDate ngayMuon) {
-        this.ngayMuon = ngayMuon;
-    }
-
-    public LocalDate getNgayTraDuKien() {
-        return ngayTraDuKien;
-    }
-
-    public void setNgayTraDuKien(LocalDate ngayTraDuKien) {
-        this.ngayTraDuKien = ngayTraDuKien;
-    }
-
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    @Override
+    public void suaThongTin() {
+        int chon = -1;
+        do {
+            System.out.println("\n--- SUA THONG TIN PHIEU MUON " + soPhieuMuon + " ---");
+            System.out.println("1. Cap nhat Trang Thai (Hien tai: " + this.trangThai + ")");
+            System.out.println("2. Sua Ngay Tra Du Kien (Hien tai: " + this.ngayTraDuKien + ")");
+            System.out.println("0. Quay lai menu truoc");
+            System.out.print("Chon muc can sua: ");
+            
+            chon = KiemTra.CheckNumber();
+            
+            switch(chon) {
+                case 1:
+                    System.out.print("Nhap Trang Thai moi: ");
+                    this.trangThai = sc.nextLine();
+                    System.out.println("Cap nhat trang thai thanh cong.");
+                    break;
+                case 2:
+                    System.out.print("Nhap Ngay Tra Du Kien moi (dd/MM/yyyy): ");
+                    this.ngayTraDuKien = sc.nextLine();
+                    System.out.println("Cap nhat ngay tra du kien thanh cong.");
+                    break;
+                case 0:
+                    System.out.println("Thoat khoi chuc nang sua thong tin.");
+                    break;
+                default:
+                    System.out.println("Lua chon khong hop le. Vui long chon lai.");
+            }
+        } while(chon != 0);
     }
 }
