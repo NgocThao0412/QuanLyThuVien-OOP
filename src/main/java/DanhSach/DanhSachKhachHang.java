@@ -3,7 +3,9 @@ package DanhSach;
 import File.FileHandler;
 import KiemTra.KiemTra;
 import Nguoi.KhachHang;
-import Sach.PhanTu;
+import SanPham.PhanTu;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class DanhSachKhachHang implements DanhSachChung {
     private int soLuong;
@@ -31,7 +33,13 @@ public class DanhSachKhachHang implements DanhSachChung {
         String[] dArr = data.split("\n");
 
         if (dArr.length == 0 || dArr[0].length() == 0) setSoLuong(0);
-        else setSoLuong(Integer.parseInt(dArr[0]));
+        else {
+            try {
+                setSoLuong(Integer.parseInt(dArr[0]));
+            } catch (NumberFormatException e) {
+                setSoLuong(0);
+            }
+        }
 
         dsKhachHang = new KhachHang[soLuong];
         KhachHang kh;
@@ -43,6 +51,8 @@ public class DanhSachKhachHang implements DanhSachChung {
             lArr = dArr[i].split("#");
             m = 0;
 
+            if (lArr.length < 11) continue;
+
             kh = new KhachHang();
             kh.setMaKhachHang(lArr[m++]);
             kh.setHoten(lArr[m++]);
@@ -53,12 +63,31 @@ public class DanhSachKhachHang implements DanhSachChung {
             kh.setSdt(lArr[m++]);
             kh.setEmail(lArr[m++]);
 
-            int n = Integer.parseInt(lArr[m++]);
-            String[] tmp = new String[n];
-            for(int j = 0; j < n; j++) tmp[j] = lArr[m++];
-            kh.setDsmspDamua(tmp);
-            kh.setSoDonHangDaThanhToan(Integer.parseInt(lArr[m++]));
-            kh.setTongTienDaThanhToan(Integer.parseInt(lArr[m++]));
+            try {
+                kh.setNgayLapThe(LocalDate.parse(lArr[m++], KhachHang.DATE_FORMATTER));
+            } catch (DateTimeParseException e) {
+                kh.setNgayLapThe(null);
+            }
+
+            try {
+                kh.setTongTienPhat(Integer.parseInt(lArr[m++]));
+            } catch (NumberFormatException e) {
+                kh.setTongTienPhat(0);
+            }
+
+            int soLuongSachMuon = 0;
+            try {
+                soLuongSachMuon = Integer.parseInt(lArr[m++]);
+            } catch (NumberFormatException e) {
+                soLuongSachMuon = 0;
+            }
+
+            String[] dsMaSach = new String[soLuongSachMuon];
+            for(int j = 0; j < soLuongSachMuon; j++) {
+                if (m < lArr.length) dsMaSach[j] = lArr[m++];
+                else dsMaSach[j] = "";
+            }
+            kh.setDsMaSachDangMuon(dsMaSach);
 
             dsKhachHang[k++] = kh;
         }
@@ -75,20 +104,30 @@ public class DanhSachKhachHang implements DanhSachChung {
         for(int i = 0; i < soLuong; i++) {
             kh = (KhachHang) dsKhachhang[i];
 
-            FileHandler.themKH(
-                kh.getMaKhachHang(),
-                kh.getHoten(),
-                kh.getNgaythangnamsinh(),
-                kh.getGioitinh(),
-                kh.getCCCD(),
-                kh.getDiachi(),
-                kh.getSdt(),
-                kh.getEmail(),
-                kh.getDsmspDamua(),
-                kh.getSoDonHangDaThanhToan(),
-                kh.getTongTienDaThanhToan(),
-                null
+            String ngayLapTheStr = (kh.getNgayLapThe() != null) ? kh.getNgayLapThe().format(KhachHang.DATE_FORMATTER) : "null";
+
+            FileHandler.ghiFile(
+                kh.getMaKhachHang() + "#" +
+                kh.getHoten() + "#" +
+                kh.getNgaythangnamsinh() + "#" +
+                kh.getGioitinh() + "#" +
+                kh.getCCCD() + "#" +
+                kh.getDiachi() + "#" +
+                kh.getSdt() + "#" +
+                kh.getEmail() + "#" +
+                ngayLapTheStr + "#" + 
+                kh.getTongTienPhat() + "#" +
+                kh.getSoSachDangMuon(),
+                tenFile
             );
+
+            String[] dsMaSach = kh.getDsMaSachDangMuon();
+            if (dsMaSach != null && dsMaSach.length > 0) {
+                for (String maSach : dsMaSach) {
+                    FileHandler.ghiFile("#" + maSach, tenFile);
+                }
+            }
+            FileHandler.ghiFile("\n", tenFile);
         }
         this.dsKhachHang = (KhachHang[]) dsKhachhang;
     }
@@ -96,39 +135,46 @@ public class DanhSachKhachHang implements DanhSachChung {
     public void nhapDanhSach(){
         System.out.print("Nhap so luong doc gia: ");
 
-        soLuong = KiemTra.CheckNumber();
-        dsKhachHang = new KhachHang[soLuong];
+        int soLuongMoi = KiemTra.CheckNumber();
+        int soLuongBanDau = getSoLuong();
+        
+        KhachHang[] dsKhachHangMoi = new KhachHang[soLuongBanDau + soLuongMoi];
 
-        int stt, soLuongTemp = 0, soLuongCurrent = soLuong;
+        if (dsKhachHang != null) {
+            System.arraycopy(dsKhachHang, 0, dsKhachHangMoi, 0, soLuongBanDau);
+        }
 
-        for (int i = 0; i < soLuongCurrent; i++){
-            dsKhachHang[i] = new KhachHang();
-            stt = i+1;
+        for (int i = 0; i < soLuongMoi; i++){
+            int stt = soLuongBanDau + i + 1;
+            dsKhachHangMoi[soLuongBanDau + i] = new KhachHang();
             System.out.println("** Doc gia thu "+stt+" **");
 
-            dsKhachHang[i].nhap();
-            soLuong = ++soLuongTemp;
-            setDsKhachHang(dsKhachHang);
+            dsKhachHangMoi[soLuongBanDau + i].nhap();
         }
+        
+        setSoLuong(soLuongBanDau + soLuongMoi);
+        setDsKhachHang(dsKhachHangMoi);
     }
-
+    
     public void xuatDanhSach(){
         if(soLuong == 0) {
             System.out.println("Chua co doc gia nao!!");
             return;
         }
         System.out.println("=== Danh sach doc gia ===");
+        KhachHang[] dskh = getDsKhachHang();
         for (int i = 0; i < soLuong; i++){
-            getDsKhachHang()[i].xuat();
+            dskh[i].xuat();
         }
         System.out.println();
     }
 
     public void themVaoDanhSach(PhanTu pt){
+        KhachHang[] dsKhachHangCu = getDsKhachHang();
         KhachHang[] dsKhachHangTmp = new KhachHang[soLuong+1];
 
         for(int i = 0; i < soLuong; i++)
-            dsKhachHangTmp[i] = getDsKhachHang()[i];
+            dsKhachHangTmp[i] = dsKhachHangCu[i];
 
         dsKhachHangTmp[soLuong] = (KhachHang) pt;
 
@@ -184,7 +230,7 @@ public class DanhSachKhachHang implements DanhSachChung {
     }
 
     public PhanTu timPhanTu(){
-        java.util.Scanner sc = new java.util.Scanner(System.in);
+
         int loai;
         System.out.print("Tim doc gia theo ten (1) hay theo ma (2), vui long chon: ");
 
@@ -216,10 +262,10 @@ public class DanhSachKhachHang implements DanhSachChung {
                         return dsKhachHangTmp[i];
             } else {
                 if (loai == 1)
-                    if (dsKhachHangTmp[i].getHoten().contains(giaTriCanTim))
+                    if (dsKhachHangTmp[i].getHoten().toLowerCase().contains(giaTriCanTim.toLowerCase()))
                         return dsKhachHangTmp[i];
                 if (loai == 2)
-                    if (dsKhachHangTmp[i].getMaKhachHang().contains(giaTriCanTim))
+                    if (dsKhachHangTmp[i].getMaKhachHang().toLowerCase().contains(giaTriCanTim.toLowerCase()))
                         return dsKhachHangTmp[i];
             }
         }
@@ -227,7 +273,6 @@ public class DanhSachKhachHang implements DanhSachChung {
     }
 
     public int timViTriPhanTu() {
-        java.util.Scanner sc = new java.util.Scanner(System.in);
         int loai;
         System.out.print("Tim doc gia theo ten (1) hay theo ma (2), vui long chon: ");
 
@@ -259,10 +304,10 @@ public class DanhSachKhachHang implements DanhSachChung {
                         return i;
             } else {
                 if (loai == 1)
-                    if (dsKhachHangTmp[i].getHoten().contains(giaTriCanTim))
+                    if (dsKhachHangTmp[i].getHoten().toLowerCase().contains(giaTriCanTim.toLowerCase()))
                         return i;
                 if (loai == 2)
-                    if (dsKhachHangTmp[i].getMaKhachHang().contains(giaTriCanTim))
+                    if (dsKhachHangTmp[i].getMaKhachHang().toLowerCase().contains(giaTriCanTim.toLowerCase()))
                         return i;
             }
         }
@@ -289,11 +334,11 @@ public class DanhSachKhachHang implements DanhSachChung {
 
     public void thongKe() {
         int chon, n;
-        dsKhachHang = getDsKhachHang();
+        KhachHang[] dskh = getDsKhachHang();
         do {
             System.out.println("=== Thong ke Doc Gia ===");
-            System.out.println("1. Loc doc gia voi so luong sach da tung muon >= n");
-            System.out.println("2. Loc doc gia co so sach dang muon >= n");
+            System.out.println("1. Loc doc gia co so sach dang muon >= n");
+            System.out.println("2. Loc doc gia voi tong tien phat >= n");
             System.out.println("0. Quay lai menu truoc");
             System.out.print("Moi chon: ");
 
@@ -301,17 +346,17 @@ public class DanhSachKhachHang implements DanhSachChung {
 
             switch (chon) {
                 case 1:
-                    System.out.print("Nhap so luong sach da muon can tim: ");
+                    System.out.print("Nhap so luong sach dang muon can tim: ");
                     n = KiemTra.CheckNumber();
-                    for (KhachHang khachHang: dsKhachHang) {
-                        if (khachHang.getSoDonHangDaThanhToan() >= n) khachHang.xuat();
+                    for (KhachHang khachHang: dskh) {
+                        if (khachHang.getSoSachDangMuon() >= n) khachHang.xuat();
                     }
                     break;
                 case 2:
-                    System.out.print("Nhap so luong sach dang muon can tim: ");
+                    System.out.print("Nhap tong tien phat can tim: ");
                     n = KiemTra.CheckNumber();
-                    for (KhachHang khachHang: dsKhachHang) {
-                        if (khachHang.getTongTienDaThanhToan() >= n) khachHang.xuat();
+                    for (KhachHang khachHang: dskh) {
+                        if (khachHang.getTongTienPhat() >= n) khachHang.xuat();
                     }
                     break;
                 default:
