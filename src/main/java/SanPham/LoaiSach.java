@@ -31,14 +31,14 @@ public class LoaiSach extends PhanTu {
     }
 
     public void setmaLoaiSach() {
-        System.out.print("Nhập mã loại sách: ");
+        System.out.print("Nhap ma loai sach: ");
         DanhSachSach dsSach = new DanhSachSach();
         boolean check;
         do {
             maLoaiSach = sc.nextLine();
             check = dsSach.layPhanTuVoi(maLoaiSach) == null;
             if (!check)
-                System.out.println("Mã loại sách đã tồn tại! Mời nhập lại: ");
+                System.out.println("Ma loai sach đa ton tai! Moi nhap lai: ");
         } while (!check);
     }
 
@@ -51,7 +51,7 @@ public class LoaiSach extends PhanTu {
     }
 
     public void settenLoaiSach() {
-        System.out.print("Nhập tên loại sách: ");
+        System.out.print("Nhap ten loai sach: ");
         tenLoaiSach = sc.nextLine();
     }
 
@@ -77,7 +77,7 @@ public class LoaiSach extends PhanTu {
     }
 
     public void setNamXuatBan() {
-        System.out.print("Nhập năm xuất bản: ");
+        System.out.print("Nhap nam xuat ban: ");
         namXuatBan = KiemTra.CheckNumber();
     }
 
@@ -132,16 +132,16 @@ public class LoaiSach extends PhanTu {
         Sach pt;
 
         for (int i = 0; i < soLuong; i++) {
-            System.out.println("Thêm mã sách thứ " + (i + 1) + ":");
+            System.out.println("Them ma sach thu " + (i + 1) + ":");
             do {
                 pt = (Sach) ttds.timPhanTu();
                 if (pt == null) {
-                    System.out.println("Không tìm thấy sách!");
-                    System.out.print("Bạn có muốn thêm sách mới? (1 - có, 0 - không): ");
+                    System.out.println("Khong tim thay sach!");
+                    System.out.print("Ban co muon them sach moi? (1 - co, 0 - khong): ");
                     int chon = KiemTra.CheckNumber();
                     if (chon == 1) ttds.themKPhanTuVaoDanhSach();
                 } else if (!pt.gettenSach().equals(tenLoaiSach)) {
-                    System.out.println("Tên sách không phù hợp!");
+                    System.out.println("Ten sach khong phu hop!");
                     pt = null;
                 }
             } while (pt == null);
@@ -164,7 +164,7 @@ public class LoaiSach extends PhanTu {
     }
 
     public void themKMaSachVaoDS() {
-        System.out.print("Nhập số sách cần thêm vào danh sách: ");
+        System.out.print("Nhap so sach can them vao danh sach: ");
         int k = KiemTra.CheckNumber();
         for (int i = 0; i < k; i++)
             themMaSachVaoDS();
@@ -178,7 +178,7 @@ public class LoaiSach extends PhanTu {
     }
 
     public void xuatLoaiSach() {
-        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Mã Loại Sách", "Tên Loại Sách", "Nhà Xuất Bản", "Năm XB", "Số Lượng");
+        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Ma Loai Sach", "Ten Loai Sach", "Nha Xuat Ban", "Nam XB", "So Luong");
         System.out.printf("%-20s %-25s %-20s %-15d %-10d \n", maLoaiSach, tenLoaiSach, nhaXuatBan, namXuatBan, soLuong);
         System.out.println("***************************************************");
     }
@@ -196,9 +196,9 @@ public class LoaiSach extends PhanTu {
     @Override
     public void xuat() {
         xuatLoaiSach();
-        System.out.println("Danh sách sách cùng loại:");
+        System.out.println("Danh sach sach cung loai:");
         System.out.printf("%-20s %-25s %-20s %-20s %-15s %-20s \n",
-                "Mã Sách", "Tên Sách", "Tác Giả", "Nhà Xuất Bản", "Số Lượng", "Giá");
+                "Ma Sach", "Ten Sach", "Tac Gia", "Nha Xuat Ban", "So Luong", "Gia");
 
         PhanTu pt;
         DanhSachSach ttds = new DanhSachSach();
@@ -213,17 +213,17 @@ public class LoaiSach extends PhanTu {
     public void suaThongTin() {
         int chon;
         do {
-            System.out.println("=== Sửa thông tin Loại Sách === ");
-            System.out.println("1. Thêm mã sách mới vào danh sách");
-            System.out.println("2. Xóa mã sách khỏi danh sách");
-            System.out.println("3. Nhập lại danh sách mã sách");
-            System.out.println("0. Thoát");
+            System.out.println("=== Sua thong tin Loai Sach === ");
+            System.out.println("1. Them ma sach moi vao danh sach");
+            System.out.println("2. Xóa ma sach khoi danh sach");
+            System.out.println("3. Nhap lai danh sach ma sach");
+            System.out.println("0. Thoat");
             System.out.println("===============================");
-            System.out.print("Nhập lựa chọn: ");
+            System.out.print("Nhap lua chon: ");
             chon = KiemTra.CheckNumber();
             switch (chon) {
                 case 0:
-                    System.out.println("Thoát sửa thông tin loại sách!");
+                    System.out.println("Thoat sua thong tin loai sach!");
                     break;
                 case 1:
                     themKMaSachVaoDS();
@@ -235,7 +235,7 @@ public class LoaiSach extends PhanTu {
                     setDsMaSach();
                     break;
                 default:
-                    System.out.println("Hãy chọn lại!");
+                    System.out.println("Hay chon lai!");
                     break;
             }
         } while (chon != 0);
