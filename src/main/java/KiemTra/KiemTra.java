@@ -22,12 +22,23 @@ public class KiemTra {
         return true;
     }
 
-    public static boolean KiemTraMaSach(String ma) {
-        if (ma == null || !ma.matches("^S\\d{3,}$")) {
-            System.out.println("Loi: Ma sach phai co dang S + it nhat 3 chu so. VD: S010");
-            return false;
-        }
-        return true;
+    public static boolean KiemTraMaSachTN(String ma) {
+        String regex = "^TN\\d{2,}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ma);
+        return matcher.find();
+    }
+	public static boolean KiemTraMaSachVH(String ma) {
+        String regex = "^VH\\d{2,}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ma);
+        return matcher.find();
+    }
+	public static boolean KiemTraMaSachTL(String ma) {
+        String regex = "^TL\\d{2,}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ma);
+        return matcher.find();
     }
 
     public static boolean KiemTraMaPhieu(String ma) {
