@@ -55,7 +55,165 @@ public class Sach extends PhanTu {
         Sach[] dss = ttds.getDsSach();
         int stt = 1;
         for( int i = 0; i < dss.length; i++){
-            if(dss[i].getLosach ===");
+            if(dss[i].getLoaiSach().equals("Sach Trinh Tham")){
+                stt = Integer.parseInt(dss[i].getmaSach().substring(5))+1;
+            }
+        }
+        if(stt>9) maSach = "TT"+ stt;
+        else maSach = "TT0"+ stt;
+        System.out.println("Ma Sach:" + maSach);
+    }
+
+    public void setmaSachTN(){
+        DanhSachSach ttds = new DanhSachSach();
+        Sach[] dss = ttds.getDsSach();
+        int stt = 1;
+        for( int i = 0; i < dss.length; i++){
+            if(dss[i].getLoaiSach().equals("Sach Thieu Nhi")){
+                stt = Integer.parseInt(dss[i].getmaSach().substring(8))+1;
+            }
+        }
+        if(stt>9) maSach = "TN"+ stt;
+        else maSach = "TN0"+ stt;
+        System.out.println("Ma Sach:" + maSach);
+    }
+
+      public void setmaSachTL(){
+        DanhSachSach ttds = new DanhSachSach();
+        Sach[] dss = ttds.getDsSach();
+        int stt = 1;
+        for( int i = 0; i < dss.length; i++){
+            if(dss[i].getLoaiSach().equals("Sach Tam Ly")){
+                stt = Integer.parseInt(dss[i].getmaSach().substring(7))+1;
+            }
+        }
+        if(stt>9) maSach = "TL"+ stt;
+        else maSach = "TL0"+ stt;
+        System.out.println("Ma Sach:" + maSach);
+    }
+
+    public void setmaSach(String maSach){
+        this.maSach = maSach;
+    }
+
+    public String gettenSach(){
+        return tenSach;
+    }
+
+    public void settenSach(){
+        System.out.print("nhap ten Sach:");
+        tenSach = sc.nextLine();
+    }
+
+    public void settenSach(String tenSach){
+        this.tenSach = tenSach;
+    }
+
+    public void setTacGia(String TacGia){
+        this.TacGia = TacGia;
+    }
+
+    public void setTacGia(){
+        System.out.print("Nhap ten Tac Gia: ");
+        TacGia = sc.nextLine();
+    }
+    
+     public void setSoLuong(int SoLuong) {
+        this.SoLuong = SoLuong;
+    }
+    public void setSoLuong() {
+        System.out.print("Nhap so luong: ");
+        boolean check = false;
+        do {
+            SoLuong = KiemTra.CheckNumber();
+            check = SoLuong > 0;
+            if(!check) System.out.print("Nhap so lon hon 0!!! Moi nhap lai: ");
+        } while(!check);
+    }
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    public void setPrice() {
+        System.out.print("Vui long nhap gia: ");
+        price = KiemTra.CheckNumber();
+    }
+
+    public String getTacGia(){
+        return TacGia;
+    }
+
+    public int getSoLuong(){
+        return SoLuong;
+    }
+
+    public int getPrice(){
+        return price;
+    }
+
+    public String getLoaiSach(){
+        return TheLoai;
+    }
+
+    public void setLoaiSach(String TheLoai){
+        this.TheLoai = TheLoai;
+    }
+
+    public void setLoaiSach(){
+        DanhSachTheLoai dstl = new DanhSachTheLoai();
+        TheLoai = dstl.getTheLoai(maSach);
+    }
+     @Override
+     public void nhap(){
+        setmaSach();
+        settenSach();
+        setTacGia();
+        setLoaiSach();
+        setSoLuong();
+        setPrice();
+     }
+
+     public void nhapSTT(){
+        setmaSachTT();
+        settenSach();
+        setTacGia();
+        setLoaiSach();
+        setSoLuong();
+        setPrice();
+     }
+
+     public void nhapSTN(){
+        setmaSachTN();
+        settenSach();
+        setTacGia();
+        setLoaiSach();
+        setSoLuong();
+        setPrice();
+     }
+
+     public void nhapSTL(){
+        setmaSachTL();
+        settenSach();
+        setTacGia();
+        setLoaiSach();
+        setSoLuong();
+        setPrice();
+     }
+
+     public String in(){
+        String data = "Ma Sach: " + getmaSach() + "\t\tTen Sach: " + gettenSach()
+        + "\t\tTac Gia: " + getTacGia() + "\t\tLoai Sach:" + getLoaiSach()
+        + "\nSo luong:" + getSoLuong() + "\t\tGia: " + getPrice();
+        return data;
+     }
+     @Override
+     public void xuat() {
+        System.out.printf("%-20s %-25s %-20s %-20s %-15s %-20s \n",maSach,tenSach,TacGia,TheLoai,SoLuong,price);
+     }
+     @Override
+     public void suaThongTin() {
+        int chon;
+        do {
+            System.out.println("=== Sua thong tin sach ===");
             System.out.println("1. Sua ma Sach");
             System.out.println("2. Sua ten Sach");
             System.out.println("3. Sua tac gia");
@@ -67,7 +225,7 @@ public class Sach extends PhanTu {
             chon = KiemTra.CheckNumber();
             switch (chon){
                 case 0:
-                    System.out.println("Thoat sua thong tin xe!!");
+                    System.out.println("Thoat sua thong tin sach!!");
                     break;
                 case 1:
                     System.out.println("Thong tin hien tai:"+getmaSach());
