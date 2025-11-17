@@ -25,13 +25,13 @@ public class FileHandler {
         ghiFile(tmp, "dstl.txt");
     }
 
-    public static void themNXB(String maNhaCC, String tenNhaCC, String diachi, String sdt) {
-        String tmp = maNhaCC + "#" + tenNhaCC + "#" + diachi + "#" + sdt;
+    public static void themNXB(String maNhaXB, String tenNhaXB, String diachi, String sdt) {
+        String tmp = maNhaXB + "#" + tenNhaXB + "#" + diachi + "#" + sdt;
         ghiFile(tmp, "dsnxb.txt");
     }
 
-    public static void themPN(int maPhieuNhap, String ngaynhap, String maNhaCC, String maNV, int tongTien, int SoluongNhap, Sach[] dsmspNhap) {
-        String tmp = maPhieuNhap + "#" + ngaynhap + "#" + maNhaCC + "#" + maNV + "#" + tongTien + "#" + SoluongNhap;
+    public static void themPN(int maPhieuNhap, String ngaynhap, String maNhaXB, String maNV, int tongTien, int SoluongNhap, Sach[] dsmspNhap) {
+        String tmp = maPhieuNhap + "#" + ngaynhap + "#" + maNhaXB + "#" + maNV + "#" + tongTien + "#" + SoluongNhap;
         for (int i = 0; i < dsmspNhap.length; i++) {
             tmp += "#" + dsmspNhap[i].getmaSach() + "#" + dsmspNhap[i].getSoLuong();
         }
