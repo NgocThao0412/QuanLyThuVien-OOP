@@ -75,7 +75,7 @@ public class DanhSachNhaXuatBan implements DanhSachChung {
             nxb.setmaNXB(lArr[m++].trim());
             nxb.settenNXB(lArr[m++].trim());
             nxb.setDiaChi(lArr[m++].trim());
-            nxb.setemail(lArr[m++].trim());
+            nxb.setsdt(lArr[m++].trim());
 
             dsNXB[k++] = nxb;
         }
@@ -103,7 +103,7 @@ public class DanhSachNhaXuatBan implements DanhSachChung {
             NhaXuatBan nxb = dsNXB[i];
             if (nxb == null) continue;
             // dùng phương thức FileHandler.themNXB(...) - giả định đã có
-            FileHandler.themNXB(nxb.getmaNXB(), nxb.gettenNXB(), nxb.getDiaChi(), nxb.getemail());
+            FileHandler.themNXB(nxb.getmaNXB(), nxb.gettenNXB(), nxb.getDiaChi(), nxb.getsdt());
         }
         this.dsNXB = dsNXB;
         this.SoLuong = dsNXB.length;
@@ -330,15 +330,15 @@ public class DanhSachNhaXuatBan implements DanhSachChung {
                     }
                     break;
                 case 2:
-                    System.out.print("Nhap email can loc: ");
+                    System.out.print("Nhap so dien thoai can loc: ");
                     giatricanloc = sc.nextLine().trim();
                     check = false;
-                    for (NhaXuatBan n : dsNXB) if (n != null && n.getemail().equalsIgnoreCase(giatricanloc)) { check = true; break; }
+                    for (NhaXuatBan n : dsNXB) if (n != null && n.getsdt().equalsIgnoreCase(giatricanloc)) { check = true; break; }
                     if (!check) {
-                        System.out.println("Khong ton tai nha xuat ban co email nay.");
+                        System.out.println("Khong ton tai nha xuat ban co so dien thoai nay.");
                         break;
                     } else {
-                        for (NhaXuatBan n : dsNXB) if (n != null && n.getemail().equalsIgnoreCase(giatricanloc)) n.xuat();
+                        for (NhaXuatBan n : dsNXB) if (n != null && n.getsdt().equalsIgnoreCase(giatricanloc)) n.xuat();
                     }
                     break;
                 default:
@@ -348,4 +348,3 @@ public class DanhSachNhaXuatBan implements DanhSachChung {
         } while (chon != 0);
     }
 }
-
