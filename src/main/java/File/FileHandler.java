@@ -16,13 +16,13 @@ public class FileHandler {
 
     public static void themSach(String maSach, String tenSach, String tacGia, String theLoai, String nhaXuatBan, int soLuong, int gia) {
         String tmp = maSach + "#" + tenSach + "#" + tacGia + "#" + theLoai + "#" + nhaXuatBan + "#" + soLuong + "#" + gia;
-        ghiFile(tmp, "dssach.txt");
+        ghiFile(tmp, "dss.txt");
     }
 
     public static void themTheLoai(String maTheLoai, String tenTheLoai, int soLuongSach, String[] dsMaSach) {
         String tmp = maTheLoai + "#" + tenTheLoai + "#" + dsMaSach.length;
         for (int i = 0; i < dsMaSach.length; i++) tmp += "#" + dsMaSach[i];
-        ghiFile(tmp, "dstheloai.txt");
+        ghiFile(tmp, "dstldstl.txt");
     }
 
     public static void themNXB(String maNhaCC, String tenNhaCC, String diachi, String sdt) {
