@@ -20,9 +20,9 @@ public class FileHandler {
     }
 
     public static void themTheLoai(String maTheLoai, String tenTheLoai, int soLuongSach, String[] dsMaSach) {
-        String tmp = maTheLoai + "#" + tenTheLoai + "#" + dsMaSach.length;
+        String tmp = maTheLoai + "#" + tenTheLoai + "#" + soLuongSach;
         for (int i = 0; i < dsMaSach.length; i++) tmp += "#" + dsMaSach[i];
-        ghiFile(tmp, "dstldstl.txt");
+        ghiFile(tmp, "dstl.txt");
     }
 
     public static void themNXB(String maNhaCC, String tenNhaCC, String diachi, String sdt) {
@@ -41,7 +41,7 @@ public class FileHandler {
     public static void themKH(String makh, String hoten, String ntns, String gioitinh, String cccd, String diachi, String sdt, String email,
                               String ngayLapThe, String[] dsMaSachDangMuon, int soSachDangMuon, int tongTienPhat) {
         String tmp = makh + "#" + hoten + "#" + ntns + "#" + gioitinh + "#" + cccd + "#" + diachi + "#" + sdt + "#" + email + "#" +
-                     ngayLapThe + "#" + dsMaSachDangMuon.length + "#";
+                      ngayLapThe + "#" + dsMaSachDangMuon.length + "#";
 
         for (int i = 0; i < dsMaSachDangMuon.length; i++) {
             tmp += dsMaSachDangMuon[i] + "#";
@@ -60,7 +60,7 @@ public class FileHandler {
     public static void themPM(int soPhieuMuon, String ngayLapPhieu, String maNhanVien, String maKhachHang,
                               String ngayTraDuKien, String trangThai, int tongSoLuongSach, Sach[] dsSachMuon) {
         String tmp = soPhieuMuon + "#" + ngayLapPhieu + "#" + maNhanVien + "#" + maKhachHang + "#" +
-                     ngayTraDuKien + "#" + trangThai + "#" + tongSoLuongSach;
+                      ngayTraDuKien + "#" + trangThai + "#" + tongSoLuongSach;
 
         for (int i = 0; i < dsSachMuon.length; i++) {
             tmp += "#" + dsSachMuon[i].getmaSach() + "#" + dsSachMuon[i].getSoLuong();
@@ -86,21 +86,36 @@ public class FileHandler {
                     switch (i) {
                         case 0:
                             tenFile = "dss.txt";
-                            ghiFile("5", tenFile);
-                            themSach("TT01", "De Men Phieu Luu Ky", "To Hoai", "Thieu Nhi", "Kim Dong", 10, 50000);
-                            themSach("VH01", "Nha Gia Kim", "Paulo Coelho", "Van Hoc", "Nha Nam", 15, 80000);
-                            themSach("KT01", "Luoc Su Loai Nguoi", "Yuval Noah Harari", "Khoa Hoc", "Omega Plus", 5, 250000);
-                            themSach("TN01", "Dac Nhan Tam", "Dale Carnegie", "Tam Ly", "First News", 20, 75000);
-                            themSach("VH02", "Hai So Phan", "Jeffrey Archer", "Van Hoc", "NXB Tre", 8, 120000);
+                            ghiFile("15", tenFile);
+                            // Sách Tâm Lý
+                            themSach("TL01", "Dac Nhan Tam", "Dale Carnegie", "Sach Tam Ly", "First News", 20, 75000);
+                            themSach("TL02", "Nhung Dieu Ap Luc", "Mark Manson", "Sach Tam Ly", "Thai Ha", 12, 85000);
+                            themSach("TL03", "Tu Duy Nhanh Va Cham", "Daniel Kahneman", "Sach Tam Ly",  "First News", 15, 100000);
+                            themSach("TL04", "Suc Manh Cua Thoi Quen", "Charles Duhigg", "Sach Tam Ly", "Thai Ha", 18, 90000);
+                            themSach("TL05", "Nghich Ly Cua Lua Chon", "Barry Schwartz", "Sach Tam Ly", "Nha Nam", 10, 80000);
+                            // Sách Thiếu Nhi
+                            themSach("TN01", "Hoang Tu Be", "Antoine de Saint-Exupery", "Sach Thieu Nhi", "Kim Dong", 15, 60000);
+                            themSach("TN02", "Toi Thay Hoa Vang Tren Co Xanh", "Nguyen Nhat Anh", "Sach Thieu Nhi", "Kim Dong", 25, 70000);
+                            themSach("TN03", "Doraemon Tap 1", "Fujiko F. Fujio", "Sach Thieu Nhi", "Kim Dong", 30, 20000);
+                            themSach("TN04", "Pippi Tat Dai", "Astrid Lindgren", "Sach Thieu Nhi", "Kim Dong", 10, 55000);
+                            themSach("TN05", "Chuyen Con Meo Day Hai Au Bay", "Luis Sepulveda", "Sach Thieu Nhi", "Kim Dong", 12, 65000);
+                            //Sách Trinh Thám 
+                            themSach("TT01", "Vu An Tren Tau Toc Hanh", "Agatha Christie", "Sach Trinh Tham", "Nha Nam", 10, 95000);
+                            themSach("TT02", "Sherlock Holmes", "Arthur Conan Doyle", "Sach Trinh Tham", "Nha Nam", 8, 120000);
+                            themSach("TT03", "Ma Code Da Vinci", "Dan Brown", "Sach Trinh Tham", "Nha Nam", 15, 110000);
+                            themSach("TT04", "Co Gai Mat Tich", "Gillian Flynn", "Sach Trinh Tham", "Nha Nam", 7, 105000);
+                            themSach("TT05", "Toi Giet Nguoi", "Haruki Murakami", "Sach Trinh Tham", "Nha Nam", 5, 130000);
                             break;
+
                         case 1:
                             tenFile = "dsnv.txt";
                             ghiFile("4", tenFile);
-                            themNv("NV01", "Tran Van A", "nhan vien", "17/07/2004", "nam", "052204016288", "273 An Duong Vuong, P3, Q5, TP.HCM", "0938412413", "tranvana@gmail.com", "17/07/2023", 0.5, 0);
-                            themNv("NV02", "Tran Van B", "nhan vien", "30/07/2000", "nu", "054524226300", "273 An Duong Vuong, P3, Q5, TP.HCM", "0938412413", "tranvanb@gmail.com", "21/09/2023", 1.2, 0);
-                            themNv("NV03", "Tran Thi C", "quan ly", "01/01/1950", "nam", "022201236288", "273 An Duong Vuong, P3, Q5, TP.HCM", "0938412413", "quanly1@gmail.com", "12/09/2023", 0.4, 1);
-                            themNv("NV04", "Tran Bui D", "quan ly", "02/02/2000", "nu", "054504012328", "273 An Duong Vuong, P3, Q5, TP.HCM", "0938412413", "quanly2@gmail.com", "25/12/2023", 2, 1);
+                            themNv("NV01", "Tran Van A", "nhan vien", "17/07/2004", "nam", "052204016288", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0938412413", "tranvana@gmail.com", "17/07/2025", 0.5, 0);
+                            themNv("NV02", "Tran Van B", "nhan vien", "30/07/2000", "nu", "054524226300", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0938412413", "tranvanb@gmail.com", "21/09/2025", 1.2, 0);
+                            themNv("NV03", "Tran Thi C", "quan ly", "01/01/1950", "nam", "022201236288", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0938412413", "quanly1@gmail.com", "12/09/2025", 0.4, 1);
+                            themNv("NV04", "Tran Bui D", "quan ly", "02/02/2000", "nu", "054504012328", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0938412413", "quanly2@gmail.com", "25/12/2025", 2.0, 1);
                             break;
+
                         case 2:
                             tenFile = "dskh.txt";
                             String[] rong = new String[0];
@@ -109,6 +124,7 @@ public class FileHandler {
                             themKH("KH02", "Nguyen Van B", "28/11/2002", "nam", "320142913", "273 An Duong Vuong, P3, Q5, TP.HCM", "0913716241", "hahah@gmail.com", "15/05/2024", rong, 0, 0);
                             themKH("KH03", "Tran Van C", "10/10/1969", "nam", "320638711", "273 An Duong Vuong, P3, Q5, TP.HCM", "0907412663", "tranvanc@gmail.com", "01/09/2022", rong, 0, 0);
                             break;
+
                         case 3:
                             tenFile = "dstk.txt";
                             ghiFile("4", tenFile);
@@ -117,6 +133,7 @@ public class FileHandler {
                             themTK("NV03", "123", "quan ly");
                             themTK("NV04", "123", "quan ly");
                             break;
+
                         case 4:
                             tenFile = "dstl.txt";
                             ghiFile("3", tenFile);
@@ -127,21 +144,26 @@ public class FileHandler {
                             String[] dsMaSp3 = new String[]{"TT01", "TT02", "TT03", "TT04", "TT05"};
                             themTheLoai("TT", "Sach Trinh Tham", 5, dsMaSp3);
                             break;
+
                         case 5:
                             tenFile = "dspm.txt";
                             ghiFile("0", tenFile);
                             break;
+
                         case 6:
                             tenFile = "dsnxb.txt";
-                            ghiFile("3", tenFile);
+                            ghiFile("4", tenFile);
                             themNXB("NXB_KIMDONG", "NXB Kim Dong", "55 Quang Trung, Ha Noi", "02439434730");
                             themNXB("NHA_NAM", "Nha Nam", "59 Do Quang, Cau Giay, Ha Noi", "02435146876");
                             themNXB("FIRST_NEWS", "First News", "11H Nguyen Thi Minh Khai, Q1, TP.HCM", "02838227979");
+                            themNXB("THAI_HA", "Thai Ha Books", "26 Hoang Cau, Dong Da, Ha Noi", "02438563810");
                             break;
+
                         case 7:
                             tenFile = "dspn.txt";
                             ghiFile("0", tenFile);
                             break;
+
                         default:
                             break;
                     }
@@ -155,7 +177,6 @@ public class FileHandler {
     public static void ghiFile(String giaTri, String tenFile) {
         try {
             File fo = new File(tenFile);
-
             String data = "";
             if (fo.exists()) {
                 fr = new Scanner(fo, "utf-8");
