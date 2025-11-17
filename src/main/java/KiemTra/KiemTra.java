@@ -49,6 +49,20 @@ public class KiemTra {
         return true;
     }
 
+    //Kiem Tra cccd
+    public static boolean KiemTraCCCD(String cccd)
+	{
+		String reg = "^\\d{12}$";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(cccd);
+		if(!matcher.matches() || cccd == "")
+		{
+			System.out.print("So can cuoc cong dan khong dung!!! Moi nhap lai:");
+			return false;
+		}
+		return true;
+	}
+
     // KIEM TRA CHUOI
     public static boolean KiemTraHoTen(String ten) {
         if (ten == null || ten.trim().isEmpty()) {
