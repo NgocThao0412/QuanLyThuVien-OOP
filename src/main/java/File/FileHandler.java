@@ -71,13 +71,13 @@ public class FileHandler {
     public static void taoCacFile() {
         File[] f = new File[8];
         try {
-            f[0] = new File("dssach.txt");
+            f[0] = new File("dss.txt");
             f[1] = new File("dsnv.txt");
             f[2] = new File("dskh.txt");
             f[3] = new File("dstk.txt");
-            f[4] = new File("dstheloai.txt");
+            f[4] = new File("dstl.txt");
             f[5] = new File("dspm.txt");
-            f[6] = new File("dsncc.txt");
+            f[6] = new File("dsnxb.txt");
             f[7] = new File("dspn.txt");
 
             String tenFile = "";
@@ -85,7 +85,7 @@ public class FileHandler {
                 if (f[i].createNewFile()) {
                     switch (i) {
                         case 0:
-                            tenFile = "dssach.txt";
+                            tenFile = "dss.txt";
                             ghiFile("5", tenFile);
                             themSach("TT01", "De Men Phieu Luu Ky", "To Hoai", "Thieu Nhi", "Kim Dong", 10, 50000);
                             themSach("VH01", "Nha Gia Kim", "Paulo Coelho", "Van Hoc", "Nha Nam", 15, 80000);
