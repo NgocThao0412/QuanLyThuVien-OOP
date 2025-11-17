@@ -15,7 +15,7 @@ public class KhachHang extends Nguoi {
     private String MaKhachHang;
     private LocalDate NgayLapThe;
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public KhachHang() {}
 
