@@ -4,8 +4,8 @@ import File.FileHandler;
 import KiemTra.KiemTra;
 import SanPham.PhanTu;
 import SanPham.Sach;
-import SanPham.SachThieuNhi;
 import SanPham.SachTamLy;
+import SanPham.SachThieuNhi;
 import SanPham.SachTrinhTham;
 
 public class DanhSachSach implements DanhSachChung {
@@ -24,52 +24,67 @@ public class DanhSachSach implements DanhSachChung {
         this.soLuong = soLuong;
     }
 
-    public Sach[] getDsSach() {
-        String data = FileHandler.docFile("dss.txt");
-        String[] dArr = data.split("\n");
-
-        if (dArr[0].length() == 0) {
-            setSoLuong(0);
-            dsSach = new Sach[0];
-            return dsSach;
-        }
-
-        setSoLuong(Integer.parseInt(dArr[0]));
-        dsSach = new Sach[soLuong];
-
-        int k = 0;
-        for (int i = 1; i < dArr.length; i++) {
-            String[] lArr = dArr[i].split("#");
-            int m = 0;
-
-            Sach sp;
-            switch (lArr[3]) {
-                case "Sach Trinh Tham": sp = new SachTrinhTham(); break;
-                case "Sach Thieu Nhi": sp = new SachThieuNhi(); break;
-                case "Sach Tam Ly": sp = new SachTamLy(); break;
-                default: sp = new Sach(); break;
-            }
-
-            sp.setmaSach(lArr[m++]);
-            sp.settenSach(lArr[m++]);
-            sp.setTacGia(lArr[m++]);
-            sp.setLoaiSach(lArr[m++]);
-            sp.setSoLuong(Integer.parseInt(lArr[m++]));
-            sp.setPrice(Integer.parseInt(lArr[m++]));
-
-            // Nếu có NhaXuatBan
-            if (sp instanceof SachTrinhTham)
-                ((SachTrinhTham) sp).setNhaXuatBan(lArr[m++]);
-            else if (sp instanceof SachThieuNhi)
-                ((SachThieuNhi) sp).setNhaXuatBan(lArr[m++]);
-            else if (sp instanceof SachTamLy)
-                ((SachTamLy) sp).setNhaXuatBan(lArr[m++]);
-
-            dsSach[k++] = sp;
-        }
-
-        return dsSach;
+   public Sach[] getDsSach() {
+    String data = FileHandler.docFile("dss.txt");
+    if (data == null || data.isEmpty()) {  // kiểm tra file rỗng
+        setSoLuong(0);
+        return new Sach[0];
     }
+
+    String[] dArr = data.split("\n");
+
+    // dòng đầu tiên là số lượng
+    try {
+        setSoLuong(Integer.parseInt(dArr[0].trim()));
+    } catch (NumberFormatException e) {
+        setSoLuong(0);
+    }
+
+    dsSach = new Sach[soLuong];
+    int k = 0;
+
+    for (int i = 1; i < dArr.length; i++) {
+        String[] lArr = dArr[i].split("#");
+        if (lArr.length < 7) continue;  // đảm bảo đủ cột
+
+        Sach sp = null;
+
+        switch (lArr[3]) {  // chọn loại sách
+            case "Sach Trinh Tham": sp = new SachTrinhTham(); break;
+            case "Sach Thieu Nhi": sp = new SachThieuNhi(); break;
+            case "Sach Tam Ly": sp = new SachTamLy(); break;
+            default: continue;  // nếu loại không hợp lệ, bỏ qua
+        }
+
+        int m = 0;
+        sp.setmaSach(lArr[m++]);
+        sp.settenSach(lArr[m++]);
+        sp.setTacGia(lArr[m++]);
+        sp.setLoaiSach(lArr[m++]);
+
+        String nxb = lArr[m++];
+        sp.setSoLuong(Integer.parseInt(lArr[m++]));
+        sp.setPrice(Integer.parseInt(lArr[m++]));
+
+        // gán NXB theo loại
+        if (sp instanceof SachTrinhTham) ((SachTrinhTham) sp).setNhaXuatBan(nxb);
+        else if (sp instanceof SachThieuNhi) ((SachThieuNhi) sp).setNhaXuatBan(nxb);
+        else if (sp instanceof SachTamLy) ((SachTamLy) sp).setNhaXuatBan(nxb);
+
+        dsSach[k++] = sp;
+    }
+
+    // nếu có dòng bị bỏ qua, chỉnh lại mảng cho đủ số lượng thực
+    if (k < soLuong) {
+        Sach[] tmp = new Sach[k];
+        System.arraycopy(dsSach, 0, tmp, 0, k);
+        dsSach = tmp;
+        setSoLuong(k);
+    }
+
+    return dsSach;
+}
+
 
     public void setDsSach(Sach[] dsSach) {
         String tenFile = "dss.txt";
@@ -98,27 +113,35 @@ public class DanhSachSach implements DanhSachChung {
     // ======== NHẬP/XUẤT DANH SÁCH =========
     public void nhapDanhSach() {
         FileHandler.resetFile("dss.txt");
-        System.out.print("Moi nhap so luong sach: ");
+        System.out.print("Moi nhap so luong Sach: ");
+
         soLuong = KiemTra.CheckNumber();
         dsSach = new Sach[soLuong];
 
-        for (int i = 0; i < soLuong; i++) {
-            System.out.println("Them sach thu " + (i + 1) + ": ");
-            String loai = KiemTra.checkTheLoaiSach();
-            switch (loai) {
-                case "Sach Trinh Tham": dsSach[i] = new SachTrinhTham(); break;
-                case "Sach Thieu Nhi": dsSach[i] = new SachThieuNhi(); break;
-                case "Sach Tam Ly": dsSach[i] = new SachTamLy(); break;
-                default: dsSach[i] = new Sach(); break;
+        int soLuongTemp=0, soLuongCurrent = soLuong;
+        String tmp;
+
+        for(int i=0;i<soLuongCurrent;i++){
+            System.out.println("Them Sach thu " + (i+1) + ": ");
+            System.out.println("Chon loai sach: ");
+            tmp = KiemTra.checkTheLoaiSach();
+            if(tmp.equals("Sach Trinh Tham")) {
+                dsSach[i] = new SachTrinhTham();
+                dsSach[i].nhap();
             }
-            dsSach[i].nhap();
+            else if(tmp.equals("Sach Thieu Nhi")) {
+                dsSach[i] = new SachThieuNhi();
+                dsSach[i].nhap();
+            }
+            else if(tmp.equals("Sach Tam Ly")) {
+                dsSach[i] = new SachTamLy();
+                dsSach[i].nhap();
+            }
+            soLuong = ++soLuongTemp;
+            setDsSach(dsSach);
         }
-
-        setDsSach(dsSach);
-
-        // Reset thể loại
         DanhSachTheLoai dstl = new DanhSachTheLoai();
-        dstl.resetDsTheLoai();
+        dstl.resetDstl();
     }
 
     public void xuatDanhSach() {
@@ -127,46 +150,81 @@ public class DanhSachSach implements DanhSachChung {
             return;
         }
         System.out.println("=== Danh sach Sach ===");
-        System.out.printf("%-15s %-25s %-20s %-20s %-10s %-10s\n",
+        System.out.printf("%-15s %-35s %-30s %-20s %-10s %-10s\n",
                 "Ma Sach", "Ten Sach", "Tac Gia", "Loai Sach", "So luong", "Gia");
         for (int i = 0; i < soLuong; i++) {
+      System.out.println("-----------------------------------------------------------");
             dsSach[i].xuat();
         }
+        System.out.println();
     }
 
     // ======== THEM/XOA/SUA =========
     public void themVaoDanhSach(PhanTu pt) {
-        Sach[] temp = new Sach[soLuong + 1];
-        System.arraycopy(dsSach, 0, temp, 0, soLuong);
-        temp[soLuong] = (Sach) pt;
+         Sach[] dsSachTemp = new Sach[soLuong+1];
+        for(int i=0;i<soLuong;i++){
+            dsSachTemp[i] = getDsSach()[i];
+        }
+        dsSachTemp[soLuong] = (Sach) pt;
         soLuong++;
-        setDsSach(temp);
+        setDsSach(dsSachTemp);
     }
 
     public void themKPhanTuVaoDanhSach() {
         System.out.print("Nhap so luong sach can them vao danh sach: ");
         int sl;
+        boolean check = false;
         do {
             sl = KiemTra.CheckNumber();
-            if(sl <= 0) System.out.print("Nhap so lon hon 0! Moi nhap lai: ");
-        } while(sl <= 0);
-
-        for(int i=0;i<sl;i++) {
+            check = sl > 0;
+            if(!check) System.out.print("Nhap so lon hon 0!!! Moi nhap lai: ");
+        } while(!check);
+        PhanTu pt;
+        String tmp;
+        for(int i=0;i<sl;i++)
+        {
             System.out.println("Them sach thu " + (i+1) + ": ");
-            String loai = KiemTra.checkTheLoaiSach();
-            PhanTu pt;
-            switch (loai) {
-                case "Sach Trinh Tham": pt = new SachTrinhTham(); break;
-                case "Sach Thieu Nhi": pt = new SachThieuNhi(); break;
-                case "Sach Tam Ly": pt = new SachTamLy(); break;
-                default: pt = new Sach(); break;
+            System.out.println("Chon loai Sach: ");
+            tmp = KiemTra.checkTheLoaiSach();
+            if(tmp.equals("Sach Trinh Tham")) {
+                pt = new SachTrinhTham();
+                pt.nhap();
+                themVaoDanhSach(pt);
             }
+            else if(tmp.equals("Sach Thieu Nhi")) {
+                pt = new SachThieuNhi();
+                pt.nhap();
+                themVaoDanhSach(pt);
+            }
+            else if(tmp.equals("Sach Tam Ly")) {
+                pt = new SachTamLy();
+                pt.nhap();
+                themVaoDanhSach(pt);
+            }
+        }
+        DanhSachTheLoai dstl = new DanhSachTheLoai();
+        dstl.resetDstl();
+    }
+     public void themPhanTuVaoDanhSach() {
+        PhanTu pt;
+        String tmp;
+        System.out.println("Chon loai Sach: ");
+        tmp = KiemTra.checkTheLoaiSach();
+        if(tmp.equals("Sach Trinh Tham")) {
+            pt = new SachTrinhTham();
             pt.nhap();
             themVaoDanhSach(pt);
         }
-
-        DanhSachTheLoai dstl = new DanhSachTheLoai();
-        dstl.resetDsTheLoai();
+        else if(tmp.equals("Sach Thieu Nhi")) {
+            pt = new SachThieuNhi();
+            pt.nhap();
+            themVaoDanhSach(pt);
+        }
+        else if(tmp.equals("Sach Tam Ly")) {
+            pt = new SachTamLy();
+            pt.nhap();
+            themVaoDanhSach(pt);
+        }
     }
 
     public void xoaPhanTu() {
@@ -181,7 +239,7 @@ public class DanhSachSach implements DanhSachChung {
 
             // Xoa khoi danh sach the loai
             DanhSachTheLoai dstl = new DanhSachTheLoai();
-            dstl.xoaPhanTuMaSach(dsSach[viTri].getmaSach(), dsSach[viTri].getLoaiSach());
+            dstl.xoaPhanTuMaSach(getDsSach()[viTri].getmaSach(), getDsSach()[viTri].getLoaiSach());
 
             soLuong--;
             setDsSach(temp);
@@ -198,62 +256,88 @@ public class DanhSachSach implements DanhSachChung {
         } else System.out.println("Khong tim thay Sach!");
     }
 
-    // ======== TIM KIEM =========
-    public PhanTu timPhanTu() {
-        System.out.print("Tim Sach theo ten (1) hay ma (2): ");
-        int loai = KiemTra.CheckNumber();
+   public PhanTu timPhanTu() { // tìm sản phẩm theo tên hoặc khoá (tương đối || tuyệt đối)
+        int loai;
+        System.out.print("Tim Sach theo ten (1) hay theo ma (2), vui long chon: ");
+
+        loai = KiemTra.CheckNumber();
         loai = (loai != 2) ? 1 : 2;
 
-        System.out.print("Nhap gia tri can tim: ");
-        String value = sc.nextLine();
+        if (loai == 1)
+            System.out.print("Nhap ten sach can tim: ");
+        if (loai == 2)
+            System.out.print("Nhap ma sach can tim: ");
 
-        System.out.print("Tim chinh xac (1) hay tuong doi (2): ");
-        int chon = KiemTra.CheckNumber();
+        String giaTriCanTim = sc.nextLine();
+        int chon;
+
+        System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
+        chon = KiemTra.CheckNumber();
         chon = (chon != 2) ? 1 : 2;
 
-        for (int i = 0; i < soLuong; i++) {
-            Sach s = dsSach[i];
-            if (chon == 1) {
-                if ((loai == 1 && s.gettenSach().equalsIgnoreCase(value)) ||
-                    (loai == 2 && s.getmaSach().equalsIgnoreCase(value)))
-                    return s;
+        Sach[] dsSachTmp = getDsSach();
+
+        for(int i=0;i<soLuong;i++) {
+            if (chon == 1) { // tìm chính xác
+                if (loai == 1)
+                    if (dsSachTmp[i].gettenSach().equalsIgnoreCase(giaTriCanTim))
+                        return dsSachTmp[i];
+                if (loai == 2)
+                    if (dsSachTmp[i].getmaSach().equalsIgnoreCase(giaTriCanTim))
+                        return dsSachTmp[i];
             } else {
-                if ((loai == 1 && s.gettenSach().contains(value)) ||
-                    (loai == 2 && s.getmaSach().contains(value)))
-                    return s;
+                if (loai == 1)
+                    if (dsSachTmp[i].gettenSach().contains(giaTriCanTim))
+                        return dsSachTmp[i];
+                if (loai == 2)
+                    if (dsSachTmp[i].getmaSach().contains(giaTriCanTim))
+                        return dsSachTmp[i];
             }
         }
         return null;
     }
-
     public int timViTriPhanTu() {
-        System.out.print("Tim Sach theo ten (1) hay ma (2): ");
-        int loai = KiemTra.CheckNumber();
+      int loai;
+        System.out.print("Tim sach theo ten (1) hay theo ma (2), vui long chon: ");
+
+        loai = KiemTra.CheckNumber();
         loai = (loai != 2) ? 1 : 2;
+        if (loai == 1)
+            System.out.print("Nhap ten sach can tim: ");
+        if (loai == 2)
+            System.out.print("Nhap ma sach can tim: ");
 
-        System.out.print("Nhap gia tri can tim: ");
-        String value = sc.nextLine();
+        String giaTriCanTim = sc.nextLine();
+        int chon;
 
-        System.out.print("Tim chinh xac (1) hay tuong doi (2): ");
-        int chon = KiemTra.CheckNumber();
+        System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
+        chon = KiemTra.CheckNumber();
         chon = (chon != 2) ? 1 : 2;
 
-        for (int i = 0; i < soLuong; i++) {
-            Sach s = dsSach[i];
-            if (chon == 1) {
-                if ((loai == 1 && s.gettenSach().equalsIgnoreCase(value)) ||
-                    (loai == 2 && s.getmaSach().equalsIgnoreCase(value)))
-                    return i;
+        Sach[] dsSachTmp = getDsSach();
+
+        for(int i=0;i<soLuong;i++) {
+            if (chon == 1) { // tìm chính xác
+                if (loai == 1)
+                    if (dsSachTmp[i].gettenSach().equalsIgnoreCase(giaTriCanTim))
+                        return i;
+                if (loai == 2)
+                    if (dsSachTmp[i].getmaSach().equalsIgnoreCase(giaTriCanTim))
+                        return i;
             } else {
-                if ((loai == 1 && s.gettenSach().contains(value)) ||
-                    (loai == 2 && s.getmaSach().contains(value)))
-                    return i;
+                if (loai == 1)
+                    if (dsSachTmp[i].gettenSach().contains(giaTriCanTim))
+                        return i;
+                if (loai == 2)
+                    if (dsSachTmp[i].getmaSach().contains(giaTriCanTim))
+                        return i;
             }
         }
         return -1;
     }
 
     public int timViTriSach(String maSach) {
+        Sach[] dsSach = getDsSach();
         for(int i=0;i<soLuong;i++) {
             if(dsSach[i].getmaSach().equalsIgnoreCase(maSach))
                 return i;
@@ -261,38 +345,49 @@ public class DanhSachSach implements DanhSachChung {
         return -1;
     }
 
-    public PhanTu layPhanTuVoi(String maSach) {
+    public PhanTu layPhanTuVoi(String thamso) {
+         Sach[] dss = getDsSach();
         for(int i=0;i<soLuong;i++) {
-            if(dsSach[i].getmaSach().equalsIgnoreCase(maSach))
-                return dsSach[i];
+            if(dss[i].getmaSach().equalsIgnoreCase(thamso))
+                return dss[i];
         }
         return null;
     }
 
     // ======== THONG KE =========
-    public void thongKe() {
+     public void thongKe() {
+        int chon,n;
         dsSach = getDsSach();
-        int chon, n;
         do {
             System.out.println("=== Thong ke ===");
-            System.out.println("1. In Sach co so luong lon hon n");
-            System.out.println("2. In Sach co gia ban lon hon n");
-            System.out.println("0. Quay lai menu");
+            System.out.println("1. In sach co so luong lon hon n");
+            System.out.println("2. In sach co gia ban lon hon n");
+            System.out.println("0. Quay lai menu truoc");
             System.out.print("Moi chon: ");
             chon = KiemTra.CheckNumber();
-            switch(chon) {
+            switch (chon) {
                 case 1:
                     System.out.print("Nhap so luong can tim: ");
                     n = KiemTra.CheckNumber();
-                    for(Sach s : dsSach) if(s.getSoLuong() > n) s.xuat();
+                    for(int i=0;i<soLuong;i++) {
+                        if(dsSach[i].getSoLuong() > n){
+                            dsSach[i].xuat();
+                        }
+                    }
                     break;
                 case 2:
                     System.out.print("Nhap gia ban can tim: ");
                     n = KiemTra.CheckNumber();
-                    for(Sach s : dsSach) if(s.getPrice() > n) s.xuat();
+                    for(int i=0;i<soLuong;i++) {
+                        if(dsSach[i].getPrice() > n){
+                            dsSach[i].xuat();
+                        }
+                    }
                     break;
-                default: chon = 0; break;
+                default:
+                    chon=0;
+                    break;
             }
-        } while(chon != 0);
+        } while(chon!=0);
     }
 }

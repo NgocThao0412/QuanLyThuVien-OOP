@@ -1,10 +1,10 @@
 package File;
 
+import SanPham.Sach;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import SanPham.Sach;
 
 public class FileHandler {
     private static Scanner fr;
@@ -120,9 +120,9 @@ public class FileHandler {
                             tenFile = "dskh.txt";
                             String[] rong = new String[0];
                             ghiFile("3", tenFile);
-                            themKH("KH01", "Doan Van A", "20/12/1950", "nu", "320873941", "273 An Duong Vuong, P3, Q5, TP.HCM", "0894172635", "doanvana@gmail.com", "10/01/2023", rong, 0, 0);
-                            themKH("KH02", "Nguyen Van B", "28/11/2002", "nam", "320142913", "273 An Duong Vuong, P3, Q5, TP.HCM", "0913716241", "hahah@gmail.com", "15/05/2024", rong, 0, 0);
-                            themKH("KH03", "Tran Van C", "10/10/1969", "nam", "320638711", "273 An Duong Vuong, P3, Q5, TP.HCM", "0907412663", "tranvanc@gmail.com", "01/09/2022", rong, 0, 0);
+                            themKH("KH01", "Doan Van A", "20/12/1950", "nu", "320873941", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0894172635", "doanvana@gmail.com", "10/01/2023", rong, 0, 0);
+                            themKH("KH02", "Nguyen Van B", "28/11/2002", "nam", "320142913", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0913716241", "hahah@gmail.com", "15/05/2024", rong, 0, 0);
+                            themKH("KH03", "Tran Van C", "10/10/1969", "nam", "320638711", "273 An Duong Vuong, Phuong Cho Quan, TP.HCM", "0907412663", "tranvanc@gmail.com", "01/09/2022", rong, 0, 0);
                             break;
 
                         case 3:

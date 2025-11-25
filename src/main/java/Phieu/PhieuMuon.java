@@ -5,6 +5,7 @@ import KiemTra.KiemTra;
 import SanPham.PhanTu;
 import SanPham.Sach;
 import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -23,14 +24,16 @@ public class PhieuMuon extends PhanTu {
 
     public PhieuMuon() {}
 
-    public PhieuMuon(String maPM, String maDG, String maTL, Date ngayMuon, Date ngayTra, String tinhTrang) {
-        this.maPM = maPM;
-        this.maDG = maDG;
-        this.maTL = maTL;
-        this.ngayMuon = ngayMuon;
-        this.ngayTra = ngayTra;
-        this.tinhTrang = tinhTrang;
-    }
+    public PhieuMuon(String maPM, String maDG, String maTL, Date ngayMuon, Date ngayTra, String tinhTrang, int soLuongMuon) {
+    this.maPM = maPM;
+    this.maDG = maDG;
+    this.maTL = maTL;
+    this.ngayMuon = ngayMuon;
+    this.ngayTra = ngayTra;
+    this.tinhTrang = tinhTrang;
+    this.soLuongMuon = soLuongMuon;
+}
+
 
     // ===== Getter - Setter =====
     public String getMaPM() { return maPM; }
@@ -67,7 +70,7 @@ public class PhieuMuon extends PhanTu {
         do {
             System.out.print("Nhap ma phieu muon: ");
             maPM = sc.nextLine();
-        } while (!KiemTra.KiemTraMaPhieu(maPM));
+        } while (!KiemTra.KiemTraMaPhieu(maPM) || !KiemTra.KiemTraMaPhieuTrung(maPM)); ;
 
         do {
             System.out.print("Nhap ma doc gia: ");
@@ -75,9 +78,23 @@ public class PhieuMuon extends PhanTu {
         } while (!KiemTra.KiemTraMaKH(maDG));
 
         do {
-            System.out.print("Nhap ma sach: ");
-            maTL = sc.nextLine();
-        } while (!KiemTra.KiemTraMaSachTL(maTL));
+    System.out.print("Nhap ma sach: ");
+    maTL = sc.nextLine().trim();
+
+    if (maTL.startsWith("TN")) {
+        if (KiemTra.KiemTraMaSachTN(maTL)) 
+            break;
+    } else if (maTL.startsWith("TT")) {
+        if (KiemTra.KiemTraMaSachTT(maTL)) 
+            break;
+    } else if (maTL.startsWith("TL")) {
+        if (KiemTra.KiemTraMaSachTL(maTL)) 
+            break;
+    } else {
+        System.out.println("Loi: Ma sach phai bat dau bang TN, TT hoac TL va co it nhat 2 chu so. VD: TN01, TT02, TL03");
+    }
+
+     } while (true);
         
         do {
             System.out.print("Nhap so luong muon: ");
@@ -86,18 +103,76 @@ public class PhieuMuon extends PhanTu {
          } catch (Exception e) { soLuongMuon = -1; }
         } while (soLuongMuon <= 0);
 
-        String strNgayMuon, strNgayTra;
+       // ===== Nhập ngày mượn =====
+    String strNgayMuon, strNgayTra;
+     Date now = new Date();
 
-        do {
-            System.out.print("Nhap ngay muon (dd/MM/yyyy): ");
-            strNgayMuon = sc.nextLine();
-        } while (!KiemTra.KiemTraNgay(strNgayMuon));
+// --- Nhập ngày mượn ---
+    while (true) {
+    System.out.println("\nChon cach nhap ngay muon:");
+    System.out.println("1. Lay ngay hien tai");
+    System.out.println("2. Tu nhap ngay");
+    System.out.print("Chon: ");
 
-        do {
-            System.out.print("Nhap ngay tra (dd/MM/yyyy): ");
-            strNgayTra = sc.nextLine();
-        } while (!KiemTra.KiemTraNgay(strNgayTra)
-                || !KiemTra.KiemTraNgayMuonTra(strNgayMuon, strNgayTra));
+    String chon = sc.nextLine();
+
+    if (chon.equals("1")) {
+        ngayMuon = now;
+        strNgayMuon = sdf.format(now);
+        System.out.println("Ngay muon duoc chon: " + strNgayMuon);
+        break;
+    } 
+    else if (chon.equals("2")) {
+        System.out.print("Nhap ngay muon (dd/MM/yyyy): ");
+        strNgayMuon = sc.nextLine();
+        if (KiemTra.KiemTraNgay(strNgayMuon)) {
+            try { ngayMuon = sdf.parse(strNgayMuon); } catch (Exception e) {}
+            break;
+        } else {
+            System.out.println("Ngay khong hop le!");
+        }
+    } 
+    else {
+        System.out.println("Lua chon khong hop le!");
+    }
+}
+
+// --- Nhập ngày trả ---
+    while (true) {
+    System.out.println("\nChon cach nhap ngay tra:");
+    System.out.println("1. Lay ngay hien tai");
+    System.out.println("2. Tu nhap ngay");
+    System.out.print("Chon: ");
+
+    String chon = sc.nextLine();
+
+    if (chon.equals("1")) {
+        ngayTra = now;
+        strNgayTra = sdf.format(now);
+
+        if (KiemTra.KiemTraNgayMuonTra(strNgayMuon, strNgayTra))
+            break;
+        else {
+            System.out.println("Ngay tra phai sau ngay muon!");
+        }
+    } 
+    else if (chon.equals("2")) {
+        System.out.print("Nhap ngay tra (dd/MM/yyyy): ");
+        strNgayTra = sc.nextLine();
+
+        if (KiemTra.KiemTraNgay(strNgayTra) &&
+            KiemTra.KiemTraNgayMuonTra(strNgayMuon, strNgayTra)) {
+
+            try { ngayTra = sdf.parse(strNgayTra); } catch (Exception e) {}
+            break;
+        } else {
+            System.out.println("Ngay tra khong hop le!");
+        }
+    } 
+    else {
+        System.out.println("Lua chon khong hop le!");
+    }
+    }
 
         try {
             ngayMuon = sdf.parse(strNgayMuon);
@@ -114,7 +189,7 @@ public class PhieuMuon extends PhanTu {
 
     @Override
     public void xuat() {
-    System.out.println("========================================= Thong tin phieu muon =========================================");
+    System.out.println("============================================================ Thong tin phieu muon ================================================");
 
     System.out.println("Ma phieu muon: " + maPM);
     System.out.println("Ma doc gia: " + maDG);
@@ -129,13 +204,12 @@ public class PhieuMuon extends PhanTu {
     
 
     System.out.println("Tinh trang: " + tinhTrang);
-    System.out.println("===========================================================================================================");
 
    DanhSachSach dss = new DanhSachSach();    
    Sach[] ds = dss.getDsSach();
    int soLuongSach = dss.getSoLuong();
 
-   System.out.println("============================================= Danh sach sach muon =============================================");
+   System.out.println("============================================================ Danh sach sach muon =================================================");
 
    for (int i = 0; i < soLuongSach; i++) {
     Sach s = ds[i];
@@ -150,7 +224,7 @@ public class PhieuMuon extends PhanTu {
         }
 
         System.out.printf(
-            "Ma sach:%-12s     Ten sach:%-28s     Tac gia:%-20s     Loai sach:%-15s     Nha xuat ban:%-20s\n",
+            "Ma sach:%-12s  Ten sach:%-28s  Tac gia:%-20s  Loai sach:%-15s  Nha xuat ban:%-20s\n",
             s.getmaSach(),
             s.gettenSach(),
             s.getTacGia(),
@@ -159,17 +233,13 @@ public class PhieuMuon extends PhanTu {
         );
 
         System.out.printf(
-            "So luong muon:%-10d     Gia:%-10d\n",
+            "So luong muon:%-10d  Gia:%-10d\n",
             soLuongMuon,
             s.getPrice()
         );
     }
 }
-
-    System.out.println("===========================================================================================================");
 }
-
-
 
     // ===== Sửa =====
     @Override
@@ -197,30 +267,53 @@ public class PhieuMuon extends PhanTu {
             try {
                 switch (chon) {
                     case 1:
-                        System.out.print("Nhap ma doc gia moi: ");
-                        maDG = sc.nextLine();
-                        break;
+                        do {
+                            System.out.print("Nhap ma doc gia moi: ");
+                            maDG = sc.nextLine();
+                           } while (!KiemTra.KiemTraMaKH(maDG));
+                            break;
 
                     case 2:
-                        System.out.print("Nhap ma tai lieu moi: ");
-                        maTL = sc.nextLine();
-                        break;
+                        do {
+                            System.out.print("Nhap ma tai lieu moi: ");
+                            maTL = sc.nextLine();
+                        } while (!KiemTra.KiemTraMaSachTL(maTL));
+                         break;
 
                     case 3:
-                        System.out.print("Nhap ngay muon moi: ");
-                        ngayMuon = sdf.parse(sc.nextLine());
-                        break;
+                        boolean validNgayMuon = false;
+                        do {
+                        try {
+                           System.out.print("Nhap ngay muon moi: ");
+                           ngayMuon = sdf.parse(sc.nextLine());
+                           validNgayMuon = true;
+                    } catch (ParseException e) {
+                           System.out.println("Loi: Dinh dang ngay muon sai! Phai la dd/MM/yyyy.");
+                    }
+                        } while (!validNgayMuon);
+                         break;
 
                     case 4:
-                        System.out.print("Nhap ngay tra moi: ");
-                        ngayTra = sdf.parse(sc.nextLine());
+                        boolean validNgayTra = false;
+                        do {
+                        try {
+                          System.out.print("Nhap ngay tra moi: ");
+                          ngayTra = sdf.parse(sc.nextLine());
+                          if (KiemTra.KiemTraNgayMuonTra(sdf.format(ngayMuon), sdf.format(ngayTra))) {
+                         validNgayTra = true;
+                        }
+                    }  catch (ParseException e) {
+                        System.out.println("Loi: Dinh dang ngay tra sai! Phai la dd/MM/yyyy.");
+                    }
+                        } while (!validNgayTra);
                         break;
 
                     case 5:
-                        System.out.print("Nhap tinh trang moi: ");
-                        tinhTrang = sc.nextLine();
+                          do {
+                              System.out.print("Nhap tinh trang moi: ");
+                              tinhTrang = sc.nextLine();
+                              } while (!KiemTra.KiemTraTinhTrang(tinhTrang));
                         break;
-
                     case 0:
                         System.out.println("Thoat sua!");
                         break;
@@ -246,12 +339,14 @@ public class PhieuMuon extends PhanTu {
             while ((line = br.readLine()) != null) {
                 String[] p = line.split("#");
 
-                if (p.length == 6) {
-                    Date ngayMuon = sdf.parse(p[3]);
-                    Date ngayTra = sdf.parse(p[4]);
+               if (p.length == 7) {
+                   Date ngayMuon = sdf.parse(p[3]);
+                   Date ngayTra = sdf.parse(p[4]);
+                   int sl = Integer.parseInt(p[6]);
 
-                    ds[n++] = new PhieuMuon(p[0], p[1], p[2], ngayMuon, ngayTra, p[5]);
+                 ds[n++] = new PhieuMuon(p[0], p[1], p[2], ngayMuon, ngayTra, p[5], sl);
                 }
+
             }
 
         } catch (Exception e) {
@@ -269,9 +364,10 @@ public class PhieuMuon extends PhanTu {
                 if (pm == null) continue;
 
                 bw.write(pm.maPM + "#" + pm.maDG + "#" + pm.maTL + "#" +
-                        sdf.format(pm.ngayMuon) + "#" +
-                        sdf.format(pm.ngayTra) + "#" +
-                        pm.tinhTrang);
+                         sdf.format(pm.ngayMuon) + "#" +
+                         sdf.format(pm.ngayTra) + "#" +
+                         pm.tinhTrang + "#" +
+                         pm.soLuongMuon);
                 bw.newLine();
             }
 

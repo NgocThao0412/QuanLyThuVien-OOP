@@ -40,7 +40,7 @@ public class SachTrinhTham extends Sach {
 
     @Override
     public void nhap() {
-        super.nhap();
+        super.nhapSTT();
         setNhaXuatBan();
     }
 

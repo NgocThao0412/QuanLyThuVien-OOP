@@ -137,7 +137,7 @@ public class DanhSachNhaXuatBan implements DanhSachChung {
             return;
         }
         System.out.println("=== Danh sach Nha Xuat Ban ===");
-        System.out.printf("%-20s %-30s %-45s %-20s \n", "Ma nha xuat ban", "Ten nha xuat ban", "Dia chi", "Email");
+        System.out.printf("%-20s %-30s %-45s %-20s \n", "Ma nha xuat ban", "Ten nha xuat ban", "Dia chi", "Sdt");
         for (int i = 0; i < SoLuong; i++) {
             if (dsNXB[i] != null) dsNXB[i].xuat();
         }

@@ -143,269 +143,266 @@ public class DanhSachTheLoai implements DanhSachChung {
         return false;
     }
 
-    public void themVaoDanhSach(PhanTu pt) {
-        if (pt == null) return;
+    public void ThemSachvaoTheLoai(String masach) {
+        LoaiSach[] dstl = getDsTheLoai();
+        int vitri = -1;
+        for(int i = 0; i < dstl.length; i++) {
+            if(masach.contains(dstl[i].getmaLoaiSach())) {
+                vitri = i;
+                break;
+            }
+        }
+        dstl[vitri].themMaSachVaoDS(masach);
+        setDsTheLoai(dstl);
+    }
+    public String getTheloai(String maTheLoai) {
+        LoaiSach[] dstl = getDsTheLoai();
+        int vitri = -1;
+        for(int i = 0; i < dstl.length; i++) {
+            if(maTheLoai.contains(dstl[i].getmaLoaiSach())) {
+                vitri = i;
+                break;
+            }
+        }
+        return dstl[vitri].gettenLoaiSach();
+    }
+    public void resetDstl() {
+        LoaiSach[] dstl = getDsTheLoai();
+        for(int i = 0; i < dstl.length; i++) {
+            dstl[i].setSoLuong();
+            dstl[i].setDsMaSach();
+        }
+        setDsTheLoai(dstl);
+    }
+    public void nhapDanhSach() {
+        System.out.println("Nhap so luong The Loai: ");
+        soLuong = KiemTra.CheckNumber();
+        dsTheLoai = new LoaiSach[soLuong];
+        int stt, soLuongTemp=0, soLuongCurrent = soLuong;
+        for (int i = 0; i < soLuongCurrent; i++){
+            dsTheLoai[i] = new LoaiSach();
+            stt = i+1;
+            System.out.println("** Loai Sach thu "+stt+" **");
 
-        LoaiSach[] current = (dsTheLoai == null) ? new LoaiSach[0] : dsTheLoai;
-        LoaiSach[] newArr = new LoaiSach[current.length + 1];
-
-        System.arraycopy(current, 0, newArr, 0, current.length);
-        newArr[current.length] = (LoaiSach) pt;
-
-        soLuong = newArr.length;
-        setDsTheLoai(newArr);
+            dsTheLoai[i].nhap();
+            soLuong = ++soLuongTemp;
+            // mỗi lần đọc phần tử từ mảng sẽ ghi trực tiếp vào file kèm số lượng phần tử đã đọc
+            setDsTheLoai(dsTheLoai);
+        }
+    }
+    // Chỉ xuất thể loại
+    public void xuatDanhSachTheLoai() {
+        System.out.println("=== Danh sach Loai Sach ===");
+        for (int i = 0; i < soLuong; i++){
+            dsTheLoai[i].xuatLoaiSach();
+        }
+        System.out.println();
+    }
+    
+    public void xuatDanhSach() {
+        if(soLuong == 0) {
+            System.out.println("Chua co loai Sach nao!!");
+            return;
+        }
+        System.out.println("=== Danh sach Loai Sach ===");
+        for (int i = 0; i < soLuong; i++){
+            dsTheLoai[i].xuat();
+        }
+        System.out.println();
     }
 
-    // ==============================
-    // 4. THÊM K THỂ LOẠI
-    // ==============================
+    public void themVaoDanhSach(PhanTu pt) {
+        LoaiSach[] dsDm = new LoaiSach[soLuong+1];
+        for(int i=0;i<soLuong;i++)
+            dsDm[i] = getDsTheLoai()[i];
+        dsDm[soLuong] = (LoaiSach) pt;
+        soLuong++;
+        setDsTheLoai(dsDm);
+    }
+
     public void themKPhanTuVaoDanhSach() {
-        System.out.print("Nhap so luong the loai can them: ");
+        System.out.print("Nhap so luong dong Sach can them vao danh sach: \n");
         int sl;
+        boolean check = false;
         do {
             sl = KiemTra.CheckNumber();
-            if (sl <= 0) System.out.print("Nhap so lon hon 0!!! Moi nhap lai: ");
-        } while (sl <= 0);
-
+            check = sl > 0;
+            if(!check) System.out.print("Nhap so lon hon 0!!! Moi nhap lai: ");
+        } while(!check);
         PhanTu pt;
-        for (int i = 0; i < sl; i++) {
+        for(int i=0;i<sl;i++)
+        {
             pt = new LoaiSach();
             pt.nhap();
             themVaoDanhSach(pt);
         }
     }
 
-    // ==============================
-    // 5. CHỈNH SỬA
-    // ==============================
     public void chinhSuaThongTinPhanTu() {
+        System.out.println("Tim loai sach can chinh sua: ");
 
         int viTri = timViTriPhanTu();
 
         LoaiSach[] dsDmSp = getDsTheLoai();
 
-        if (viTri != -1 && viTri < dsDmSp.length) {
+        if (viTri != -1) {
             dsDmSp[viTri].suaThongTin();
             setDsTheLoai(dsDmSp);
         } else System.out.println("Khong tim thay!");
     }
-
-    // ==============================
-    // 6. XÓA THỂ LOẠI
-    // ==============================
+    public void xoaPhanTuMaSach(String ms, String loaisach) {
+        LoaiSach[] dstl = getDsTheLoai();
+        int viTri1 = -1, viTri2 = -1;
+        for (int i = 0; i < dstl.length; i++) if(dstl[i].gettenLoaiSach().equals(loaisach)) {
+            viTri1 = i;
+            break;
+        }
+        String[] dstlx = dstl[viTri1].getDsMaSach();
+        for (int i = 0; i < dstlx.length; i++) if(dstlx[i].equals(ms)) {
+            viTri2 = i;
+            break;
+        }
+        // Nếu tìm thấy
+        String[] dstlxtmp = new String[dstlx.length - 1];
+        for (int i = 0, k = 0; i < dstlx.length; i++) {
+            if (i == viTri2) continue; // bỏ phần tử
+            dstlxtmp[k++] = dstlx[i];
+        }
+        dstl[viTri1].setDsMaSach(dstlxtmp);
+        setDsTheLoai(dstl);
+    }
     public void xoaPhanTu() {
-        System.out.println("Tim dong the loai can xoa: ");
+        System.out.println("Tim Loai Sach can xoa: ");
 
         int viTri = timViTriPhanTu();
 
         // Nếu tìm thấy
-        if (viTri != -1 && dsTheLoai != null && viTri < dsTheLoai.length) {
-            LoaiSach[] dsDm = new LoaiSach[soLuong - 1];
+        if (viTri != -1) {
+            LoaiSach[] dsDm = new LoaiSach[soLuong-1];
 
-            for (int i = 0, k = 0; i < soLuong; i++) {
-                if (i == viTri) continue; // bỏ phần tử
-                dsDm[k++] = dsTheLoai[i];
+            for(int i=0, k=0;i<soLuong;i++) {
+                if (i==viTri) continue; // bỏ phần tử
+                dsDm[k++] = getDsTheLoai()[i];
             }
 
-            soLuong = dsDm.length;
+            soLuong--;
             setDsTheLoai(dsDm);
             System.out.println("Xoa thanh cong!!!");
-        } else System.out.println("Khong tim thay the loai!");
+        } else System.out.println("Khong tim thay loai Sach!");
     }
 
-    // ==============================
-    // 7. LẤY TÊN THỂ LOẠI TỪ MÃ SÁCH
-    // ==============================
-    public String getTheLoai(String maSach) {
-        if (maSach == null || dsTheLoai == null) return null;
+    public PhanTu timPhanTu() { // tìm danh mục sản phẩm dựa theo tên hoặc khoá (tương đối || tuyệt đối)
 
-        for (LoaiSach tl : dsTheLoai) {
-            String[] dsMa = tl.getDsMaSach();
-            if (dsMa == null) continue;
-            for (String ms : dsMa) {
-                if (ms != null && ms.equalsIgnoreCase(maSach))
-                    return tl.gettenLoaiSach();
-            }
-        }
-        return null; // Không tìm thấy
-    }
-
-    // ==============================
-    // 8. THÊM SÁCH VÀO THỂ LOẠI
-    // ==============================
-    public void themSachVaoTheLoai(String maSach, String tenTL) {
-        if (maSach == null || tenTL == null || dsTheLoai == null) return;
-
-        for (LoaiSach tl : dsTheLoai) {
-            if (tl.gettenLoaiSach() != null && tl.gettenLoaiSach().equalsIgnoreCase(tenTL)) {
-
-                String[] old = tl.getDsMaSach();
-                if (old == null) old = new String[0];
-
-                String[] newArr = new String[old.length + 1];
-                System.arraycopy(old, 0, newArr, 0, old.length);
-                newArr[old.length] = maSach;
-
-                tl.setDsMaSach(newArr);
-                tl.setSoLuong(newArr.length);
-                break;
-            }
-        }
-        setDsTheLoai(dsTheLoai);
-    }
-
-    // ==============================
-    // 9. XÓA SÁCH TỪ THỂ LOẠI
-    // ==============================
-    public void xoaPhanTuMaSach(String maSach, String tenTL) {
-        if (maSach == null || tenTL == null || dsTheLoai == null) return;
-
-        for (LoaiSach tl : dsTheLoai) {
-
-            if (tl.gettenLoaiSach() != null && tl.gettenLoaiSach().equalsIgnoreCase(tenTL)) {
-
-                String[] ds = tl.getDsMaSach();
-                if (ds == null || ds.length == 0) return;
-
-                int vt = -1;
-
-                for (int i = 0; i < ds.length; i++)
-                    if (ds[i] != null && ds[i].equalsIgnoreCase(maSach)) {
-                        vt = i;
-                        break;
-                    }
-
-                if (vt == -1) return;
-
-                String[] newArr = new String[ds.length - 1];
-
-                for (int i = 0, k = 0; i < ds.length; i++) {
-                    if (i == vt) continue;
-                    newArr[k++] = ds[i];
-                }
-
-                tl.setDsMaSach(newArr);
-                tl.setSoLuong(newArr.length);
-            }
-        }
-        setDsTheLoai(dsTheLoai);
-    }
-
-    // ==============================
-    // 10. TÌM VỊ TRÍ THỂ LOẠI
-    // ==============================
-    public int timViTriPhanTu() {
-
-        System.out.print("Tim theo ten (1) hay ma (2): ");
-        int loai = KiemTra.CheckNumber();
+        int loai;
+        System.out.print("Tim loai sach theo ten (1) hay theo ma (2), vui long chon: ");
+        loai = KiemTra.CheckNumber();
         loai = (loai != 2) ? 1 : 2;
 
-        // clear buffer nếu cần
-        try {
-            sc.nextLine();
-        } catch (Exception e) {
-            // nếu sc không tồn tại hoặc lỗi, bỏ qua (PhanTu của bạn nên có sc)
-        }
+        if (loai == 1)
+            System.out.print("Nhap ten loai sach can tim: ");
+        if (loai == 2)
+            System.out.print("Nhap ma loai sach can tim: ");
 
-        System.out.print("Nhap gia tri can tim: ");
-        String key = sc.nextLine();
+        String giaTriCanTim = sc.nextLine();
 
-        LoaiSach[] ds = (dsTheLoai == null) ? new LoaiSach[0] : dsTheLoai;
+        int chon;
+        System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
+        chon = KiemTra.CheckNumber();
+        chon = (chon != 2) ? 1 : 2;
+        LoaiSach[] dsDm = getDsTheLoai();
 
-        for (int i = 0; i < ds.length; i++) {
-            if (ds[i] == null) continue;
-            if (loai == 1 && ds[i].gettenLoaiSach() != null && ds[i].gettenLoaiSach().equalsIgnoreCase(key))
-                return i;
+        for(int i=0;i<soLuong;i++) {
+            if (chon == 1) { // tìm chính xác
 
-            if (loai == 2 && ds[i].getmaLoaiSach() != null && ds[i].getmaLoaiSach().equalsIgnoreCase(key))
-                return i;
-        }
-        return -1;
-    }
+                if (loai == 1)
+                    if (dsDm[i].gettenLoaiSach().equalsIgnoreCase(giaTriCanTim))
+                        return dsDm[i];
+                if (loai == 2)
+                    if (dsDm[i].getmaLoaiSach().equalsIgnoreCase(giaTriCanTim))
+                        return dsDm[i];
 
-    // ==============================
-    // 11. TÌM PHẦN TỬ GIỐNG
-    // ==============================
-    public PhanTu layPhanTuVoi(String ma) {
-        if (ma == null || dsTheLoai == null) return null;
-        for (LoaiSach tl : dsTheLoai) {
-            if (tl.getmaLoaiSach() != null && tl.getmaLoaiSach().equalsIgnoreCase(ma))
-                return tl;
+            } else {
+
+                if (loai == 1)
+                    if (dsDm[i].gettenLoaiSach().contains(giaTriCanTim))
+                        return dsDm[i];
+                if (loai == 2)
+                    if (dsDm[i].getmaLoaiSach().contains(giaTriCanTim))
+                        return dsDm[i];
+
+            }
         }
         return null;
     }
 
-    // ==============================
-    // 12. XUẤT
-    // ==============================
-    public void xuatDanhSach() {
-        if (soLuong == 0 || dsTheLoai == null || dsTheLoai.length == 0) {
-            System.out.println("Chua co the loai nao!");
-            return;
-        }
-        System.out.println("=== Danh sach the loai ===");
-        for (LoaiSach tl : dsTheLoai) {
-            if (tl != null) tl.xuat();
-        }
-    }
-
-    // ==============================
-    // 13. RESET
-    // ==============================
-    public void resetDsTheLoai() {
-        if (dsTheLoai == null) dsTheLoai = new LoaiSach[0];
-
-        for (LoaiSach tl : dsTheLoai) {
-            if (tl == null) continue;
-            tl.setSoLuong(0);
-            tl.setDsMaSach(new String[0]);
-        }
-        setDsTheLoai(dsTheLoai);
-    }
-
-    // ==============================
-    // 14. THỐNG KÊ
-    // ==============================
-    public void thongKe() {
+    public int timViTriPhanTu() { // trả về vị trí phần tử trong mảng
+        int loai;
+        System.out.print("Tim loai sach theo ten (1) hay theo ma (2), vui long chon: ");
+        loai = KiemTra.CheckNumber();
+        loai = (loai != 2) ? 1 : 2;
+        if (loai == 1)
+            System.out.print("Nhap ten loai sach can tim: ");
+        if (loai == 2)
+            System.out.print("Nhap ma loai sach can tim: ");
+        String giaTriCanTim = sc.nextLine();
         int chon;
+        System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
+        chon = KiemTra.CheckNumber();
+        chon = (chon != 2) ? 1 : 2;
+        LoaiSach[] dsDm = getDsTheLoai();
+        for(int i=0;i<soLuong;i++) {
+            if (chon == 1) {
+                if (loai == 1)
+                    if (dsDm[i].gettenLoaiSach().equalsIgnoreCase(giaTriCanTim))
+                        return i;
+                if (loai == 2)
+                    if (dsDm[i].getmaLoaiSach().equalsIgnoreCase(giaTriCanTim))
+                        return i;
+            } else {
+                if (loai == 1)
+                    if (dsDm[i].gettenLoaiSach().contains(giaTriCanTim))
+                        return i;
+                if (loai == 2)
+                    if (dsDm[i].getmaLoaiSach().contains(giaTriCanTim))
+                        return i;
+            }
+        }
+        return -1;
+    }
 
+    public PhanTu layPhanTuVoi(String thamSo) {
+        LoaiSach[] dsDm = getDsTheLoai();
+        for(int i=0;i<soLuong;i++) {
+            if (dsDm[i].getmaLoaiSach().equalsIgnoreCase(thamSo))
+                return dsDm[i];
+        }
+        return null;
+    }
+
+    public void thongKe() {
+        int chon, n;
+        dsTheLoai = getDsTheLoai();
         do {
             System.out.println("=== Thong ke ===");
-            System.out.println("1. Loc the loai co so luong >= n");
-            System.out.println("0. Thoat");
+            System.out.println("1. Loc loai sach co so luong >= n");
+            System.out.println("0. Quay lai menu truoc");
             System.out.print("Moi chon: ");
 
             chon = KiemTra.CheckNumber();
 
-            if (chon == 1) {
-                System.out.print("Nhap n: ");
-                int n = KiemTra.CheckNumber();
-
-                if (dsTheLoai == null) break;
-                for (LoaiSach tl : dsTheLoai) {
-                    if (tl != null && tl.getSoLuong() >= n)
-                        tl.xuat();
-                }
+            switch (chon) {
+                case 1:
+                    System.out.print("Nhap so luong can tim: ");
+                    n = KiemTra.CheckNumber();
+                    for (LoaiSach dmSP: dsTheLoai) {
+                        if (dmSP.getSoLuong() >= n) dmSP.xuat();
+                    }
+                    break;
+                default:
+                    chon = 0;
+                    break;
             }
-
         } while (chon != 0);
     }
-
-    @Override
-    public void nhapDanhSach() {
-        themKPhanTuVaoDanhSach();
-    }
-
-    @Override
-    public PhanTu timPhanTu() {
-        String ma = "";
-        System.out.print("Nhap ma the loai: ");
-        try {
-            // reuse existing scanner 'sc' to avoid creating an unclosed Scanner on System.in
-            ma = sc.nextLine();
-        } catch (Exception e) {
-            // handle exception
-        }
-        return layPhanTuVoi(ma);
-    }
 }
+

@@ -1,18 +1,27 @@
 package DanhSach;
 
 import Phieu.PhieuMuon;
-import Phieu.PhanTu;
+import SanPham.PhanTu;
 
 public class DanhSachPhieuMuon {
 
     private PhieuMuon[] ds = new PhieuMuon[200]; 
     private int size = 0; 
+    private int soLuong;
 
     // ===== Đọc file khi khởi tạo =====
     public DanhSachPhieuMuon() {
-        ds = PhieuMuon.docFile();
-        size = ds.length;
+    ds = new PhieuMuon[200];
+
+    PhieuMuon[] dsFile = PhieuMuon.docFile();
+    size = 0;
+
+    for (PhieuMuon pm : dsFile) {
+        if (pm != null)
+            ds[size++] = pm;
     }
+}
+
 
     // ===== Nhập mới danh sách =====
     public void nhapDanhSach() {
@@ -76,7 +85,7 @@ public class DanhSachPhieuMuon {
             return;
         }
 
-        ds[index].sua();
+        ds[index].suaThongTin();
         PhieuMuon.ghiFile(ds);
         System.out.println("Da cap nhat file!");
     }
@@ -115,12 +124,22 @@ public class DanhSachPhieuMuon {
             return;
         }
 
-        System.out.printf("%-10s %-10s %-10s %-15s %-15s %-15s\n",
-                "MaPM", "MaDG", "MaTL", "Ngay muon", "Ngay tra", "Tinh trang");
-        System.out.println("-----------------------------------------------------------");
-
         ds[index].xuat();
     }
+    
+
+    public void inPhieuMuon() {
+    System.out.print("Nhap ma phieu muon can in: ");
+    String ma = PhanTu.sc.nextLine();
+
+    int index = timTheoMaIndex(ma);
+    if (index == -1) {
+        System.out.println("Khong tim thay phieu muon co ma: " + ma);
+        return;
+    }
+    System.out.println("In phieu muon thanh cong!!!");
+}
+
 
     // ===== Thống kê =====
     public void thongKe() {
@@ -185,4 +204,5 @@ public class DanhSachPhieuMuon {
 
         } while (chon != 0);
     }
+
 }

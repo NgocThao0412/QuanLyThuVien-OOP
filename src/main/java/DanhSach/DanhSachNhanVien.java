@@ -106,7 +106,7 @@ public class DanhSachNhanVien implements DanhSachChung {
         FileHandler.resetFile("dsnv.txt");
         System.out.println("Nhap so luong nhan vien: ");
 
-        soLuong = KiemTra.checkNumber();
+        soLuong = KiemTra.CheckNumber();
         dsNhanVien = new NhanVien[soLuong];
 
         int stt, soLuongTemp = 0, soLuongCurrent = soLuong;
@@ -146,7 +146,7 @@ public class DanhSachNhanVien implements DanhSachChung {
         int sl;
         boolean check = false;
         do {
-            sl = KiemTra.checkNumber();
+            sl = KiemTra.CheckNumber();
             check = sl > 0;
             if(!check) System.out.print("Nhap so lon hon 0!!! Moi nhap lai: ");
         } while(!check);
@@ -193,7 +193,7 @@ public class DanhSachNhanVien implements DanhSachChung {
         int loai;
         System.out.print("Tim nhan vien theo ten (1) hay theo ma (2), vui long chon: ");
 
-        loai = KiemTra.checkNumber();
+        loai = KiemTra.CheckNumber();
         loai = (loai != 2) ? 1 : 2;
 
         if (loai == 1)
@@ -206,7 +206,7 @@ public class DanhSachNhanVien implements DanhSachChung {
         int chon;
         System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
 
-        chon = KiemTra.checkNumber();
+        chon = KiemTra.CheckNumber();
         chon = (chon != 2) ? 1 : 2;
 
         NhanVien[] dsNhanVienTmp = getDsNhanVien();
@@ -234,7 +234,7 @@ public class DanhSachNhanVien implements DanhSachChung {
         int loai;
         System.out.print("Tim nhan vien theo ten (1) hay theo ma (2), vui long chon: ");
 
-        loai = KiemTra.checkNumber();
+        loai = KiemTra.CheckNumber();
         loai = (loai != 2) ? 1 : 2;
 
         if (loai == 1)
@@ -247,7 +247,7 @@ public class DanhSachNhanVien implements DanhSachChung {
         int chon;
         System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
 
-        chon = KiemTra.checkNumber();
+        chon = KiemTra.CheckNumber();
         chon = (chon != 2) ? 1 : 2;
 
         NhanVien[] dsNhanVienTmp = getDsNhanVien();
@@ -289,7 +289,7 @@ public class DanhSachNhanVien implements DanhSachChung {
             System.out.println("2. Loc nhan vien theo hang");
             System.out.println("0. Quay lai menu truoc");
             System.out.print("Moi chon: ");
-            chon = KiemTra.checkNumber();
+            chon = KiemTra.CheckNumber();
             switch (chon) {
                 case 1:
                     String[] year;

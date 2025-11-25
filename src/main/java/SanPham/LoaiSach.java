@@ -135,7 +135,7 @@ public class LoaiSach extends PhanTu {
         setDsMaSach(dsmaSp);
     }
 
-    public void themMaSachVaoDS() {
+    public void themMaSachVaoDS(String masach) {
         String[] dsmaSp = new String[soLuong + 1];
         for (int i = 0; i < soLuong; i++)
             dsmaSp[i] = dsmaSach[i];
@@ -151,7 +151,7 @@ public class LoaiSach extends PhanTu {
         System.out.print("Nhap so sach can them vao danh sach: ");
         int k = KiemTra.CheckNumber();
         for (int i = 0; i < k; i++)
-            themMaSachVaoDS();
+            themMaSachVaoDS(maLoaiSach);
     }
 
     public void xoaMaSachKhoiDS() {
@@ -162,8 +162,8 @@ public class LoaiSach extends PhanTu {
     }
 
     public void xuatLoaiSach() {
-        System.out.printf("%-20s %-25s %-20s %-15s %-10s \n", "Ma Loai Sach", "Ten Loai Sach", "Nha Xuat Ban", "So Luong");
-        System.out.printf("%-20s %-25s %-20s %-15d %-10d \n", maLoaiSach, tenLoaiSach, nhaXuatBan, soLuong);
+        System.out.printf("%-20s %-25s %-20s %-15s \n", "Ma Loai Sach", "Ten Loai Sach", "Nha Xuat Ban", "So Luong");
+        System.out.printf("%-20s %-25s %-20s %-15d \n", maLoaiSach, tenLoaiSach, nhaXuatBan, soLuong);
         System.out.println("***************************************************");
     }
 
@@ -180,14 +180,17 @@ public class LoaiSach extends PhanTu {
     public void xuat() {
         xuatLoaiSach();
         System.out.println("Danh sach sach cung loai:");
-        System.out.printf("%-20s %-25s %-20s %-20s %-15s %-20s \n",
-                "Ma Sach", "Ten Sach", "Tac Gia", "Nha Xuat Ban", "So Luong", "Gia");
+        System.out.printf("%-15s %-35s %-30s %-20s %-10s %-10s \n",
+                "Ma Sach", "Ten Sach", "Tac Gia","The Loai", "So Luong", "Gia");
 
         PhanTu pt;
         DanhSachSach ttds = new DanhSachSach();
         for (int i = 0; i < dsmaSach.length; i++) {
             pt = ttds.layPhanTuVoi(dsmaSach[i]);
-            if (pt != null) pt.xuat();
+            if (pt != null){
+            System.out.println("-----------------------------------------------------------");
+                 pt.xuat();
+            }
         }
         System.out.println("***************************************************");
     }

@@ -8,6 +8,7 @@ import SanPham.PhanTu;
 public class DanhSachTaiKhoan implements DanhSachChung {
     private int soLuong;
     private TaiKhoan[] dsTaiKhoan;
+    
     public DanhSachTaiKhoan() {
         dsTaiKhoan = getDsTaiKhoan();
     }
@@ -25,7 +26,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         this.soLuong = soLuong;
     }
 
-    public TaiKhoan[] getDsTaikhoan() { //đọc từ file
+    public TaiKhoan[] getDsTaiKhoan() { //đọc từ file
         String data = FileHandler.docFile("dstk.txt");
         String[] dArr = data.split("\n"); //Tạo mảng từ file
 
@@ -76,8 +77,16 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         return null;
     }
 
+    public PhanTu layPhanTuVoi(String thamSo) {
+        TaiKhoan[] dsnv = getDsTaiKhoan();
+        for (int i = 0; i < soLuong; i++) {
+            if (dsnv[i].getUsername().equals(thamSo)) return dsnv[i];
+        }
+        return null;
+    }
+
     public TaiKhoan checkLogin(String username, String password) {
-        Taikhoan check;
+        TaiKhoan check;
         check = (TaiKhoan) layPhanTuVoi(username);
         if (check == null) {
             System.out.println("Khong ton tai tai khoan");
@@ -102,6 +111,18 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         themVaoDanhSach(pt);
     }
 
+    public void themPhanTuVaoDanhSach(String username, String type) {  
+        DanhSachNhanVien dsnv = new DanhSachNhanVien();
+        if(dsnv.getSoLuong() == soLuong) {
+            System.out.print("Tat ca nhan vien da co tai khoan");
+            return;
+        }
+        TaiKhoan pt;
+        pt = new TaiKhoan();
+        pt.nhap(username, type);
+        themVaoDanhSach((PhanTu) pt);
+    }
+
     public void changePassword(String username) {
         TaiKhoan[] dsnv = getDsTaiKhoan();
         int vitri = -1;
@@ -119,7 +140,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         FileHandler.resetFile("dstk.txt");
         System.out.println("Nhap so luong tai khoan: ");
 
-        soLuong = KiemTra.checkNumber();
+        soLuong = KiemTra.CheckNumber();
         dsTaiKhoan = new TaiKhoan[soLuong];
 
         int stt, soLuongTemp = 0, soLuongCurrent = soLuong;
@@ -150,7 +171,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
     public void themVaoDanhSach(PhanTu pt) {
         TaiKhoan[] dsTaiKhoanTmp = new TaiKhoan[soLuong + 1];
         for (int i = 0; i < soLuong; i++) {
-            dsTaiKhoanTMp[i] = getDsTaiKhoan()[i];
+            dsTaiKhoanTmp[i] = getDsTaiKhoan()[i];
             dsTaiKhoanTmp[soLuong] = (TaiKhoan) pt;
             soLuong++;
             setDsTaiKhoan(dsTaiKhoanTmp);
@@ -166,7 +187,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         int sl;
         boolean check = false;
         do {
-            sl = KiemTra.checkNumber();
+            sl = KiemTra.CheckNumber();
             check = sl > 0;
             if (!check) System.out.print("Nhap so lon hon 0!!! Moi nhap lai: ");
         } while (!check);
@@ -206,14 +227,13 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         }
     }
     public void xoaPhanTu(String mnv) {
-        TaiKhoan[] dsnv = getDsTaiKhoan();
+        TaiKhoan[] dstktmp = getDsTaiKhoan();
         int viTri = -1;
         for (int i = 0; i < dstktmp.length; i++)
         if (dstktmp[i].getUsername().equals(mnv)) {
             viTri = i;
             break;
         }
-    }
     // Neu tim thay
     if (viTri != -1) {
         TaiKhoan[] dsTaiKhoanTmp = new TaiKhoan[soLuong -1];
@@ -226,6 +246,8 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         soLuong--;
         setDsTaiKhoan(dsTaiKhoanTmp);
     }
+    }
+
     public void xoaPhanTu() {
         // Tim tai khoan truoc
         System.out.println("Tim tai khoan can xoa: ");
@@ -249,7 +271,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         int loai;
         System.out.print("Tim tai khoan theo tai khoan (1) hay theo mat khau (2), vui long chon: ");
 
-        loai = KiemTra.checkNumber();
+        loai = KiemTra.CheckNumber();
         loai = (loai !=2) ? 1 : 2;
 
         if (loai == 1) {
@@ -263,7 +285,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         int chon;
         System.out.print("Ban can timm chinh xac (1) hay tim tuong doi (2), vui long chon: ");
 
-        chon = KiemTra.checkNumber();
+        chon = KiemTra.CheckNumber();
         chon = (chon != 2) ? 1 : 2;
 
         TaiKhoan[] dsTaiKhoanTmp = getDsTaiKhoan();
@@ -291,7 +313,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         int loai;
         System.out.print("Tim tai khoan theo tai khoan (1) hay theo mat khau (2), vui long chon: ");
 
-        loai = KiemTra.checkNumber();
+        loai = KiemTra.CheckNumber();
         loai = (loai !=2) ? 1 : 2;
 
         if (loai == 1) {
@@ -306,7 +328,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
         int chon;
         System.out.print("Ban can tim chinh xac (1) hay tim tuong doi (2), vui long chon: ");
 
-        chon = KiemTra.checkNumber();
+        chon = KiemTra.CheckNumber();
         chon = (chon != 2) ? 1 : 2;
 
         TaiKhoan[] dsTaiKhoanTmp = getDsTaiKhoan();
@@ -338,7 +360,7 @@ public class DanhSachTaiKhoan implements DanhSachChung {
             System.out.println("1. Loc tai khoan theo loai tai khoan");
             System.out.println("0. Quay lai menu truoc");
             System.out.println("Moi chon: ");
-            chon = KiemTra.checkNumber();
+            chon = KiemTra.CheckNumber();
             switch (chon) {
                 case 1:
                     String type;

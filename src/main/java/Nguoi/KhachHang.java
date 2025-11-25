@@ -1,12 +1,11 @@
 package Nguoi;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import DanhSach.DanhSachKhachHang;
 import DanhSach.DanhSachSach;
 import KiemTra.KiemTra;
 import SanPham.Sach;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class KhachHang extends Nguoi {
     private int SoSachDangMuon;

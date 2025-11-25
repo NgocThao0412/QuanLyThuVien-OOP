@@ -13,20 +13,20 @@
 
 -   Menu Chính:
 
-    ![alt text](./images/Menu-Đăng-nhập.png)
+    ![alt text](./images/Menu_dang_nhap.png)
 
 -   Menu Quản Lý:
 
-    ![alt text](./images/Menu-Quản-lý.png)
+    ![alt text](./images/Menu_quan_ly.png)
 
 -   Menu Nhân viên:
 
-    ![alt text](./images/Menu-Nhân-viên.png)
+    ![alt text](./images/Menu_nhan_vien.png)
 
--   Hóa đơn:
+-   Phiếu mượn:
 
-    ![alt text](./images/Phiếu-mượn.png)
+    ![alt text](./images/Phieu_muon.jpg)
 
 -   Mô hình:
 
-    ![alt text](./images/Mô-hình.png)
+    ![alt text](./images/Mo_hinh.png)

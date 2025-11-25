@@ -22,17 +22,24 @@ public class NhaXuatBan extends PhanTu {
         maNXB = a;
     }
 
-    public void setmaNXB(){
-        System.out.print("nhap ma nha xuat ban: ");
-        DanhSachNhaXuatBan ttds = new DanhSachNhaXuatBan();
-        boolean check = false;
-        do
-        {
-            maNXB = sc.nextLine();
-            check = ttds.layPhanTuVoi(maNXB) == null;
-            if(!check) System.out.print("Ma nha xuat ban da ton tai, moi nhap lai: ");
-        } while(!check);
+    public void setmaNXB() {
+    DanhSachNhaXuatBan ttds = new DanhSachNhaXuatBan();
+    NhaXuatBan[] ds = ttds.getdsNXB();
+    int stt = 1;
+
+    for (int i = 0; i < ds.length; i++) {
+        String ma = ds[i].getmaNXB();     // ví dụ: NXB05
+        int so = Integer.parseInt(ma.substring(3));  // tách số 05 → 5
+        if (so >= stt) stt = so + 1;
     }
+
+    // tạo mã
+    if (stt > 9) maNXB = "NXB" + stt;
+    else maNXB = "NXB0" + stt;
+
+    System.out.println("Ma Nha Xuat Ban: " + maNXB);
+}
+
     public void settenNXB(){
         System.out.print("Nhap ten nha xuat ban: ");
         tenNXB = sc.nextLine();
@@ -86,7 +93,7 @@ public class NhaXuatBan extends PhanTu {
     }
     @Override
     public void xuat() {
-        System.out.printf("%-20s %-20s %-45s %-20s  \n",getmaNXB(),gettenNXB(),getDiaChi(),getsdt());
+        System.out.printf("%-20s %-30s %-45s %-20s   \n",getmaNXB(),gettenNXB(),getDiaChi(),getsdt());
 
     }
     @Override

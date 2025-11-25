@@ -1,7 +1,7 @@
 package Nguoi;
 
-improt Danhsach.DanhsachNhanVien;
-import Danhsach.DanhSachTaiKhoan;
+import DanhSach.DanhSachNhanVien;
+import DanhSach.DanhSachTaiKhoan;
 import KiemTra.KiemTra;
 import SanPham.PhanTu;
 public class TaiKhoan extends PhanTu {
@@ -62,21 +62,22 @@ public class TaiKhoan extends PhanTu {
 
     public void changePassword(String username) {
         System.out.print("Nhap mat khau cu: ");
-        var password_old = sc.nextLine();
+        var password_old = sc.nextLine().trim();
         if(!password_old.equals(password)) {
             System.out.print("Nhap sai mat khau cu!!!");
             return;
         }
         System.out.print("Nhap mat khau moi: ");
-        var password_new = sc.nextLine();
+        var password_new = sc.nextLine().trim();
         if(password_new.equals(password)) {
             System.out.print("Ban dang nhap mat khau cu!!!");
             return;
         }
         System.out.print("Nhap lai mat khau: ");
-        var password_new_again = sc.nextLine();
+        var password_new_again = sc.nextLine().trim();
         if(!password_new.equals(password_new_again)) {
             System.out.print("Nhap khong trung nhau!!!");
+            return;
         }
         System.out.println("Thay doi mat khau thanh cong!!!");
         password = password_new;
@@ -135,7 +136,7 @@ public class TaiKhoan extends PhanTu {
             System.out.println("0. Thoat");
             System.out.println("===============================");
             System.out.print("Nhap lua chon: ");
-            chon = KiemTra.checkNumber();;
+            chon = KiemTra.CheckNumber();;
             switch (chon) {
                 case 0:
                     System.out.println("Thoat sua thong tin!!!");

@@ -56,7 +56,7 @@ public class Sach extends PhanTu {
         int stt = 1;
         for( int i = 0; i < dss.length; i++){
             if(dss[i].getLoaiSach().equals("Sach Trinh Tham")){
-                stt = Integer.parseInt(dss[i].getmaSach().substring(5))+1;
+                stt = Integer.parseInt(dss[i].getmaSach().substring(2))+1;
             }
         }
         if(stt>9) maSach = "TT"+ stt;
@@ -70,7 +70,7 @@ public class Sach extends PhanTu {
         int stt = 1;
         for( int i = 0; i < dss.length; i++){
             if(dss[i].getLoaiSach().equals("Sach Thieu Nhi")){
-                stt = Integer.parseInt(dss[i].getmaSach().substring(8))+1;
+                stt = Integer.parseInt(dss[i].getmaSach().substring(2))+1;
             }
         }
         if(stt>9) maSach = "TN"+ stt;
@@ -84,7 +84,7 @@ public class Sach extends PhanTu {
         int stt = 1;
         for( int i = 0; i < dss.length; i++){
             if(dss[i].getLoaiSach().equals("Sach Tam Ly")){
-                stt = Integer.parseInt(dss[i].getmaSach().substring(7))+1;
+                stt = Integer.parseInt(dss[i].getmaSach().substring(2))+1;
             }
         }
         if(stt>9) maSach = "TL"+ stt;
@@ -160,7 +160,7 @@ public class Sach extends PhanTu {
 
     public void setLoaiSach(){
         DanhSachTheLoai dstl = new DanhSachTheLoai();
-        TheLoai = dstl.getTheLoai(maSach);
+        TheLoai = dstl.getTheloai(maSach);
     }
      @Override
      public void nhap(){
@@ -207,7 +207,7 @@ public class Sach extends PhanTu {
      }
      @Override
      public void xuat() {
-        System.out.printf("%-20s %-25s %-20s %-20s %-15s %-20s \n",maSach,tenSach,TacGia,TheLoai,SoLuong,price);
+        System.out.printf("%-15s %-35s %-30s %-20s %-10s %-10s \n",maSach,tenSach,TacGia,TheLoai,SoLuong,price);
      }
      @Override
      public void suaThongTin() {

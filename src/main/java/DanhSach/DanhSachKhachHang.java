@@ -28,109 +28,126 @@ public class DanhSachKhachHang implements DanhSachChung {
         this.soLuong = soLuong;
     }
 
-    public KhachHang[] getDsKhachHang(){
-        String data = FileHandler.docFile("dskh.txt");
-        String[] dArr = data.split("\n");
-
-        if (dArr.length == 0 || dArr[0].length() == 0) setSoLuong(0);
-        else {
-            try {
-                setSoLuong(Integer.parseInt(dArr[0]));
-            } catch (NumberFormatException e) {
-                setSoLuong(0);
-            }
-        }
-
-        dsKhachHang = new KhachHang[soLuong];
-        KhachHang kh;
-
-        String[] lArr;
-        int k = 0, m;
-
-        for (int i = 1; i < dArr.length; i++) {
-            lArr = dArr[i].split("#");
-            m = 0;
-
-            if (lArr.length < 11) continue;
-
-            kh = new KhachHang();
-            kh.setMaKhachHang(lArr[m++]);
-            kh.setHoten(lArr[m++]);
-            kh.setNgaythangnamsinh(lArr[m++]);
-            kh.setGioitinh(lArr[m++]);
-            kh.setCCCD(lArr[m++]);
-            kh.setDiachi(lArr[m++]);
-            kh.setSdt(lArr[m++]);
-            kh.setEmail(lArr[m++]);
-
-            try {
-                kh.setNgayLapThe(LocalDate.parse(lArr[m++], KhachHang.DATE_FORMATTER));
-            } catch (DateTimeParseException e) {
-                kh.setNgayLapThe(null);
-            }
-
-            try {
-                kh.setTongTienPhat(Integer.parseInt(lArr[m++]));
-            } catch (NumberFormatException e) {
-                kh.setTongTienPhat(0);
-            }
-
-            int soLuongSachMuon = 0;
-            try {
-                soLuongSachMuon = Integer.parseInt(lArr[m++]);
-            } catch (NumberFormatException e) {
-                soLuongSachMuon = 0;
-            }
-
-            String[] dsMaSach = new String[soLuongSachMuon];
-            for(int j = 0; j < soLuongSachMuon; j++) {
-                if (m < lArr.length) dsMaSach[j] = lArr[m++];
-                else dsMaSach[j] = "";
-            }
-            kh.setDsMaSachDangMuon(dsMaSach);
-
-            dsKhachHang[k++] = kh;
-        }
+   public KhachHang[] getDsKhachHang(){
+    String data = FileHandler.docFile("dskh.txt");
+    if (data == null || data.trim().length() == 0) {
+        setSoLuong(0);
+        dsKhachHang = new KhachHang[0];
         return dsKhachHang;
     }
 
-    public void setDsKhachHang(PhanTu[] dsKhachhang){
-        KhachHang kh;
-        String tenFile = "dskh.txt";
+    String[] dArr = data.split("\\r?\\n");
 
-        FileHandler.resetFile(tenFile);
-        FileHandler.ghiFile(soLuong+"", tenFile);
-
-        for(int i = 0; i < soLuong; i++) {
-            kh = (KhachHang) dsKhachhang[i];
-
-            String ngayLapTheStr = (kh.getNgayLapThe() != null) ? kh.getNgayLapThe().format(KhachHang.DATE_FORMATTER) : "null";
-
-            FileHandler.ghiFile(
-                kh.getMaKhachHang() + "#" +
-                kh.getHoten() + "#" +
-                kh.getNgaythangnamsinh() + "#" +
-                kh.getGioitinh() + "#" +
-                kh.getCCCD() + "#" +
-                kh.getDiachi() + "#" +
-                kh.getSdt() + "#" +
-                kh.getEmail() + "#" +
-                ngayLapTheStr + "#" + 
-                kh.getTongTienPhat() + "#" +
-                kh.getSoSachDangMuon(),
-                tenFile
-            );
-
-            String[] dsMaSach = kh.getDsMaSachDangMuon();
-            if (dsMaSach != null && dsMaSach.length > 0) {
-                for (String maSach : dsMaSach) {
-                    FileHandler.ghiFile("#" + maSach, tenFile);
-                }
-            }
-            FileHandler.ghiFile("\n", tenFile);
-        }
-        this.dsKhachHang = (KhachHang[]) dsKhachhang;
+    // Đếm số dòng hợp lệ (>= 11 trường) bắt đầu từ dòng 1 (bỏ dòng ghi số lượng ở đầu)
+    int validCount = 0;
+    for (int i = 1; i < dArr.length; i++) {
+        if (dArr[i].trim().isEmpty()) continue;
+        String[] tmp = dArr[i].split("#");
+        if (tmp.length >= 11) validCount++;
     }
+
+    setSoLuong(validCount);
+    dsKhachHang = new KhachHang[soLuong];
+
+    if (soLuong == 0) return dsKhachHang;
+
+    KhachHang kh;
+    String[] lArr;
+    int k = 0, m;
+
+    for (int i = 1; i < dArr.length && k < soLuong; i++) {
+        if (dArr[i].trim().isEmpty()) continue;
+        lArr = dArr[i].split("#");
+        m = 0;
+
+        // Nếu dòng không đủ trường thì bỏ qua
+        if (lArr.length < 11) continue;
+
+        kh = new KhachHang();
+        kh.setMaKhachHang(lArr[m++]);
+        kh.setHoten(lArr[m++]);
+        kh.setNgaythangnamsinh(lArr[m++]);
+        kh.setGioitinh(lArr[m++]);
+        kh.setCCCD(lArr[m++]);
+        kh.setDiachi(lArr[m++]);
+        kh.setSdt(lArr[m++]);
+        kh.setEmail(lArr[m++]);
+
+        try {
+            kh.setNgayLapThe(LocalDate.parse(lArr[m++], KhachHang.DATE_FORMATTER));
+        } catch (DateTimeParseException e) {
+            kh.setNgayLapThe(null);
+        }
+
+        try {
+            kh.setTongTienPhat(Integer.parseInt(lArr[m++]));
+        } catch (NumberFormatException e) {
+            kh.setTongTienPhat(0);
+        }
+
+        int soLuongSachMuon = 0;
+        try {
+            soLuongSachMuon = Integer.parseInt(lArr[m++]);
+        } catch (NumberFormatException e) {
+            soLuongSachMuon = 0;
+        }
+
+        String[] dsMaSach = new String[soLuongSachMuon];
+        for (int j = 0; j < soLuongSachMuon; j++) {
+            if (m < lArr.length) dsMaSach[j] = lArr[m++];
+            else dsMaSach[j] = "";
+        }
+        kh.setDsMaSachDangMuon(dsMaSach);
+
+        dsKhachHang[k++] = kh;
+    }
+
+    return dsKhachHang;
+}
+
+
+    public void setDsKhachHang(PhanTu[] dsKhachhang){
+    KhachHang kh;
+    String tenFile = "dskh.txt";
+
+    FileHandler.resetFile(tenFile);
+    // Vẫn ghi số lượng
+    FileHandler.ghiFile(soLuong + "", tenFile); 
+
+    for(int i = 0; i < soLuong; i++) {
+        kh = (KhachHang) dsKhachhang[i];
+
+        String ngayLapTheStr = (kh.getNgayLapThe() != null) 
+                                ? kh.getNgayLapThe().format(KhachHang.DATE_FORMATTER) 
+                                : "null";
+
+        // BƯỚC 1: Xây dựng chuỗi thông tin cơ bản
+        String line = kh.getMaKhachHang() + "#" +
+            kh.getHoten() + "#" +
+            kh.getNgaythangnamsinh() + "#" +
+            kh.getGioitinh() + "#" +
+            kh.getCCCD() + "#" +
+            kh.getDiachi() + "#" +
+            kh.getSdt() + "#" +
+            kh.getEmail() + "#" +
+            ngayLapTheStr + "#" + 
+            kh.getTongTienPhat() + "#" +
+            kh.getSoSachDangMuon(); // <-- Kết thúc bằng số lượng sách đang mượn
+
+        // BƯỚC 2: Nối danh sách mã sách (Không gọi ghiFile ở đây)
+        String[] dsMaSach = kh.getDsMaSachDangMuon();
+        if (dsMaSach != null && dsMaSach.length > 0) {
+            for (String maSach : dsMaSach) {
+                line += "#" + maSach; // Nối tiếp vào chuỗi 'line'
+            }
+        }
+        
+        // BƯỚC 3: Ghi toàn bộ chuỗi + ký tự xuống dòng MỘT LẦN DUY NHẤT
+        FileHandler.ghiFile(line + "\n", tenFile); 
+    }
+    
+    this.dsKhachHang = (KhachHang[]) dsKhachhang;
+}
 
     public void nhapDanhSach(){
         System.out.print("Nhap so luong doc gia: ");

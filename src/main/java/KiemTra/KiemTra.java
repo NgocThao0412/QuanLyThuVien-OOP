@@ -1,55 +1,94 @@
 package KiemTra;
 
+import Phieu.PhieuMuon;
+import static SanPham.PhanTu.sc;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class KiemTra {
 
     // KIEM TRA MA
     public static boolean KiemTraMaNV(String ma) {
-        if (ma == null || !ma.matches("^NV\\d{3,}$")) {
-            System.out.println("Loi: Ma nhan vien phai co dang NV + it nhat 3 chu so. VD: NV001");
+        if (ma == null || !ma.matches("^NV\\d{2,}$")) {
+            System.out.println("Loi: Ma nhan vien phai co dang NV + it nhat 2 chu so. VD: NV01");
             return false;
         }
         return true;
     }
 
     public static boolean KiemTraMaKH(String ma) {
-        if (ma == null || !ma.matches("^KH\\d{3,}$")) {
-            System.out.println("Loi: Ma khach hang phai co dang KH + it nhat 3 chu so. VD: KH005");
+        if (ma == null || !ma.matches("^KH\\d{2,}$")) {
+            System.out.println("Loi: Ma khach hang phai co dang KH + it nhat 2 chu so. VD: KH05");
             return false;
         }
         return true;
     }
 
-    public static boolean KiemTraMaSachTN(String ma) {
-        String regex = "^TN\\d{2,}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(ma);
-        return matcher.find();
+   public static boolean KiemTraMaSachTN(String ma) {
+    String regex = "^TN\\d{2,}$";
+    boolean hopLe = ma.matches(regex);
+
+    if (!hopLe) {
+        System.out.println("Loi: Ma sach thieu nhi phai bat dau bang 'TN' va co it nhat 2 chu so.");
     }
-	public static boolean KiemTraMaSachVH(String ma) {
-        String regex = "^VH\\d{2,}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(ma);
-        return matcher.find();
+    return hopLe;
     }
-	public static boolean KiemTraMaSachTL(String ma) {
-        String regex = "^TL\\d{2,}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(ma);
-        return matcher.find();
+
+    public static boolean KiemTraMaSachTT(String ma) {
+    String regex = "^TT\\d{2,}$";
+    boolean hopLe = ma.matches(regex);
+
+    if (!hopLe) {
+        System.out.println("Loi: Ma sach trinh tham phai bat dau bang 'TT' va co it nhat 2 chu so.");
+    }
+    return hopLe;
+    }  
+
+    public static boolean KiemTraMaSachTL(String ma) {
+    String regex = "^TL\\d{2,}$";
+    boolean hopLe = ma.matches(regex);
+
+    if (!hopLe) {
+        System.out.println("Loi: Ma sach tai lieu phai bat dau bang 'TL' va co it nhat 2 chu so.");
+    }
+    return hopLe;
     }
 
     public static boolean KiemTraMaPhieu(String ma) {
-        if (ma == null || !ma.matches("^PM\\d{3,}$")) {
-            System.out.println("Loi: Ma phieu muon phai co dang PM + it nhat 3 chu so. VD: PM001");
+        if (ma == null || !ma.matches("^PM\\d{2,}$")) {
+            System.out.println("Loi: Ma phieu muon phai co dang PM + it nhat 2 chu so. VD: PM01");
             return false;
         }
         return true;
     }
 
-    //Kiem Tra cccd
+    public static String checkMaso() {
+        boolean check = false;
+		String str;
+		do {
+			str = sc.nextLine();
+			check = true;
+			if(!check_maso(str)) {
+				check = false;
+			}
+		} while (!check);
+		return str;
+	}
+	
+	public static boolean check_maso(String maso) {
+		String reg = "^[A-Za-z]{2,}.*\\d{2,}$";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(maso);
+		if (!matcher.matches()) {
+			System.out.print("Ma so khong dung dinh dang!!! Moi nhap lai: ");
+			return false;
+		}
+		return true;
+	}
+
+     //Kiem Tra cccd
     public static boolean KiemTraCCCD(String cccd)
 	{
 		String reg = "^\\d{12}$";
@@ -340,6 +379,16 @@ public class KiemTra {
         }
     } while (true);
 }
+public static boolean KiemTraMaPhieuTrung(String ma) {
+    PhieuMuon[] ds = PhieuMuon.docFile();
 
+    for (PhieuMuon pm : ds) {
+        if (pm != null && pm.getMaPM().equalsIgnoreCase(ma)) {
+            System.out.println("Loi: Ma phieu muon da ton tai!");
+            return false;
+        }
+    }
+    return true;
+}
 }
 

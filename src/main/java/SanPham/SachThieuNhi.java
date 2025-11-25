@@ -40,7 +40,7 @@ public class SachThieuNhi extends Sach {
 
     @Override
     public void nhap() {
-        super.nhap();
+        super.nhapSTN();
         setNhaXuatBan();
     }
 

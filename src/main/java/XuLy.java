@@ -1,9 +1,8 @@
 import DanhSach.*;
+import KiemTra.KiemTra;
 import Nguoi.NhanVien;
 import Nguoi.TaiKhoan;
 import SanPham.PhanTu;
-import KiemTra.KiemTra;
-
 import java.util.Scanner;
 
 public class XuLy {
@@ -17,16 +16,15 @@ public class XuLy {
         int chon;
         DanhSachTaiKhoan danhSachTaiKhoan = new DanhSachTaiKhoan(); 
         
-        System.out.println("************************************************************\n" +
-                            "*** Chao mung ban den voi chuong trinh                    ***\n" +
-                            "*** QUAN LY THU VIEN                                    ***\n" +
-                            "*** --------------------------------------------------- ***\n" +
+        System.out.println ("************************************************************\n" +
+                            "***          Chao mung ban den voi chuong trinh          ***\n" +
+                            "***                   QUAN LI THU VIEN                   ***\n"+
                             "************************************************************");
         
         do {
             System.out.println("============================================================");
             System.out.println("*** Moi ban dang nhap vao chuong trinh!!! Ban la...    ***");
-            System.out.println("*** 1. Nhan vien (Thu thu)                             ***");
+            System.out.println("*** 1. Nhan vien                                       ***");
             System.out.println("*** 2. Quan ly                                         ***");
             System.out.println("*** 0. Thoat chuong trinh                              ***");
             System.out.println("============================================================");
@@ -44,10 +42,10 @@ public class XuLy {
                     TaiKhoan taiKhoan1 = danhSachTaiKhoan.checkLogin(user1, pass1);
                     if(taiKhoan1 != null) {
                         if(taiKhoan1.getType().equals("nhan vien")) {
-                            System.out.println("Dang nhap thanh cong!!!");
+                            System.out.println("Dang nhap thanh cong!!!\n");
                             username = user1;
                             MenuNV();
-                            chon = 0;
+                            continue;
                         }
                         else {
                             System.out.println("Ban dang dang nhap voi vai tro la nhan vien!!! Vui long su dung tai khoan nhan vien.");
@@ -64,10 +62,10 @@ public class XuLy {
                     TaiKhoan taiKhoan = danhSachTaiKhoan.checkLogin(user, pass);
                     if(taiKhoan != null) {
                         if(taiKhoan.getType().equals("quan ly")) {
-                            System.out.println("Dang nhap thanh cong!!!");
+                            System.out.println("Dang nhap thanh cong!!!\n");
                             username = user;
                             MenuQL();
-                            chon = 0;
+                            continue;
                         }
                         else {
                             System.out.println("Ban dang dang nhap voi vai tro la quan ly!!! Vui long su dung tai khoan quan ly.");
@@ -110,12 +108,12 @@ public class XuLy {
             System.out.println("6. Them doc gia moi");
             System.out.println("7. In danh sach doc gia");
             System.out.println("8. In danh sach sach");
-            System.out.println("9. Kiem tra han tra (theo Ma Doc Gia)");
-            System.out.println("10. Thay doi mat khau tai khoan");
-            System.out.println("0.  Thoat chuong trinh");
+            System.out.println("9. Thay doi mat khau tai khoan");
+            System.out.println("0. Thoat chuong trinh");
             System.out.println("==============================");
             System.out.print("Moi chon: ");
             chon = KiemTra.CheckNumber();
+            sc.nextLine();
             switch (chon) {
                 case 0:
                     System.out.println("Cam on ban da su dung chuong trinh");
@@ -134,7 +132,7 @@ public class XuLy {
                     danhSachPhieuMuon.xuatDanhSach();
                     break;
                 case 5:
-                    System.out.println("Chuc nang In file phieu muon dang phat trien!");
+                    danhSachPhieuMuon.inPhieuMuon();
                     break;
                 case 6:
                     danhSachKhachHang.themKPhanTuVaoDanhSach();
@@ -146,9 +144,6 @@ public class XuLy {
                     danhSachSach.xuatDanhSach();
                     break;
                 case 9:
-                    System.out.println("Chuc nang Kiem tra han tra dang phat trien!");
-                    break;
-                case 10:
                     danhSachTaiKhoan.changePassword(username);
                     break;
                 default:
@@ -166,13 +161,7 @@ public class XuLy {
     public static void MenuQL() {
         DanhSachNhanVien danhSachNhanVien = new DanhSachNhanVien();
         NhanVien nhanVien = (NhanVien) danhSachNhanVien.layPhanTuVoi(username);
-        
-        // Khởi tạo các lớp cần thiết cho chức năng Quản lý
-        DanhSachPhieuMuon danhSachPhieuMuon = new DanhSachPhieuMuon(); 
         DanhSachTaiKhoan danhSachTaiKhoan = new DanhSachTaiKhoan();
-        DanhSachSach danhSachSach = new DanhSachSach();
-        DanhSachKhachHang danhSachKhachHang = new DanhSachKhachHang();
-        DanhSachNhaXuatBan danhSachNXB = new DanhSachNhaXuatBan();
         
         int chon;
         System.out.println("***** Chuong Trinh Quan Ly Thu Vien - Quan Ly *****"); 
@@ -182,12 +171,12 @@ public class XuLy {
             System.out.println("1.  Xem thong tin tai khoan");
             System.out.println("2.  Sua thong tin tai khoan");
             System.out.println("3.  Quan ly danh sach sach");           
-            System.out.println("4.  Quan ly danh sach Nha Xuat Ban");   
-            System.out.println("5.  Quan ly danh sach nhan vien");
-            System.out.println("6.  Quan ly danh sach doc gia");
-            System.out.println("7.  Quan ly danh sach tai khoan");
-            System.out.println("8.  Quan ly danh sach phieu muon");
-            System.out.println("9. Kiem tra han tra (theo Ma Doc Gia)");
+            System.out.println("4.  Quan ly danh sach Nha Xuat Ban"); 
+            System.out.println("5.  Quan ly danh sach The loai");
+            System.out.println("6.  Quan ly danh sach nhan vien");
+            System.out.println("7.  Quan ly danh sach doc gia");
+            System.out.println("8.  Quan ly danh sach tai khoan");
+            System.out.println("9.  Quan ly danh sach phieu muon");
             System.out.println("10. Thay doi mat khau tai khoan");
             System.out.println("0. Thoat chuong trinh");
             System.out.println("==============================");
@@ -196,7 +185,7 @@ public class XuLy {
             switch (chon) {
                 case 0:
                     System.out.println("Cam on ban da su dung chuong trinh");
-                    break;
+                    return;
                 case 1:
                     nhanVien.xuat();
                     break;
@@ -211,19 +200,19 @@ public class XuLy {
                     quanLyDSNXB();
                     break;
                 case 5:
-                    quanLyDSNV();
+                    quanLyDSTL();
                     break;
                 case 6:
-                    quanLyDSDG();
+                    quanLyDSNV();
                     break;
                 case 7:
-                    quanLyDSTK();
+                    quanLyDSDG();
                     break;
                 case 8:
-                    quanLyDSPM();
+                    quanLyDSTK();
                     break;
                 case 9:
-                    System.out.println("Chuc nang Kiem tra han tra dang phat trien!");
+                    quanLyDSPM();
                     break;
                 case 10:
                     danhSachTaiKhoan.changePassword(username);
@@ -265,7 +254,7 @@ public class XuLy {
         int chon;
         
         do {
-            inMenu("sach");
+            inMenu("sach"); 
             chon = KiemTra.CheckNumber();
             switch (chon) {
                 case 1:
@@ -297,15 +286,13 @@ public class XuLy {
                     System.out.println("So luong: " + danhSachSach.getSoLuong()); 
                     break;
                 case 0:
-                    MenuQL();
-                    break;
+                    break; 
                 default:
                     System.out.println("Hay nhap so co trong menu!!!");
                     break;
             }
         } while(chon!=0);
     }
-
     /**
      * Quản lý Danh sách Nhân viên.
      */
@@ -343,7 +330,7 @@ public class XuLy {
                     danhSachNhanVien.thongKe();
                     break;
                 case 8:
-                    System.out.println("So luong: " + danhSachNhanVien.getSoluong());
+                    System.out.println("So luong: " + danhSachNhanVien.getSoLuong());
                     break;
                 case 0:
                     MenuQL();
@@ -494,6 +481,51 @@ public class XuLy {
                     break;
                 case 0:
                     MenuQL();
+                    break;
+                default:
+                    System.out.println("Hay nhap so co trong menu!!!");
+                    break;
+            }
+        } while(chon!=0);
+    }
+
+    public static void quanLyDSTL() {
+        DanhSachTheLoai danhSachTheLoai = new DanhSachTheLoai();
+        int chon;
+        
+        do {
+            inMenu("the loai");
+            chon = KiemTra.CheckNumber();
+            switch (chon) {
+                case 1:
+                    danhSachTheLoai.nhapDanhSach();
+                    break;
+                case 2:
+                    danhSachTheLoai.xuatDanhSach();
+                    break;
+                case 3:
+                    danhSachTheLoai.themKPhanTuVaoDanhSach();
+                    break;
+                case 4:
+                    danhSachTheLoai.chinhSuaThongTinPhanTu();
+                    break;
+                case 5:
+                    danhSachTheLoai.xoaPhanTu();
+                    break;
+                case 6:
+                    PhanTu phanTu = danhSachTheLoai.timPhanTu();
+                    if (phanTu != null) {
+                        System.out.println("** Thong tin tim thay **");
+                        phanTu.xuat();
+                    } else System.out.println("Khong tim thay!");
+                    break;
+                case 7:
+                    danhSachTheLoai.thongKe();
+                    break;
+                case 8:
+                    System.out.println("So luong the loai: " + danhSachTheLoai.getSoLuong()); 
+                    break;
+                case 0:
                     break;
                 default:
                     System.out.println("Hay nhap so co trong menu!!!");

@@ -40,7 +40,7 @@ public class SachTamLy extends Sach {
 
     @Override
     public void nhap() {
-        super.nhap();
+        super.nhapSTL();
         setNhaXuatBan();
     }
 
@@ -58,10 +58,12 @@ public class SachTamLy extends Sach {
             System.out.println("1. Sua thong tin Sach");
             System.out.println("2. Sua nha xuat ban");
             System.out.println("0. Quay ve menu truoc");
+         System.out.println("===============================");
             System.out.print("Nhap lua chon: ");
             chon = KiemTra.CheckNumber();
             switch (chon) {
                 case 0:
+                    System.out.println("Thoat sua thong tin Sach tam ly!!");
                     break;
                 case 1:
                     super.suaThongTin();
